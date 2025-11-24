@@ -86,11 +86,6 @@ function InicioSesion() {
           {/* Espacio para Título y subtítulo */}
           <div className="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center mb-5 mb-md-0 text-center px-3">
             <img src={LoginEcoSwap} alt="Login EcoSwap" style={styleImageLogin}/>
-            
-            {/* <h1 className="text-center text-white mt-5" style={styleHeading1}>
-              EcoSwap
-            </h1>
-            <h4 className="text-center text-white">Compra, vende, recicla</h4> */}
           </div>
 
           {/* Formulario para inicio de sesión */}
