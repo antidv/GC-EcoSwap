@@ -6,19 +6,19 @@ function ChatComponente() {
     {
       id: 1,
       sender: "other",
-      text: "Hola, ¿tienes disponible el producto?",
+      text: "Hola, buenas tardes",
       timestamp: "10:30",
     },
     {
       id: 2,
       sender: "user",
-      text: "Sí, está disponible. ¿Te interesa?",
+      text: "Hola, ¿tienes disponible el producto?",
       timestamp: "10:31",
     },
     {
       id: 3,
       sender: "other",
-      text: "Claro, ¿cuál es el precio?",
+      text: "Claro, ¿dónde nos encontramos?",
       timestamp: "10:32",
     },
   ]);
