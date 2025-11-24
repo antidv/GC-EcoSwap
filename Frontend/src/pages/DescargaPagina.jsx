@@ -19,7 +19,7 @@ function PaginaDescarga() {
     padding: "8px 20px",
     textDecoration: "none",
     display: "inline-block",
-    marginButton: "20px",
+    marginBottom: "20px",
   };
 
   // Buscar la transacción de nuevo

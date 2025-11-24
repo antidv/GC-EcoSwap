@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import Publicacion from '../components/PublicacionInventario.jsx';
+import { useNavigate } from 'react-router-dom'; 
+import Publicacion from '../components/PublicacionInventario.jsx'; 
+import { useInventario } from '../context/InventarioContext.jsx';
+import Header from '../components/Header.jsx';
 
 const ColorDot = ({ color }) => (
   <span style={{
@@ -14,42 +17,37 @@ const ColorDot = ({ color }) => (
 
 function Inventario() {
   const [filtro, setFiltro] = useState("Todos");
+  const navigate = useNavigate();
+  const { listaPublicaciones } = useInventario();
 
   const handleNuevaPublicacion = () => {
-    console.log("Crear nueva publicación...");
+    navigate('/publicar-insumo');
   };
 
   const handleSetFiltro = (e, tipo) => {
     e.preventDefault();
     setFiltro(tipo);
-    console.log("Filtrar por:", tipo);
   };
 
-  const mockPublicaciones = [
-    { id: 1, tipo: "Privado" },
-    { id: 2, tipo: "Publico" }
-  ];
+  const publicacionesFiltradas = listaPublicaciones.filter((pub) => {
+    if (filtro === "Todos") return true;
+    return pub.tipo === filtro;
+  });
 
   return (
-    <div className="container-fluid min-vh-100 stylePantalla">
+    <div className="container-fluid">
+      <Header />
+      
       <div className="container-fluid">
         
-        {/* 1. Título y Subtítulo */}
-        <div className="row">
-            <h1 className="text-center text-white mt-5">EcoSwap</h1>
-            <h4 className="text-center text-white">Compra, vende, recicla</h4>
-        </div>
-
-        {/* 2. Fila de Botones y Filtros */}
-        <div className="row mb-4">
-          <div className="col-12 d-flex">
+        {/* Fila de Botones y Filtros */}
+        <div className="row mb-4 mt-5">
+          <div className="col-12 d-flex align-items-center">
             
-            {/* Botón Nueva Publicación*/}
             <button className="btn btn-light me-3" onClick={handleNuevaPublicacion}>
-              <i className="bi bi-plus-lg"></i> + Nueva publicación
+              <i className="bi bi-plus-lg"></i> Nueva publicación
             </button>
 
-            {/* Dropdown de Filtro*/}
             <div className="dropdown">
               <button 
                 className="btn btn-light dropdown-toggle" 
@@ -57,7 +55,6 @@ function Inventario() {
                 data-bs-toggle="dropdown" 
                 aria-expanded="false"
               >
-                
                 <i className="bi bi-filter"></i> {filtro}
               </button>
               <ul className="dropdown-menu">
@@ -74,17 +71,22 @@ function Inventario() {
           </div>
         </div>
 
-        {/* 3. Área de Publicaciones */}
-        <div className="row">
-          {mockPublicaciones.map((pub) => (
-            <div className="col-12 col-md-4 col-lg-3 mb-4" key={pub.id}>
-              <Publicacion tipo={pub.tipo} />
-            </div>
-          ))}
+        {/* Área de Publicaciones */}
+        <div className="row px-3">
+          {publicacionesFiltradas.length > 0 ? (
+            publicacionesFiltradas.map((pub) => (
+              <div className="col-12 col-md-6 col-lg-4 col-xl-3 mb-4" key={pub.id}>
+                <Publicacion publicacion={pub} />
+              </div>
+            ))
+          ) : (
+             <div className="col-12 text-center mt-5">
+                <h4 className='text-white-50'>No hay publicaciones en esta categoría.</h4>
+             </div>
+          )}
         </div>
 
-        {/* 4. Mensaje */}
-        <div className="row mt-5">
+        <div className="row mt-5 mb-5">
           <div className="col-12 text-center">
             <p className='text-white'>No hay más para mostrar...</p>
           </div>

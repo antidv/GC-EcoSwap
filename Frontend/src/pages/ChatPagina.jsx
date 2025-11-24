@@ -1,29 +1,31 @@
-import ChatComponente from "../components/ChatComponente";
-import TransaccionActual from "../components/TransaccionActual";
-import Header from "../components/Header";
+import React from 'react';
+import ChatComponente from "../components/ChatComponente.jsx";
+import TransaccionActual from "../components/TransaccionActual.jsx";
+import Header from "../components/Header.jsx";
+import { useChats } from '../context/ChatsContext.jsx';
 
 function ChatPagina() {
+  const { chatSeleccionado } = useChats() || {};
+
   return (
     <>
-      {/* Header */}
       <Header />
       
-      <div className="container-fluid min-vh-100 stylePantalla">
-        {/* Espacio para Título y subtítulo */}
-        <div className="row">
-          <h1 className="text-center text-white mt-5">EcoSwap</h1>
-          <h4 className="text-center text-white">Compra, vende, recicla</h4>
-        </div>
-
-        <div className="row">
-          <div className="col-4 d-flex justify-content-end align-items-center">
-               <TransaccionActual></TransaccionActual>
+      <div className="container-fluid min-vh-100">
+        <div className="row pt-4">
+          <div className="col-12 col-md-4 d-flex justify-content-end align-items-start">
+             <TransaccionActual datos={chatSeleccionado} />
           </div>
-          <div className="col-8 d-flex justify-content-start">
-               <ChatComponente></ChatComponente>
+          <div className="col-12 col-md-8 d-flex justify-content-start">
+             {chatSeleccionado ? (
+                <ChatComponente />
+             ) : (
+               <div className="d-flex align-items-center justify-content-center border rounded bg-light text-muted w-100" style={{height: '500px', maxWidth: '45rem'}}>
+                  Selecciona una empresa del menú ($) para chatear
+               </div>
+             )}
           </div>
         </div>
-
       </div>
     </>
   );

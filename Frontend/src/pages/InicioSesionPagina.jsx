@@ -45,16 +45,33 @@ function InicioSesion() {
     if (esValido){
       console.log("Credenciales válidas. Iniciando sesión...");
 
-      const usuarioSimulado = {
-        nombre: "Empresa Demo S.A.C",
-        ruc: "20601234567",
-        direccion: "Av. Javier Prado Este 1234, Lima",
-        telefono: "987654321",
-        email: email
+      let usuarioSimulado;
+
+      // Si el correo incluye "admin"...
+      if (email.toLowerCase().includes('admin')) {
+        usuarioSimulado = {
+          nombre: "Administrador Principal",
+          rol: "admin",
+          email: email
+        };
+      } else {
+        // Si no, es una empresa normal
+        usuarioSimulado = {
+          nombre: "Empresa Demo S.A.C",
+          ruc: "20601234567",
+          direccion: "Av. Javier Prado Este 1234, Lima",
+          telefono: "987654321",
+          email: email,
+          rol: "empresa"
+        };
       }
 
       login(usuarioSimulado);
-      navigate('/');
+      if (usuarioSimulado.rol === 'admin') {
+        navigate('/inventario'); // El admin suele ir directo al inventario o dashboard
+      } else {
+        navigate('/'); // La empresa va al inicio
+      }
     }
   }
 
