@@ -2,6 +2,7 @@ package com.greencycle.ecoswap.ecoswap.controller;
 import com.greencycle.ecoswap.ecoswap.dto.LoginRequest;
 import com.greencycle.ecoswap.ecoswap.dto.RegistroRequest;
 import com.greencycle.ecoswap.ecoswap.model.Usuario;
+import com.greencycle.ecoswap.ecoswap.service.JwtService;
 import com.greencycle.ecoswap.ecoswap.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*") // Permite que React se conecte sin problemas
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     @Autowired
@@ -22,6 +23,9 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
 
     // LOGIN (HU-0005)
     @PostMapping("/login")
@@ -33,11 +37,12 @@ public class AuthController {
             // Verificar contraseña encriptada
             if (passwordEncoder.matches(loginRequest.getPassword(), usuario.getPassword())) {
 
-                // AQUÍ GENERARÍAMOS EL TOKEN JWT (Por ahora devolvemos un JSON simple)
+                String token = jwtService.generateToken(usuario.getEmail(), usuario.getRol());
                 Map<String, Object> response = new HashMap<>();
                 response.put("mensaje", "Login exitoso");
                 response.put("usuario_id", usuario.getId());
                 response.put("rol", usuario.getRol());
+                response.put("token", token);
 
                 return ResponseEntity.ok(response);
             }
