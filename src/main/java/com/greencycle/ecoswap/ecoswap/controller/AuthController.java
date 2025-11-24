@@ -38,7 +38,6 @@ public class AuthController {
                 response.put("mensaje", "Login exitoso");
                 response.put("usuario_id", usuario.getId());
                 response.put("rol", usuario.getRol());
-                response.put("token", "TOKEN_FALSO_TEMPORAL_12345"); // Esto lo cambiaremos por JWT real luego
 
                 return ResponseEntity.ok(response);
             }
