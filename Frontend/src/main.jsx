@@ -6,6 +6,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { CarritoProvider } from './context/CarritoContext.jsx'
 import { UsuarioProvider } from './context/UsuarioContext.jsx';
 import { TransaccionesProvider } from './context/TransaccionesContext.jsx';
+import { InventarioProvider } from './context/InventarioContext.jsx';
+import { ChatsProvider } from './context/ChatsContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -13,7 +15,11 @@ createRoot(document.getElementById('root')).render(
       <UsuarioProvider>
         <CarritoProvider> 
           <TransaccionesProvider>
-            <App />
+            <InventarioProvider>
+              <ChatsProvider>
+                <App />
+              </ChatsProvider>
+            </InventarioProvider>
           </TransaccionesProvider>
         </CarritoProvider>
       </UsuarioProvider>

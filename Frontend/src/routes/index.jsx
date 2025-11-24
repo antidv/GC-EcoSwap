@@ -11,6 +11,13 @@ import InicioSesion from '../pages/InicioSesionPagina.jsx';
 import CrearCuenta from '../pages/CrearCuentaPagina.jsx';
 import CertificadoDocumento from '../pages/CertificadoPDF.jsx';
 
+{/* Del admin */}
+import Inventario from '../pages/InventarioPagina.jsx';
+import PublicarInsumo from '../pages/PublicarInsumoPagina.jsx';
+import ChatPagina from '../pages/ChatPagina.jsx';
+import PagoExitoso from '../pages/PagoExistosoPagina.jsx';
+import HistorialTransacciones from '../pages/HistorialTransaccionesPagina.jsx';
+
 function AppRoutes() {
   return (
     <Routes>
@@ -39,6 +46,7 @@ function AppRoutes() {
       />
 
       {/* Una ruta "catch-all" por si el usuario pone una URL no válida */}
+      {/* Falta arreglar esto, siempre manda a Pagina Principal xd, debe ser por rol */}
       <Route 
         path="*" 
         element={<PaginaPrincipal />} 
@@ -67,6 +75,39 @@ function AppRoutes() {
       <Route
         path='/descargar-certificado/:id'
         element={<PaginaDescarga />}
+      />
+
+      {/* Admin */}
+
+      <Route
+        path='/inventario'
+        element={<Inventario />}
+      />
+
+      <Route
+        path='/publicar-insumo'
+        element={<PublicarInsumo />}
+      />
+
+      <Route
+        path='/chat-admin'
+        element={<ChatPagina />}
+      />
+
+      <Route
+        path='/pago-exitoso/:id'
+        element={<PagoExitoso />}
+      />
+
+      <Route
+        path='/pago-exitoso/:id'
+        element={<PagoExitoso />}
+      />
+
+      {/* Esto se tiene que editar respecto al rol, uno sería filtrado */}
+      <Route
+        path='/historial-transacciones'
+        element={<HistorialCertificadosPagina />}
       />
 
     </Routes>

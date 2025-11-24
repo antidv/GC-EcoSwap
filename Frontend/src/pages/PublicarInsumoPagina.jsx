@@ -1,142 +1,161 @@
-function PublicarInsumo() {
-  return (
-    <>
-      {/* Header */}
-      <Header />
-      
-      <div className="container-fluid min-vh-100 stylePantalla">
-        {/* Espacio para Título y subtítulo */}
-        <div className="row">
-          <h1 className="text-center text-white mt-5">EcoSwap</h1>
-          <h4 className="text-center text-white">Compra, vende, recicla</h4>
-        </div>
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useInventario } from '../context/InventarioContext.jsx';
+import ImagenCarton from "../assets/carton.jpg"; 
+import Header from '../components/Header.jsx';
 
-        <div className="row mx-5">
-          <h4 className="text-white mt-3">Publicar insumo</h4>
-          <div className="col-12 justify-content-start">
-            <div className="card">
-              <div className="card-body">
-                <form action="">
-                  <div className="row">
-                    <div className="col-3">
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputEmail1"
-                          className="form-label text-black"
-                        >
-                          <b>Nombre</b>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-3">
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputPassword1"
-                          className="form-label text-black"
-                        >
-                          <b>Categoría</b>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="exampleInputPassword1"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-3">
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputEmail1"
-                          className="form-label text-black"
-                        >
-                          <b>Nombre</b>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-3">
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputPassword1"
-                          className="form-label text-black"
-                        >
-                          <b>Categoría</b>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="exampleInputPassword1"
-                        />
-                      </div>
+function PublicarInsumo() {
+  const navigate = useNavigate();
+  const { agregarPublicacion } = useInventario(); 
+
+  const [nombre, setNombre] = useState("");
+  const [categoria, setCategoria] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [estado, setEstado] = useState("Publico");
+  const [precio, setPrecio] = useState("");
+  const [cantidad, setCantidad] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Publicando insumo...");
+
+    const nuevaData = {
+      nombre: nombre || "Nuevo Insumo",
+      categoria: categoria || "Varios",
+      descripcion: descripcion,
+      tipo: estado,
+      precio: precio ? `S/ ${precio}` : "S/ 0.00",
+      cantidad: cantidad ? `${cantidad} uni.` : "0 uni.",
+      imagen: ImagenCarton 
+    };
+
+    agregarPublicacion(nuevaData);
+
+    alert("Publicación creada exitosamente");
+    navigate('/inventario'); 
+  };
+
+  return (
+    <div className="container-fluid">
+      <Header />
+      <div className="row justify-content-center mt-4 mb-5">
+        <div className="col-12 col-md-10 col-lg-8">
+          
+          <h4 className="text-white mb-3">Publicar insumo</h4>
+          
+          <div className="card shadow" style={{borderRadius: '8px'}}>
+            <div className="card-body p-4">
+              <form onSubmit={handleSubmit}>
+                
+                {/* Fila 1: Nombre y Categoría */}
+                <div className="row mb-3">
+                  <div className="col-md-6">
+                    <label className="form-label fw-bold">Nombre</label>
+                    <input 
+                      type="text" 
+                      className="form-control" 
+                      placeholder="Ej: Cajas de cartón" 
+                      value={nombre}
+                      onChange={(e) => setNombre(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label className="form-label fw-bold">Categoría</label>
+                    <select 
+                      className="form-select"
+                      value={categoria}
+                      onChange={(e) => setCategoria(e.target.value)}
+                    >
+                        <option value="">Seleccionar...</option>
+                        <option value="Cartón">Cartón</option>
+                        <option value="Plástico">Plástico</option>
+                        <option value="Papel">Papel</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Fila 2: Cantidad y Precio */}
+                <div className="row mb-3">
+                  <div className="col-md-6">
+                    <label className="form-label fw-bold">Cantidad</label>
+                    <input 
+                      type="number" 
+                      className="form-control" 
+                      placeholder="Ej: 100" 
+                      value={cantidad}
+                      onChange={(e) => setCantidad(e.target.value)}
+                      min="1"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label className="form-label fw-bold">Precio (S/)</label>
+                    <input 
+                      type="number" 
+                      className="form-control" 
+                      placeholder="Ej: 50.00" 
+                      value={precio}
+                      onChange={(e) => setPrecio(e.target.value)}
+                      min="0"
+                      step="0.01"
+                    />
+                  </div>
+                </div>
+
+                {/* Fila 3: Descripción y Estado */}
+                <div className="row mb-3">
+                  <div className="col-md-8">
+                    <label className="form-label fw-bold">Descripción</label>
+                    <textarea 
+                      className="form-control" 
+                      placeholder="Detalles del insumo..." 
+                      value={descripcion}
+                      onChange={(e) => setDescripcion(e.target.value)}
+                      style={{ height: "120px", resize: "none" }}
+                    ></textarea>
+                  </div>
+                  <div className="col-md-4">
+                    <label className="form-label fw-bold">Estado</label>
+                    <select 
+                      className="form-select"
+                      value={estado}
+                      onChange={(e) => setEstado(e.target.value)}
+                    >
+                      <option value="Publico">Público</option>
+                      <option value="Privado">Privado</option>
+                    </select>
+
+                    <div className="mt-3">
+                        <label className="form-label fw-bold">Imagen</label>
+                        <div className="input-group">
+                        <label className="input-group-text bg-light" htmlFor="formFile">Elegir</label>
+                        <input type="text" className="form-control bg-white" placeholder="No se eligió..." disabled />
+                        <input type="file" className="d-none" id="formFile" />
+                        </div>
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-9">
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputEmail1"
-                          className="form-label text-black"
+                </div>
+
+                {/* Botón Submit */}
+                <div className="row mt-4">
+                    <div className="col-12">
+                        <button 
+                        type="submit" 
+                        className="btn btn-success"
+                        style={{backgroundColor: '#198754', borderColor: '#198754'}}
                         >
-                          <b>Descripción</b>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                        />
-                      </div>
+                        Crear publicación
+                        </button>
                     </div>
-                    <div className="col-3">
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputEmail1"
-                          className="form-label text-black"
-                        >
-                          <b>Estado</b>
-                        </label>
-                        <select class="form-select" aria-label="Público">
-                          <option selected>Público</option>
-                          <option value="publico">Público</option>
-                          <option value="privado">Privado</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3">
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputEmail1"
-                          className="form-label text-black"
-                        >
-                          <b>Image</b>
-                        </label>
-                        <input class="form-control" type="file" id="formFile" />
-                      </div>
-                    </div>
-                  </div>
-                  <button type="submit" className="btn btn-success">
-                    Crear publicación
-                  </button>
-                </form>
-              </div>
+                </div>
+
+              </form>
             </div>
           </div>
+
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
