@@ -1,0 +1,26 @@
+.stylePantalla {
+  background: linear-gradient(
+    180deg,
+    rgba(18, 158, 3, 1) 0%,
+    rgba(7, 56, 1, 1) 100%
+  );
+}
+
+.colorBlue {
+  background-color: #17A2B8;
+}
+
+body {
+  /* El gradiente que estabas usando */
+  background: linear-gradient(180deg, rgba(18, 158, 3, 1) 0%, rgba(7, 56, 1, 1) 100%);
+  
+  /* Aseguramos que siempre cubra toda la pantalla */
+  min-height: 100vh;
+  
+  /* Un color de texto base que funcione con el fondo */
+  color: white;
+
+  /* Importante: Evita que el gradiente se repita si el contenido es corto */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
