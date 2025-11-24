@@ -1,14 +1,15 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import LogoEcoSwap from "../assets/logo_ecoswap.png";
 
 // Importaciones relativas directas
-import { useCarrito } from '../context/CarritoContext.jsx'; 
-import { useUsuario } from '../context/UsuarioContext.jsx';
-import { useChats } from '../context/ChatsContext.jsx';
+import { useCarrito } from "../context/CarritoContext.jsx";
+import { useUsuario } from "../context/UsuarioContext.jsx";
+import { useChats } from "../context/ChatsContext.jsx";
 
 const Header = () => {
   const navigate = useNavigate();
-  
+
   // Hooks seguros con valores por defecto para evitar crashes
   const { usuario, logout } = useUsuario() || {};
   const rol = usuario?.rol || "invitado";
@@ -21,34 +22,84 @@ const Header = () => {
   const handleSeleccionarEmpresa = (chat) => {
     if (seleccionarChat) {
       seleccionarChat(chat);
-      navigate('/chat-admin');
+      navigate("/chat-admin");
     }
   };
 
   const handleLogout = (e) => {
     e.preventDefault();
-    if(logout) logout();
-    navigate('/login');
+    if (logout) logout();
+    navigate("/login");
   };
 
-  const styleHeader = { color: "white", padding: "1.5rem 2rem", display: "flex", justifyContent: "flex-end", alignItems: "center", position: "relative" };
-  const styleLogoContainer = { position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", textAlign: "center" };
-  const styleIcono = { background: "white", color: "black", borderRadius: "50%", width: "50px", height: "50px", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "1.5rem", cursor: "pointer", position: "relative" };
-  const styleBadge = { position: "absolute", top: "-5px", right: "-5px", background: "red", color: "white", borderRadius: "50%", width: "20px", height: "20px", fontSize: "0.8rem", display: "flex", justifyContent: "center", alignItems: "center" };
+  const styleHeader = {
+    backgroundColor: "#198754",
+    color: "white",
+    padding: "0.4rem 2rem",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+  };
+
+  const styleBrandContainer = {
+    display: "flex",
+    alignItems: "center",
+    gap: "15px",
+    textDecoration: "none",
+    color: "white",
+  };
+
+  const styleLogo = {
+    height: "45px",
+    width: "auto",
+    backgroundColor: "white",
+    borderRadius: "10%",
+    padding: "3px 10px",
+  };
+
+  const styleIcono = {
+    background: "white",
+    color: "#198754",
+    borderRadius: "50%",
+    width: "45px",
+    height: "45px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: "1.3rem",
+    cursor: "pointer",
+    position: "relative",
+    transition: "transform 0.2s",
+  };
+
+  const styleBadge = {
+    position: "absolute",
+    top: "-5px",
+    right: "-5px",
+    background: "red",
+    color: "white",
+    borderRadius: "50%",
+    width: "20px",
+    height: "20px",
+    fontSize: "0.75rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "bold",
+  };
 
   return (
     <header style={styleHeader}>
-      <div style={styleLogoContainer}>
-        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <h1>EcoSwap</h1>
-          <h4 className="fw-normal">Compra, Vende, Recicla</h4>
+      <div style={styleBrandContainer}>
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <img src={LogoEcoSwap} alt="Logo Ecoswap" style={styleLogo} />
         </Link>
       </div>
-      
+
       <div className="d-flex align-items-center gap-3">
-        
         {/* VISTA EMPRESA */}
-        {rol === 'empresa' && (
+        {rol === "empresa" && (
           <>
             <Link to="/carrito">
               <div style={styleIcono}>
@@ -73,7 +124,10 @@ const Header = () => {
                       <h6 className="dropdown-header text-uppercase text-success fw-bold">
                         {usuario.nombre}
                       </h6>
-                      <span className="dropdown-item-text text-muted" style={{fontSize: '0.9rem'}}>
+                      <span
+                        className="dropdown-item-text text-muted"
+                        style={{ fontSize: "0.9rem" }}
+                      >
                         {usuario.email}
                       </span>
                     </li>
@@ -101,26 +155,52 @@ const Header = () => {
         )}
 
         {/* VISTA ADMIN */}
-        {rol === 'admin' && (
+        {rol === "admin" && (
           <>
             <div className="dropdown">
-              <div style={styleIcono} data-bs-toggle="dropdown" aria-expanded="false" title="Empresas Pendientes">
+              <div
+                style={styleIcono}
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                title="Empresas Pendientes"
+              >
                 <i className="bi bi-currency-dollar"></i>
-                {chatsActivos.length > 0 && <span style={styleBadge}>{chatsActivos.length}</span>}
+                {chatsActivos.length > 0 && (
+                  <span style={styleBadge}>{chatsActivos.length}</span>
+                )}
               </div>
-              <ul className="dropdown-menu dropdown-menu-end" style={{minWidth: '250px'}}>
-                <li><h6 className="dropdown-header">Transacciones Pendientes</h6></li>
+              <ul
+                className="dropdown-menu dropdown-menu-end"
+                style={{ minWidth: "250px" }}
+              >
+                <li>
+                  <h6 className="dropdown-header">Transacciones Pendientes</h6>
+                </li>
                 {chatsActivos.length > 0 ? (
                   chatsActivos.map((chat) => (
                     <li key={chat.id}>
-                      <button className="dropdown-item d-flex justify-content-between align-items-center" onClick={() => handleSeleccionarEmpresa(chat)}>
-                        <div className="text-truncate" style={{maxWidth: '150px'}}>{chat.comprador}</div>
-                        <span className="badge bg-success ms-2">S/ {chat.total}</span>
+                      <button
+                        className="dropdown-item d-flex justify-content-between align-items-center"
+                        onClick={() => handleSeleccionarEmpresa(chat)}
+                      >
+                        <div
+                          className="text-truncate"
+                          style={{ maxWidth: "150px" }}
+                        >
+                          {chat.comprador}
+                        </div>
+                        <span className="badge bg-success ms-2">
+                          S/ {chat.total}
+                        </span>
                       </button>
                     </li>
                   ))
                 ) : (
-                  <li><span className="dropdown-item text-muted">No hay pendientes</span></li>
+                  <li>
+                    <span className="dropdown-item text-muted">
+                      No hay pendientes
+                    </span>
+                  </li>
                 )}
               </ul>
             </div>
@@ -141,7 +221,10 @@ const Header = () => {
                       <h6 className="dropdown-header text-uppercase text-success fw-bold">
                         {usuario.nombre}
                       </h6>
-                      <span className="dropdown-item-text text-muted" style={{fontSize: '0.9rem'}}>
+                      <span
+                        className="dropdown-item-text text-muted"
+                        style={{ fontSize: "0.9rem" }}
+                      >
                         {usuario.email}
                       </span>
                     </li>
@@ -174,12 +257,11 @@ const Header = () => {
         )}
 
         {/* VISTA INVITADO */}
-        {(!usuario || rol === 'invitado') && (
+        {(!usuario || rol === "invitado") && (
           <Link to="/login" className="btn btn-light fw-bold">
             Iniciar Sesión
           </Link>
         )}
-
       </div>
     </header>
   );
