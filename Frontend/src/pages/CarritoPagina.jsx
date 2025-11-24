@@ -5,8 +5,7 @@ import Header from "../components/Header.jsx";
 
 const FilaCarrito = ({ item, onEliminar }) => {
   const producto = item.producto;
-  const subtotal =
-    parseFloat(producto.precio.replace("S/", "")) * item.cantidad;
+  const subtotal = parseFloat(producto.precio.replace("S/", "")) * item.cantidad;
 
   return (
     <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
@@ -76,13 +75,26 @@ function PaginaCarrito() {
     width: "100%",
   };
 
+  const styleBotonVolver = {
+    backgroundColor: "#ffc107",
+    color: "#333",
+    fontWeight: "bold",
+    border: "none",
+    borderRadius: "8px",
+    padding: "8px 20px",
+    textDecoration: "none",
+    display: "inline-block",
+    marginButton: "20px",
+  };
+
   return (
     <>
       {/* Header */}
       <Header />
 
       <div className="container" style={styleContenedor}>
-        <h2 className="text-white mb-4">Carrito de compras</h2>
+        <Link to="/" style={styleBotonVolver}>&larr; Volver al Inicio</Link>
+        <h2 className="text-white mb-4 mt-4">Carrito de compras</h2>
         <div className="row">
           {/* Columna Izquierda: Items */}
           <div className="col-md-8">

@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { useCarrito } from "../context/CarritoContext.jsx";
+import { useUsuario } from "../context/UsuarioContext.jsx";
 
 const Header = () => {
   const { items } = useCarrito();
+  const { usuario } = useUsuario();
+
   const totalItems = items.reduce((acc, item) => acc + item.cantidad, 0);
 
   const styleHeader = {
@@ -64,6 +67,8 @@ const Header = () => {
             {totalItems > 0 && <span style={styleBadge}>{totalItems}</span>}
           </div>
         </Link>
+        
+        {/* Dropdown de Usuario */}
         <div className="dropdown">
           <div
             style={styleIcono}
@@ -74,6 +79,21 @@ const Header = () => {
           </div>
 
           <ul className="dropdown-menu dropdown-menu-end">
+            {usuario && (
+              <>
+                <li>
+                  <h6 className="dropdown-header text-uppercase text-success fw-bold">
+                    {usuario.nombre}
+                  </h6>
+                  <span className="dropdown-item-text text-muted" style={{fontSize: '0.9rem'}}>
+                    {usuario.email}
+                  </span>
+                </li>
+              </>
+            )}
+            <li>
+              <hr className="dropdown-divider" />
+            </li>
             <li>
               <Link className="dropdown-item" to="/historial-certificados">
                 Ver certificados

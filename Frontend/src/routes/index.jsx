@@ -2,12 +2,14 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PaginaPrincipal from '../pages/PrincipalPagina.jsx';
 import PaginaDetalle from '../pages/DetallePagina.jsx';
+import PaginaDescarga from '../pages/DescargaPagina.jsx';
 import PaginaCarrito from '../pages/CarritoPagina.jsx';
 import PaginaChatEmpresa from '../pages/ChatEmpresaPagina.jsx'
 import HistorialCertificadosPagina from '../pages/HistorialCertificadosPagina.jsx';
 import PaginaCertificado from '../pages/CertificadoPagina.jsx';
 import InicioSesion from '../pages/InicioSesionPagina.jsx';
 import CrearCuenta from '../pages/CrearCuentaPagina.jsx';
+import CertificadoDocumento from '../pages/CertificadoPDF.jsx';
 
 function AppRoutes() {
   return (
@@ -61,6 +63,12 @@ function AppRoutes() {
         path="/certificado/:id" 
         element={<PaginaCertificado />} 
       />
+
+      <Route
+        path='/descargar-certificado/:id'
+        element={<PaginaDescarga />}
+      />
+
     </Routes>
   );
 }

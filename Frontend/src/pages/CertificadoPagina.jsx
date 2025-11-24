@@ -2,7 +2,7 @@ import React from "react";
 import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { useTransacciones } from "../context/TransaccionesContext.jsx";
 import { MOCK_TRANSACCIONES } from "../data/mockTransacciones.js";
-import Header from "../components/Header.jsx";
+import Header from "../components/Header";
 
 function PaginaCertificado() {
   const { id } = useParams();
@@ -114,12 +114,12 @@ function PaginaCertificado() {
 
           {/* Botón de Descarga */}
           <div className="mt-4">
-            <button
+            <Link 
+              to={`/descargar-certificado/${transaccion.id}`}
               style={styleBotonDescarga}
-              onClick={() => alert("Función de descarga no implementada.")}
-            >
+              className="btn">
               Descargar certificado verde
-            </button>
+            </Link>
           </div>
         </div>
       </div>
