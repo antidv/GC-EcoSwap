@@ -27,7 +27,6 @@ function InicioSesion() {
 
   const styleImageLogin = {
     maxWidth: "20rem",
-    backgroundColor: "white",
     borderRadius: "5%",
     padding: "10px 20px",
   }

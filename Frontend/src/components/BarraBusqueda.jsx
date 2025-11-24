@@ -23,7 +23,7 @@ function BarraBusqueda({
       <form className="input-group" onSubmit={onSearchSubmit} style={{ maxWidth: "30rem" }}>
         <input 
           type="text" 
-          className="form-control" 
+          className="form-control border-2 colorVerdeOscuro" 
           placeholder="Buscar insumos, materiales, etc..." 
           aria-label="Barra de búsqueda"
           value={terminoBusqueda}
@@ -34,7 +34,7 @@ function BarraBusqueda({
       {/* BOTÓN DE FILTRO (Dropdown) */}
       <div className="dropdown ms-2">
         <button 
-          className="btn btn-light dropdown-toggle" 
+          className="btn btn-light dropdown-toggle border-2 colorVerdeOscuro" 
           type="button" 
           data-bs-toggle="dropdown" 
           aria-expanded="false"

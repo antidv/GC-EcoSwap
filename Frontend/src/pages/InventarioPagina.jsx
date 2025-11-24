@@ -38,7 +38,7 @@ function Inventario() {
     <>
       <Header />
       
-      <div className="container">
+      <div className="container stylePantalla" >
         
         {/* Fila de Botones y Filtros */}
         <div className="row mb-4 mt-5">

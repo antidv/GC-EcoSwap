@@ -69,7 +69,7 @@ function PaginaDetalle() {
   if (!producto) {
     return (
       <div className="container min-vh-100 text-center mt-5">
-        <h2 className="text-white">Producto no encontrado</h2>
+        <h2 className="text-black">Producto no encontrado</h2>
         <Link to="/" style={styleBotonVolver}>
           &larr; Volver al inicio
         </Link>
@@ -98,18 +98,18 @@ function PaginaDetalle() {
           </div>
 
           <div className="col-12 col-md-5">
-            <h2 className="mb-3">{producto.nombre}</h2>
-            <p style={{ fontSize: "1rem", opacity: 0.9 }}>
+            <h2 className="mb-3 text-black">{producto.nombre}</h2>
+            <p className="text-black" style={{ fontSize: "1rem", opacity: 0.9 }}>
               {producto.descripcion}
             </p>
             <hr />
-            <p>
+            <p className="text-black">
               <strong>Categoría:</strong> {producto.categoria}
             </p>
-            <p>
+            <p className="text-black">
               <strong>Cantidad disponible:</strong> {producto.cantidad}
             </p>
-            <h4 className="mt-2">
+            <h4 className="mt-2 text-black">
               <strong>Precio: {producto.precio}</strong>
             </h4>
 

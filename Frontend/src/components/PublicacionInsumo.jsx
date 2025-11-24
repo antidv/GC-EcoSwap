@@ -42,7 +42,7 @@ function PublicacionInsumo({ publicacion }) {
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
       <div 
-        className="card mt-4 mb-4" 
+        className="card mt-4 mb-4 border-2 colorVerdeOscuro" 
         style={styleCard}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -54,7 +54,6 @@ function PublicacionInsumo({ publicacion }) {
         <div className="card-body">
           <h5 className="card-title">{publicacion.nombre}</h5>
           <p className="card-text m-0">Cantidad: {publicacion.cantidad}</p>
-          <p className="card-text m-0">Ubicación: {publicacion.ubicacion}</p>
           <p className="card-text text-end"><b>Precio: {publicacion.precio}</b></p>
         </div>
       </div>

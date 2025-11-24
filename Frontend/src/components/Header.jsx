@@ -35,7 +35,7 @@ const Header = () => {
   const styleHeader = {
     backgroundColor: "#198754",
     color: "white",
-    padding: "0.4rem 2rem",
+    padding: "0.7rem 3rem",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
