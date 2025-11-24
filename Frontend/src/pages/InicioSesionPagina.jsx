@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUsuario } from '../context/UsuarioContext';
+import LoginEcoSwap from '../assets/login_ecoswap.png';
 
 function InicioSesion() {
   const navigate = useNavigate();
@@ -24,9 +25,12 @@ function InicioSesion() {
     backgroundColor: "#D9D9D9",
   };
 
-  const styleHeading1 = {
-    fontSize: "70px",
-  };
+  const styleImageLogin = {
+    maxWidth: "20rem",
+    backgroundColor: "white",
+    borderRadius: "5%",
+    padding: "10px 20px",
+  }
 
   // Función que maneja envío del formulario
   const handleSubmit = (e) => {
@@ -81,10 +85,12 @@ function InicioSesion() {
         <div className="row min-vh-100 d-flex align-items-center justify-content-center">
           {/* Espacio para Título y subtítulo */}
           <div className="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center mb-5 mb-md-0 text-center px-3">
-            <h1 className="text-center text-white mt-5" style={styleHeading1}>
+            <img src={LoginEcoSwap} alt="Login EcoSwap" style={styleImageLogin}/>
+            
+            {/* <h1 className="text-center text-white mt-5" style={styleHeading1}>
               EcoSwap
             </h1>
-            <h4 className="text-center text-white">Compra, vende, recicla</h4>
+            <h4 className="text-center text-white">Compra, vende, recicla</h4> */}
           </div>
 
           {/* Formulario para inicio de sesión */}

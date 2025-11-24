@@ -35,10 +35,10 @@ function Inventario() {
   });
 
   return (
-    <div className="container-fluid">
+    <>
       <Header />
       
-      <div className="container-fluid">
+      <div className="container">
         
         {/* Fila de Botones y Filtros */}
         <div className="row mb-4 mt-5">
@@ -93,7 +93,7 @@ function Inventario() {
         </div>
 
       </div>
-    </div>
+    </>
   );
 }
 
