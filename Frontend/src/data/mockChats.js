@@ -2,25 +2,30 @@ export const MOCK_CHATS = [
   {
     id: "T-1234",
     comprador: "Recycle S.A.C",
-    productos: [
-        { nombre: "Cajas de Cartón", cantidad: 100 }
-    ],
+    productos: [{ nombre: "Cajas de Cartón", cantidad: 100 }],
     direccion: "Jr de la Unión 573",
-    total: 50.00,
+    total: 50.0,
     codigo: "3256",
     cci: "12842334587348",
-    estado: "pendiente"
+    estado: "pendiente",
   },
   {
     id: "T-5678",
     comprador: "EcoPapel Ltda.",
-    productos: [
-        { nombre: "Papel Bond", cantidad: 50 }
-    ],
+    productos: [{ nombre: "Papel Bond", cantidad: 50 }],
     direccion: "Av. Arequipa 1200",
-    total: 150.00,
+    total: 150.0,
     codigo: "9988",
     cci: "99887766554433",
-    estado: "pendiente"
-  }
+    estado: "pendiente",
+  },
+  {
+    id: "123456",
+    comprador: "Recycle S.A.C",
+    producto: "100 cajas de cartón",
+    direccion: "Jr de la Unión 573",
+    cantidad: 4,
+    total: 200.0,
+    codigo: "3256",
+  },
 ];

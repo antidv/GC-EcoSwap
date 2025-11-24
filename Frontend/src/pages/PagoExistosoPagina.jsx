@@ -3,15 +3,16 @@ import { useParams, useLocation, Link } from 'react-router-dom';
 import TransaccionPagada from "../components/TransaccionPagada.jsx";
 import Header from "../components/Header.jsx";
 import { MOCK_TRANSACCIONES } from '../data/mockTransacciones.js';
+import { MOCK_CHATS } from '../data/mockChats.js';
 
 function PagoExitoso() {
   const { id } = useParams();
   const location = useLocation();
 
   let datosTransaccion = location.state?.datosTransaccion;
-
+  
   if (!datosTransaccion) {
-    datosTransaccion = MOCK_TRANSACCIONES.find(t => 
+    datosTransaccion = MOCK_CHATS.find(t => 
       t.id === id || t.id === `T-${id}` || (t.id && t.id.includes(id))
     );
   }
