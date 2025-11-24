@@ -41,7 +41,7 @@ function PaginaDescarga() {
         {/* Botonera superior */}
         <div className="d-flex justify-content-between mb-4 no-print">
           <button className="btn btn-secondary" style={styleBotonVolver} onClick={() => navigate(-1)}>
-            &larr; Volver al inicio
+            &larr; Volver
           </button>
           <button className="btn btn-light fw-bold" onClick={handlePrint}>
             Imprimir / Guardar como PDF

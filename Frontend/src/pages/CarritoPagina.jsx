@@ -2,6 +2,7 @@
 import { useCarrito } from "../context/CarritoContext.jsx";
 import { Link } from "react-router-dom";
 import Header from "../components/Header.jsx";
+import Footer from "../components/Footer.jsx";
 
 const FilaCarrito = ({ item, onEliminar }) => {
   const producto = item.producto;
@@ -58,14 +59,14 @@ function PaginaCarrito() {
     color: "#333",
   };
   const styleResumen = {
-    backgroundColor: "#D4D4A9",
-    color: "#073801",
+    backgroundColor: "#ffffff",
+    color: "#333",
     borderRadius: "8px",
     padding: "1.5rem",
   };
   const styleBotonComprar = {
-    backgroundColor: "#D4D4A9",
-    color: "#073801",
+    backgroundColor: "#198754",
+    color: "#ffffff",
     fontWeight: "bold",
     fontSize: "1.2rem",
     border: "2px solid #073801",
@@ -75,30 +76,19 @@ function PaginaCarrito() {
     width: "100%",
   };
 
-  const styleBotonVolver = {
-    backgroundColor: "#ffc107",
-    color: "#333",
-    fontWeight: "bold",
-    border: "none",
-    borderRadius: "8px",
-    padding: "8px 20px",
-    textDecoration: "none",
-    display: "inline-block",
-    marginBottom: "20px",
-  };
-
   return (
     <>
       {/* Header */}
       <Header />
 
       <div className="container" style={styleContenedor}>
-        <Link to="/" style={styleBotonVolver}>&larr; Volver al Inicio</Link>
-        <h2 className="text-white mb-4 mt-4">Carrito de compras</h2>
+        <h2 className="text-black mb-4 mt-4">Carro de compras</h2>
         <div className="row">
           {/* Columna Izquierda: Items */}
           <div className="col-md-8">
-            <div style={styleTabla}>
+            <hr className="border-dark opacity-25 m-0 mb-3"/>
+            <p className="text-black">Los productos de tu carro de compras pueden agotarse. Cómpralos pronto para que no te quedes sin ellos.</p>
+            <div className="colorVerdeOscuro" style={styleTabla}>
               {/* Encabezados */}
               <div className="d-flex justify-content-between align-items-center p-3 border-bottom fw-bold">
                 <div className="col-md-5">
@@ -134,7 +124,7 @@ function PaginaCarrito() {
 
           {/* Columna Derecha: Resumen */}
           <div className="col-md-4">
-            <div style={styleResumen}>
+            <div className="colorVerdeOscuro" style={styleResumen}>
               <h4 className="fw-bold">Resumen</h4>
               <div className="d-flex justify-content-between my-3">
                 <span>Subtotal:</span>
@@ -156,6 +146,9 @@ function PaginaCarrito() {
           </div>
         </div>
       </div>
+      
+      {/* Pie de página */}
+      <Footer />
     </>
   );
 }

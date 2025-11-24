@@ -3,6 +3,7 @@ import BarraBusqueda from "../components/BarraBusqueda.jsx";
 import { useState } from "react";
 import { MOCK_PUBLICACIONES } from "/src/data/mockData.js";
 import Header from "../components/Header.jsx";
+import Footer from "../components/Footer.jsx";
 
 function PaginaPrincipal() {
   const [terminoBusqueda, setTerminoBusqueda] = useState("");
@@ -36,10 +37,10 @@ function PaginaPrincipal() {
       <Header />
 
       {/* Pagina Principal */}
-      <div className="container-fluid">
+      <div className="container-fluid my-5">
         
         {/* Fila para título de bienvenida */}
-        <h2 className="text-center mt-5 text-black">Bievenido a EcoSwap</h2>
+        <h2 className="text-center text-black">Bievenido a EcoSwap</h2>
 
         {/* Espacio para Barra de Búsqueda */}
         <div className="row justify-content-center my-4">
@@ -71,6 +72,9 @@ function PaginaPrincipal() {
           )}
         </div>
       </div>
+
+      {/* Pie de página */}
+      <Footer />
     </>
   );
 }

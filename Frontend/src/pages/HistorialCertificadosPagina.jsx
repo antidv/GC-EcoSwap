@@ -28,7 +28,7 @@ function HistorialCertificadosPagina() {
       <div className="container" style={{ padding: "2rem" }}>
         <div className="row mb-3">
           <div className="col">
-            <Link to="/" style={styleBotonVolver}>&larr; Volver al Inicio</Link>
+            <Link to="/" style={styleBotonVolver}>&larr; Volver</Link>
             <h2 className="text-white">Historial de transacciones</h2>
           </div>
         </div>

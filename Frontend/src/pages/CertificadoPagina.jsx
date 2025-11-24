@@ -73,7 +73,7 @@ function PaginaCertificado() {
       <Header />
       
       <div className="container">
-        <Link to="/" style={styleBotonVolver}>&larr; Volver al Inicio</Link>
+        <Link to="/" style={styleBotonVolver}>&larr; Volver</Link>
 
         {/* Certificado */}
         <div style={styleCertificado}>

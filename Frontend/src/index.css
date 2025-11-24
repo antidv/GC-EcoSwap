@@ -1,5 +1,5 @@
 .colorVerdeOscuro {
-  border: 2px ridge rgba(21,92,23,0.71) !important;
+  border: 3px ridge rgba(21,92,23,0.71) !important;
 }
 
 .colorBlue {
@@ -8,7 +8,7 @@
 
 body {
   /* El gradiente que estabas usando */
-  background-color: rgb(240,240,240);
+  background-color: rgb(230,230,230);
   
   /* Aseguramos que siempre cubra toda la pantalla */
   min-height: 100vh;
