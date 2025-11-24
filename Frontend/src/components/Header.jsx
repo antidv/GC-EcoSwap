@@ -16,8 +16,8 @@ const Header = () => {
 
   const { items = [] } = useCarrito() || {};
   const totalItems = items.reduce((acc, item) => acc + item.cantidad, 0);
-
   const { chatsActivos = [], seleccionarChat } = useChats() || {};
+  const rutaLogo = rol === "admin" ? "/inventario" : "/";
 
   const handleSeleccionarEmpresa = (chat) => {
     if (seleccionarChat) {
@@ -92,7 +92,7 @@ const Header = () => {
   return (
     <header style={styleHeader}>
       <div style={styleBrandContainer}>
-        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+        <Link to={rutaLogo} style={{ textDecoration: "none", color: "inherit" }}>
           <img src={LogoEcoSwap} alt="Logo Ecoswap" style={styleLogo} />
         </Link>
       </div>

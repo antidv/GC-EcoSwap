@@ -109,9 +109,6 @@ function PaginaDetalle() {
             <p>
               <strong>Cantidad disponible:</strong> {producto.cantidad}
             </p>
-            <p>
-              <strong>Ubicación:</strong> {producto.ubicacion}
-            </p>
             <h4 className="mt-2">
               <strong>Precio: {producto.precio}</strong>
             </h4>

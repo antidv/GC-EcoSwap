@@ -36,8 +36,11 @@ function PaginaPrincipal() {
       <Header />
 
       {/* Pagina Principal */}
-      <div className="container-fluid min-vh-100">
+      <div className="container-fluid">
         
+        {/* Fila para título de bienvenida */}
+        <h2 className="text-center mt-5">Bievenido a EcoSwap</h2>
+
         {/* Espacio para Barra de Búsqueda */}
         <div className="row justify-content-center my-4">
           <div className="col-12 col-md-10 col-lg-8">
