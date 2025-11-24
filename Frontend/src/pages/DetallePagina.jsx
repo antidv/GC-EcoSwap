@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useCarrito } from "../context/CarritoContext.jsx";
+import { useUsuario } from "../context/UsuarioContext.jsx";
 import Header from "../components/Header.jsx";
 
 // fetch(`/api/productos/${id}`)
@@ -9,9 +10,13 @@ import { MOCK_PUBLICACIONES } from "/src/data/mockData.js";
 function PaginaDetalle() {
   const [cantidad, setCantidad] = useState(1);
   const { id } = useParams();
+  const { usuario } = useUsuario();
   const { agregarAlCarrito } = useCarrito();
 
   const producto = MOCK_PUBLICACIONES.find((p) => p.id === parseInt(id));
+  
+  const esInvitado = !usuario || usuario.rol === "invitado";
+
   const styleBotonVolver = {
     backgroundColor: "#ffc107",
     color: "#333",
@@ -21,36 +26,41 @@ function PaginaDetalle() {
     padding: "8px 20px",
     textDecoration: 'none',
     display: 'inline-block',
-    marginButton: '20px'
+    marginBottom: '20px'
   };
   const styleContador = {
     display: "flex",
     alignItems: "center",
-    background: "white",
-    color: "black",
+    background: esInvitado ? "#E9ECEF" : "white",
+    color: esInvitado ? "#ADB5BD" : "black",
     borderRadius: "8px",
     padding: "5px 10px",
     width: "fit-content",
+    border: esInvitado ? "1px solid #dee2e6" : "none"
   };
   const styleBotonContador = {
     background: "none",
     border: "none",
     fontSize: "1.5rem",
     fontWeight: "bold",
-    cursor: "pointer",
+    cursor: esInvitado ? "not-allowed" : "pointer",
+    color: esInvitado ? "#adb5bd" : "inherit",
   };
+
   const styleBotonComprar = {
-    backgroundColor: "#D4D4A9",
-    color: "#073801",
+    backgroundColor: esInvitado ? "#ccc" : "#D4D4A9",
+    color: esInvitado ? "#666" : "#073801",
     fontWeight: "bold",
     fontSize: "1.2rem",
     border: "none",
     borderRadius: "8px",
     padding: "10px 20px",
-    cursor: "pointer",
+    cursor: esInvitado ? "not-allowed" : "pointer",
+    opacity: esInvitado ? 0.7 : 1,
   };
 
   const handleAgregarProductoCarritoCompra = () => {
+    if (esInvitado) return;
     agregarAlCarrito(producto, cantidad);
     setCantidad(1);
   };
@@ -106,11 +116,13 @@ function PaginaDetalle() {
               <strong>Precio: {producto.precio}</strong>
             </h4>
 
+            {/* CONTADOR */}
             <div className="my-4">
               <div style={styleContador}>
                 <button
                   style={styleBotonContador}
                   onClick={() => setCantidad((c) => Math.max(1, c - 1))}
+                  disabled={esInvitado}
                 >
                   -
                 </button>
@@ -120,6 +132,7 @@ function PaginaDetalle() {
                 <button
                   style={styleBotonContador}
                   onClick={() => setCantidad((c) => c + 1)}
+                  disabled={esInvitado}
                 >
                   +
                 </button>
@@ -129,8 +142,9 @@ function PaginaDetalle() {
             <button
               style={styleBotonComprar}
               onClick={handleAgregarProductoCarritoCompra}
+              disabled={esInvitado}
             >
-              Agregar compra
+              {esInvitado ? "Inicia sesión para comprar" : "Agregar compra"}
             </button>
           </div>
         </div>
