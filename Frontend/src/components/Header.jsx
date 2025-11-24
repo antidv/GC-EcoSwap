@@ -54,8 +54,8 @@ const Header = () => {
     height: "45px",
     width: "auto",
     backgroundColor: "white",
-    borderRadius: "10%",
-    padding: "3px 10px",
+    borderRadius: "5%",
+    padding: "5px 10px",
   };
 
   const styleIcono = {
