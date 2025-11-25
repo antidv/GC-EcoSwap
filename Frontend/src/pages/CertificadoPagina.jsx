@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { useTransacciones } from "../context/TransaccionesContext.jsx";
 import { MOCK_TRANSACCIONES } from "../data/mockTransacciones.js";
 import Header from "../components/Header";
+import Footer from "../components/Footer.jsx";
 
 function PaginaCertificado() {
   const { id } = useParams();
@@ -22,7 +23,7 @@ function PaginaCertificado() {
     borderRadius: "15px",
     padding: "2rem",
     maxWidth: "600px",
-    margin: "3rem auto 0 auto",
+    margin: "auto",
     boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
   };
 
@@ -69,59 +70,62 @@ function PaginaCertificado() {
 
   return (
     <>
-      {/* Header */}
-      <Header />
-      
-      <div className="container">
-        <Link to="/" style={styleBotonVolver}>&larr; Volver</Link>
-
-        {/* Certificado */}
-        <div style={styleCertificado}>
-          <div className="text-center">
-            <h4 className="fw-bold">Transacción N° {transaccion.id}</h4>
-            <p>Código de verificación: {transaccion.codigo}</p>
-          </div>
-
-          <div className="row mt-4 align-items-center">
-            {/* Columna de Texto */}
-            <div className="col-7">
-              <p className="mb-2">
-                <strong>Comprador:</strong>
-                <br />
-                {transaccion.comprador}
-              </p>
-              <p className="mb-2">
-                <strong>Producto:</strong>
-                <br />
-                {transaccion.producto}
-              </p>
-              <p className="mb-2">
-                <strong>Dirección:</strong>
-                <br />
-                {transaccion.direccion}
-              </p>
+      <div className="d-flex flex-column min-vh-100">
+        {/* Header */}
+        <Header />
+        
+        <div className="container my-5 flex-grow-1">
+          {/* Certificado */}
+          <div style={styleCertificado}>
+            <div className="text-center">
+              <h4 className="fw-bold">Transacción N° {transaccion.id}</h4>
+              <p>Código de verificación: {transaccion.codigo}</p>
             </div>
 
-            {/* Columna de QR */}
-            <div className="col-5 text-center">
-              <img
-                src={qrUrl}
-                alt="Código QR de la transacción"
-                style={{ border: "4px solid #D4D4A9", borderRadius: "8px" }}
-              />
-            </div>
-          </div>
+            <div className="row mt-4 align-items-center">
+              {/* Columna de Texto */}
+              <div className="col-7">
+                <p className="mb-2">
+                  <strong>Comprador:</strong>
+                  <br />
+                  {transaccion.comprador}
+                </p>
+                <p className="mb-2">
+                  <strong>Producto:</strong>
+                  <br />
+                  {transaccion.producto}
+                </p>
+                <p className="mb-2">
+                  <strong>Dirección:</strong>
+                  <br />
+                  {transaccion.direccion}
+                </p>
+              </div>
 
-          {/* Botón de Descarga */}
-          <div className="mt-4">
-            <Link 
-              to={`/descargar-certificado/${transaccion.id}`}
-              style={styleBotonDescarga}
-              className="btn">
-              Descargar certificado verde
-            </Link>
+              {/* Columna de QR */}
+              <div className="col-5 text-center">
+                <img
+                  src={qrUrl}
+                  alt="Código QR de la transacción"
+                  style={{ border: "4px solid #D4D4A9", borderRadius: "8px" }}
+                />
+              </div>
+            </div>
+
+            {/* Botón de Descarga */}
+            <div className="mt-4">
+              <Link 
+                to={`/descargar-certificado/${transaccion.id}`}
+                style={styleBotonDescarga}
+                className="btn">
+                Descargar certificado verde
+              </Link>
+            </div>
           </div>
         </div>
+
+        {/* Footer */}
+        <Footer />
       </div>
     </>
   );

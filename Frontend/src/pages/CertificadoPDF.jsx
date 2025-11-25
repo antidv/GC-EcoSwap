@@ -32,7 +32,9 @@ const CertificadoDocumento = ({ transaccion }) => {
             >
               Certificado de Impacto
             </h1>
-            <p className="text-muted mb-0">Operación de Economía Circular</p>
+            <p className="text-muted mb-0">
+              Operación de Economía Circular
+            </p>
           </div>
           <div className="text-end text-muted small">
             <p className="mb-0">Fecha de emisión</p>
@@ -44,14 +46,20 @@ const CertificadoDocumento = ({ transaccion }) => {
         <div className="row">
           {/* Detalles de Operación */}
           <div className="col-md-7">
-            <h5 className="fw-bold mb-3 text-dark">Detalles de la Operación</h5>
+            <h5 className="fw-bold mb-3 text-dark">
+              Detalles de la Operación
+            </h5>
             <ul className="list-group list-group-flush mb-4">
               <li className="list-group-item d-flex justify-content-between ps-0">
-                <span className="fw-bold text-secondary">ID Transacción:</span>
+                <span className="fw-bold text-secondary">
+                  ID Transacción:
+                </span>
                 <span>{transaccion.id}</span>
               </li>
               <li className="list-group-item d-flex justify-content-between ps-0">
-                <span className="fw-bold text-secondary">Código Verif.:</span>
+                <span className="fw-bold text-secondary">
+                  Código Verif.:
+                </span>
                 <span className="font-monospace">{transaccion.codigo}</span>
               </li>
               <li className="list-group-item d-flex justify-content-between ps-0">
@@ -59,11 +67,15 @@ const CertificadoDocumento = ({ transaccion }) => {
                 <span>{transaccion.comprador}</span>
               </li>
               <li className="list-group-item ps-0">
-                <span className="fw-bold text-secondary d-block">Insumos:</span>
+                <span className="fw-bold text-secondary d-block">
+                  Insumos:
+                </span>
                 <span className="d-block mt-1">{transaccion.producto}</span>
               </li>
               <li className="list-group-item d-flex justify-content-between ps-0">
-                <span className="fw-bold text-secondary">Inversión Total:</span>
+                <span className="fw-bold text-secondary">
+                  Inversión Total:
+                </span>
                 <span className="fw-bold text-success">
                   S/ {Number(transaccion.total).toFixed(2)}
                 </span>
@@ -87,9 +99,15 @@ const CertificadoDocumento = ({ transaccion }) => {
         {/* Métricas Ambientales - Diseño destacado */}
         <div
           className="mt-4 p-4 rounded"
-          style={{ backgroundColor: "#f1f8e9", border: "1px solid #c5e1a5" }}
+          style={{
+            backgroundColor: "#f1f8e9",
+            border: "1px solid #c5e1a5",
+          }}
         >
-          <h4 className="text-center fw-bold mb-4" style={{ color: "#33691e" }}>
+          <h4
+            className="text-center fw-bold mb-4"
+            style={{ color: "#33691e" }}
+          >
             Impacto Ambiental Generado
           </h4>
 
@@ -103,12 +121,16 @@ const CertificadoDocumento = ({ transaccion }) => {
             </div>
             <div className="col-4 mb-3">
               <div className="fs-2">🌍</div>
-              <div className="fw-bold fs-5 text-black">{metricas.co2} kg</div>
+              <div className="fw-bold fs-5 text-black">
+                {metricas.co2} kg
+              </div>
               <small className="text-muted">CO₂ Ahorrado</small>
             </div>
             <div className="col-4 mb-3">
               <div className="fs-2">💧</div>
-              <div className="fw-bold fs-5 text-black">{metricas.agua} L</div>
+              <div className="fw-bold fs-5 text-black">
+                {metricas.agua} L
+              </div>
               <small className="text-muted">Agua Preservada</small>
             </div>
           </div>
@@ -116,7 +138,9 @@ const CertificadoDocumento = ({ transaccion }) => {
           <hr style={{ borderColor: "#a5d6a7" }} />
 
           <div className="text-center">
-            <span className="text-muted me-2">Ahorro Económico Estimado:</span>
+            <span className="text-muted me-2">
+              Ahorro Económico Estimado:
+            </span>
             <span className="fw-bold text-success fs-5">
               S/ {metricas.ahorro}
             </span>

@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTransacciones } from "../context/TransaccionesContext";
 import { useReactToPrint } from "react-to-print";
 import CertificadoDocumento from "./CertificadoPDF";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function PaginaDescarga() {
   const { id } = useParams();
@@ -37,29 +39,33 @@ function PaginaDescarga() {
 
   return (
     <>
-      <div className="container mt-4 mb-5">
-        {/* Botonera superior */}
-        <div className="d-flex justify-content-between mb-4 no-print">
-          <button className="btn btn-secondary" style={styleBotonVolver} onClick={() => navigate(-1)}>
-            &larr; Volver
-          </button>
-          <button className="btn btn-light fw-bold" onClick={handlePrint}>
-            Imprimir / Guardar como PDF
-          </button>
-        </div>
+      <div className="d-flex flex-column min-vh-100">
+        {/* Header */}
+        <Header />
 
-        <div ref={componentRef}>
-          <CertificadoDocumento transaccion={transaccion} />
-        </div>
+        <div className="container my-5 flex-grow-1">
+          <div ref={componentRef}>
+            <CertificadoDocumento transaccion={transaccion} />
+          </div>
 
-        <style>
-          {`
+          <div className="d-flex justify-content-center mt-5 no-print">
+            <button className="btn btn-light fw-bold" onClick={handlePrint}>
+              Imprimir / Guardar como PDF
+            </button>
+          </div>
+
+          <style>
+            {`
           @media print {
             .no-print { display: none; }
             body { background-color: white; }
           }
         `}
-        </style>
+          </style>
+        </div>
+
+        {/* Footer */}
+        <Footer />
       </div>
     </>
   );

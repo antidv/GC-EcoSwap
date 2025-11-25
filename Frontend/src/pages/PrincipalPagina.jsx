@@ -38,7 +38,7 @@ function PaginaPrincipal() {
         <Header />
 
         {/* Pagina Principal */}
-        <div className="container my-5">
+        <div className="container my-5 flex-grow-1">
           
           {/* Fila para título de bienvenida */}
           <h2 className="text-center text-black">Bievenido a EcoSwap</h2>

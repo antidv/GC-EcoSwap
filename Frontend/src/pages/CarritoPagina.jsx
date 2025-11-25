@@ -78,77 +78,79 @@ function PaginaCarrito() {
 
   return (
     <>
-      {/* Header */}
-      <Header />
+      <div className="d-flex flex-column min-vh-100">
+        {/* Header */}
+        <Header />
 
-      <div className="container" style={styleContenedor}>
-        <h2 className="text-black mb-4 mt-4">Carro de compras</h2>
-        <div className="row">
-          {/* Columna Izquierda: Items */}
-          <div className="col-md-8">
-            <hr className="border-dark opacity-25 m-0 mb-3"/>
-            <p className="text-black">Los productos de tu carro de compras pueden agotarse. Cómpralos pronto para que no te quedes sin ellos.</p>
-            <div className="colorVerdeOscuro" style={styleTabla}>
-              {/* Encabezados */}
-              <div className="d-flex justify-content-between align-items-center p-3 border-bottom fw-bold">
-                <div className="col-md-5">
-                  <span>Insumo</span>
+        <div className="container my-5 flex-grow-1" style={styleContenedor}>
+          <h2 className="text-black">Carro de compras</h2>
+          <div className="row">
+            {/* Columna Izquierda: Items */}
+            <div className="col-md-8">
+              <hr className="border-dark opacity-25 m-0 mb-3"/>
+              <p className="text-black">Los productos de tu carro de compras pueden agotarse. Cómpralos pronto para que no te quedes sin ellos.</p>
+              <div className="colorVerdeOscuro" style={styleTabla}>
+                {/* Encabezados */}
+                <div className="d-flex justify-content-between align-items-center p-3 border-bottom fw-bold">
+                  <div className="col-md-5">
+                    <span>Insumo</span>
+                  </div>
+                  <div className="col-md-1 text-center">
+                    <span>Cantidad</span>
+                  </div>
+                  <div className="col-md-2 text-center">
+                    <span>Precio</span>
+                  </div>
+                  <div className="col-md-2 text-center">
+                    <span>Subtotal</span>
+                  </div>
+                  <div className="col-md-2 text-center">
+                    <span>Acciones</span>
+                  </div>
                 </div>
-                <div className="col-md-1 text-center">
-                  <span>Cantidad</span>
-                </div>
-                <div className="col-md-2 text-center">
-                  <span>Precio</span>
-                </div>
-                <div className="col-md-2 text-center">
-                  <span>Subtotal</span>
-                </div>
-                <div className="col-md-2 text-center">
-                  <span>Acciones</span>
-                </div>
+                {/* Items */}
+                {items.length === 0 ? (
+                  <p className="p-3 text-center">Tu carrito está vacío.</p>
+                ) : (
+                  items.map((item) => (
+                    <FilaCarrito
+                      key={item.producto.id}
+                      item={item}
+                      onEliminar={eliminarDelCarrito}
+                    />
+                  ))
+                )}
               </div>
-              {/* Items */}
-              {items.length === 0 ? (
-                <p className="p-3 text-center">Tu carrito está vacío.</p>
-              ) : (
-                items.map((item) => (
-                  <FilaCarrito
-                    key={item.producto.id}
-                    item={item}
-                    onEliminar={eliminarDelCarrito}
-                  />
-                ))
-              )}
             </div>
-          </div>
 
-          {/* Columna Derecha: Resumen */}
-          <div className="col-md-4">
-            <div className="colorVerdeOscuro" style={styleResumen}>
-              <h4 className="fw-bold">Resumen</h4>
-              <div className="d-flex justify-content-between my-3">
-                <span>Subtotal:</span>
-                <span className="fw-bold">S/ {subtotal.toFixed(2)}</span>
-              </div>
-              <div className="d-flex justify-content-between my-3">
-                <span>Total pedido:</span>
-                <span className="fw-bold">S/ {total.toFixed(2)}</span>
-              </div>
+            {/* Columna Derecha: Resumen */}
+            <div className="col-md-4">
+              <div className="colorVerdeOscuro" style={styleResumen}>
+                <h4 className="fw-bold">Resumen</h4>
+                <div className="d-flex justify-content-between my-3">
+                  <span>Subtotal:</span>
+                  <span className="fw-bold">S/ {subtotal.toFixed(2)}</span>
+                </div>
+                <div className="d-flex justify-content-between my-3">
+                  <span>Total pedido:</span>
+                  <span className="fw-bold">S/ {total.toFixed(2)}</span>
+                </div>
 
-              <Link
-                to="/chat-empresa"
-                style={styleBotonComprar}
-                className="btn mt-3"
-              >
-                Comprar
-              </Link>
+                <Link
+                  to="/chat-empresa"
+                  style={styleBotonComprar}
+                  className="btn mt-3"
+                >
+                  Comprar
+                </Link>
+              </div>
             </div>
           </div>
         </div>
+        
+        {/* Pie de página */}
+        <Footer />
       </div>
-      
-      {/* Pie de página */}
-      <Footer />
     </>
   );
 }
