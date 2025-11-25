@@ -17,7 +17,7 @@ const CertificadoDocumento = ({ transaccion }) => {
     <>
       <div
         id="certificado-imprimible"
-        className="bg-white p-5 mx-auto"
+        className="bg-white p-5 mx-auto colorVerdeOscuro"
         style={{ maxWidth: "800px", border: "1px solid #ddd" }}
       >
         {/* Encabezado */}

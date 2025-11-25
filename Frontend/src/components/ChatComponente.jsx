@@ -49,11 +49,11 @@ function ChatComponente() {
 
   return (
     <div
-      className="mx-3 rounded-3 d-flex flex-column"
+      className="mx-3 rounded-3 d-flex flex-column colorVerdeOscuro"
       style={{ height: "500px", width: "45rem" ,backgroundColor: "#fff" }}
     >
       {/* Header del Chat */}
-      <div className="text-white p-3 border-bottom d-flex justify-content-between align-items-center" style={{backgroundColor:"#17A2B8"}}>
+      <div className="text-white p-3 border-bottom d-flex justify-content-between align-items-center" style={{backgroundColor:"#198754"}}>
         <div className="d-flex align-items-center gap-3">
           <img
             src="https://static.vecteezy.com/system/resources/previews/037/282/413/non_2x/user-icon-vector.jpg"
@@ -85,7 +85,7 @@ function ChatComponente() {
             <div
               className={`p-2 rounded-3 ${
                 message.sender === "user"
-                  ? "colorBlue text-white border border-black"
+                  ? "colorVerdeClaro text-white border border-black"
                   : "bg-light text-dark border border-black"
               }`}
               style={{ maxWidth: "70%" }}
@@ -106,7 +106,7 @@ function ChatComponente() {
       {/* Input de Mensaje */}
       <div className="p-3 border-top">
         <div
-          className="input-group"
+          className="input-group colorVerdeOscuro"
           style={{ backgroundColor: "#f5f5f5", border: "1px solid #e0e0e0" }}
         >
           <textarea

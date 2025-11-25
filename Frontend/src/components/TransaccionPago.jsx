@@ -84,7 +84,7 @@ function TransaccionPago() {
   };
 
   return (
-    <div className="card" style={styleCard}>
+    <div className="card colorVerdeOscuro" style={styleCard}>
       <div className="card-body">
         <h5 className="card-title fw-bold text-center mb-3">
           Transacción actual

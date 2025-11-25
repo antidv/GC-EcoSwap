@@ -109,7 +109,7 @@ function PaginaDetalle() {
                 <strong>Categoría:</strong> {producto.categoria}
               </p>
               <p className="text-black">
-                <strong>Cantidad disponible:</strong> {producto.cantidad}
+                <strong>Disponible:</strong> {producto.cantidad}
               </p>
               <h4 className="mt-2 text-black">
                 <strong>Precio: {producto.precio}</strong>

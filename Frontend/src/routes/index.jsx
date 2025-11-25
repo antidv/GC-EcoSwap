@@ -8,6 +8,8 @@ import PaginaDescarga from '../pages/DescargaPagina.jsx';
 import PaginaCarrito from '../pages/CarritoPagina.jsx';
 import PaginaChatEmpresa from '../pages/ChatEmpresaPagina.jsx'
 import HistorialCertificadosPagina from '../pages/HistorialCertificadosPagina.jsx';
+import QuienesSomos from '../pages/QuienesSomosPagina.jsx';
+import ComoComprar from '../pages/ComoComprarPagina.jsx';
 import PaginaCertificado from '../pages/CertificadoPagina.jsx';
 import InicioSesion from '../pages/InicioSesionPagina.jsx';
 import CrearCuenta from '../pages/CrearCuentaPagina.jsx';
@@ -42,6 +44,8 @@ function AppRoutes() {
       <Route path='/sign-up' element={<CrearCuenta />}/>
       <Route path="/" element={<PaginaPrincipal />}/>
       <Route path="/detalle/:id" element={<PaginaDetalle />}/>
+      <Route path="/quienes-somos" element={<QuienesSomos />}/>
+      <Route path="/como-comprar" element={<ComoComprar />}/>
 
       {/* Una ruta "catch-all" por si el usuario pone una URL no válida */}
       {/* Falta arreglar esto, siempre manda a Pagina Principal xd, debe ser por rol */}

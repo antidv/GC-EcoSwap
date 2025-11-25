@@ -76,7 +76,7 @@ function PaginaCertificado() {
         
         <div className="container my-5 flex-grow-1">
           {/* Certificado */}
-          <div style={styleCertificado}>
+          <div className="colorVerdeOscuro" style={styleCertificado}>
             <div className="text-center">
               <h4 className="fw-bold">Transacción N° {transaccion.id}</h4>
               <p>Código de verificación: {transaccion.codigo}</p>
