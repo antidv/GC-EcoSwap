@@ -12,26 +12,45 @@ function Footer() {
   return (
     <>
       <footer style={styleHeader}>
-          {/* Información para el cliente */}
-          <div className="row">
-               <div className="col-4 col-md-4">
-                    <p>¿Tienes algún residuo que quieras vender?<b> Contáctanos</b></p>
-                    <form>
-                         <input type="text" className="form-control" placeholder="Tu correo electrónico"/>
-                    </form>
-               </div>
-               <div className="col-4 col-md-4">
-                    <p><b>INFORMACIÓN PARA EL CLIENTE</b></p>
-                    <lu>
-                         <li>Quiénes somos</li>
-                         <li>Cómo comprar</li>
-                    </lu>
-               </div>
-               <div className="col-4 col-md-4">
-                    <p><b>@EcoSwap S.A.C</b></p>
-                    <p>Privacidad Términos y condiciones</p>
-               </div>
+        {/* Información para el cliente */}
+        <div className="row">
+          <div className="col-4 col-md-4">
+            <p>
+              ¿Tienes algún residuo que quieras vender?<b> Contáctanos</b>
+            </p>
+            <form>
+              <div className="input-group mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Tu correo electrónico"
+                />
+                <button
+                  className="btn btn-dark"
+                  type="button"
+                  id="button-addon2"
+                >
+                  Enviar
+                </button>
+              </div>
+            </form>
           </div>
+          <div className="col-4 col-md-4">
+            <p>
+              <b>INFORMACIÓN PARA EL CLIENTE</b>
+            </p>
+            <ul className="list-unstyled">
+              <li>Quiénes somos</li>
+              <li>Cómo comprar</li>
+            </ul>
+          </div>
+          <div className="col-4 col-md-4">
+            <p>
+              <b>@EcoSwap S.A.C</b>
+            </p>
+            <p>Privacidad Términos y condiciones</p>
+          </div>
+        </div>
       </footer>
     </>
   );

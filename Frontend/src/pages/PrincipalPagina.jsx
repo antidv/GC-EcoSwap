@@ -33,48 +33,50 @@ function PaginaPrincipal() {
 
   return (
     <>
-      {/* Header */}
-      <Header />
+      <div className="d-flex flex-column min-vh-100">
+        {/* Header */}
+        <Header />
 
-      {/* Pagina Principal */}
-      <div className="container-fluid my-5">
-        
-        {/* Fila para título de bienvenida */}
-        <h2 className="text-center text-black">Bievenido a EcoSwap</h2>
+        {/* Pagina Principal */}
+        <div className="container my-5">
+          
+          {/* Fila para título de bienvenida */}
+          <h2 className="text-center text-black">Bievenido a EcoSwap</h2>
 
-        {/* Espacio para Barra de Búsqueda */}
-        <div className="row justify-content-center my-4">
-          <div className="col-12 col-md-10 col-lg-8">
-            <BarraBusqueda
-              terminoBusqueda={terminoBusqueda}
-              onTerminoBusquedaChange={setTerminoBusqueda}
-              filtroActivo={filtroActivo}
-              onFiltroActivoChange={setFiltroActivo}
-              onSearchSubmit={handleSearch}
-            />
+          {/* Espacio para Barra de Búsqueda */}
+          <div className="row justify-content-center my-4">
+            <div className="col-12 col-md-10 col-lg-8">
+              <BarraBusqueda
+                terminoBusqueda={terminoBusqueda}
+                onTerminoBusquedaChange={setTerminoBusqueda}
+                filtroActivo={filtroActivo}
+                onFiltroActivoChange={setFiltroActivo}
+                onSearchSubmit={handleSearch}
+              />
+            </div>
+          </div>
+
+          {/* Espacio para Publicaciones */}
+          <div className="row mt-3 px-3">
+            {publicacionesFiltradas.length > 0 ? (
+              publicacionesFiltradas.map((pub) => (
+              <div key={pub.id} className="col-12 col-md-4 col-lg-3 d-flex justify-content-center">
+                <PublicacionInsumo 
+                  publicacion={pub}
+                />
+              </div>
+              ))
+            ): (
+              <div className="col-12 text-center mt-5">
+                <h4>No se encontraron resultados para "{terminoBusqueda}</h4>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Espacio para Publicaciones */}
-        <div className="row mt-3 px-3">
-          {publicacionesFiltradas.length > 0 ? (
-            publicacionesFiltradas.map((pub) => (
-            <div key={pub.id} className="col-12 col-md-4 col-lg-3 d-flex justify-content-center">
-              <PublicacionInsumo 
-                publicacion={pub}
-              />
-            </div>
-            ))
-          ): (
-            <div className="col-12 text-center mt-5">
-              <h4>No se encontraron resultados para "{terminoBusqueda}</h4>
-            </div>
-          )}
-        </div>
+        {/* Pie de página */}
+        <Footer />
       </div>
-
-      {/* Pie de página */}
-      <Footer />
     </>
   );
 }

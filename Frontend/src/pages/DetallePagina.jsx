@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useCarrito } from "../context/CarritoContext.jsx";
 import { useUsuario } from "../context/UsuarioContext.jsx";
 import Header from "../components/Header.jsx";
+import Footer from "../components/Footer.jsx";
 
 
 // fetch(`/api/productos/${id}`)
@@ -31,13 +32,11 @@ function PaginaDetalle() {
     marginBottom: "20px",
   };
   const styleContador = {
-    display: "flex",
-    alignItems: "center",
     background: esInvitado ? "#aeaeaeff" : "white",
     color: esInvitado ? "#626569ff" : "black",
     borderRadius: "8px",
     padding: "5px 10px",
-    width: "fit-content",
+    width: "auto",
     border: "1px solid #2a2b2bff",
   };
   const styleBotonContador = {
@@ -56,10 +55,11 @@ function PaginaDetalle() {
     fontSize: "1.2rem",
     border: "1px solid #2a2b2bff",
     borderRadius: "8px",
-    padding: "10px 20px",
+    padding: "2px 20px",
     cursor: esInvitado ? "not-allowed" : "pointer",
     opacity: esInvitado ? 0.7 : 1,
-    maxWidth: "120px"
+    width: "fit-content",
+    height: "50px",
   };
 
   const handleAgregarProductoCarritoCompra = () => {
@@ -81,72 +81,76 @@ function PaginaDetalle() {
 
   return (
     <>
-      {/* Header */}
-      <Header />
+      <div className="d-flex flex-column min-vh-100">
+        {/* Header */}
+        <Header />
 
-      <div className="container">
-        <div className="row mt-5 justify-content-center">
-          <div className="col-12 col-md-5">
-            <img
-              src={producto.imagen}
-              alt={producto.nombre}
-              className="img-fluid rounded shadow colorVerdeOscuro"
-              style={{ border: "3px solid white" }}
-            />
-          </div>
+        <div className="container my-5 flex-grow-1">
+          <div className="row justify-content-center">
+            <div className="col-12 col-md-5">
+              <img
+                src={producto.imagen}
+                alt={producto.nombre}
+                className="img-fluid rounded shadow colorVerdeOscuro"
+                style={{ border: "3px solid white" }}
+              />
+            </div>
 
-          <div className="col-12 col-md-5">
-            <h2 className="mb-3 text-black">{producto.nombre}</h2>
-            <p
-              className="text-black"
-              style={{ fontSize: "1rem", opacity: 0.9 }}
-            >
-              {producto.descripcion}
-            </p>
-            <hr className="border-dark opacity-100" />
-            <p className="text-black">
-              <strong>Categoría:</strong> {producto.categoria}
-            </p>
-            <p className="text-black">
-              <strong>Cantidad disponible:</strong> {producto.cantidad}
-            </p>
-            <h4 className="mt-2 text-black">
-              <strong>Precio: {producto.precio}</strong>
-            </h4>
+            <div className="col-12 col-md-5">
+              <h2 className="mb-3 text-black">{producto.nombre}</h2>
+              <p
+                className="text-black"
+                style={{ fontSize: "1rem", opacity: 0.9 }}
+              >
+                {producto.descripcion}
+              </p>
+              <hr className="border-dark opacity-100" />
+              <p className="text-black">
+                <strong>Categoría:</strong> {producto.categoria}
+              </p>
+              <p className="text-black">
+                <strong>Cantidad disponible:</strong> {producto.cantidad}
+              </p>
+              <h4 className="mt-2 text-black">
+                <strong>Precio: {producto.precio}</strong>
+              </h4>
 
-            {/* CONTADOR */}
-            <div className="row mx-0 my-4">
-              <div className="col-6 d-flex" style={styleContador}>
-                <button
-                  style={styleBotonContador}
-                  onClick={() => setCantidad((c) => Math.max(1, c - 1))}
-                  disabled={esInvitado}
-                >
-                  -
-                </button>
-                <span style={{ margin: "0 15px", fontSize: "1.2rem" }}>
-                  {cantidad}
-                </span>
-                <button
-                  style={styleBotonContador}
-                  onClick={() => setCantidad((c) => c + 1)}
-                  disabled={esInvitado}
-                >
-                  +
-                </button>
-              </div>
-              <div className="col-6">
+              {/* CONTADOR */}
+              <div className="d-flex align-items-center gap-3 my-4">
+                <div style={styleContador}>
+                  <button
+                    style={styleBotonContador}
+                    onClick={() => setCantidad((c) => Math.max(1, c - 1))}
+                    disabled={esInvitado}
+                  >
+                    -
+                  </button>
+                  <span style={{ margin: "0 10px", fontSize: "1.2rem" }}>
+                    {cantidad}
+                  </span>
+                  <button
+                    style={styleBotonContador}
+                    onClick={() => setCantidad((c) => c + 1)}
+                    disabled={esInvitado}
+                  >
+                    +
+                  </button>
+                </div>
+                
                 <button
                   style={styleBotonComprar}
                   onClick={handleAgregarProductoCarritoCompra}
                   disabled={esInvitado}
                 >
-                  {esInvitado ? "Inicia sesión para comprar" : "Agregar compra"}
+                  {esInvitado ? "Inicia sesión" : "Agregar compra"}
                 </button>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Pie de página */}
+        <Footer />
       </div>
     </>
   );

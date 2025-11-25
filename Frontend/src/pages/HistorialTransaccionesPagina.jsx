@@ -17,7 +17,7 @@ function HistorialTransacciones() {
           <div className="col-12 d-flex justify-content-center">
             <div className="card" style={{ width: "85rem" }}>
               <div className="card-body">
-                <table class="table">
+                <table className="table">
                   <thead>
                     <tr>
                       <th scope="col">ID Transacción</th>
