@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useTransacciones } from "../context/TransaccionesContext";
 import { useReactToPrint } from "react-to-print";
 import CertificadoDocumento from "./CertificadoPDF";
@@ -8,21 +8,12 @@ import Footer from "../components/Footer";
 
 function PaginaDescarga() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { transacciones } = useTransacciones();
   const componentRef = useRef();
 
-  const styleBotonVolver = {
-    backgroundColor: "#ffc107",
-    color: "#333",
-    fontWeight: "bold",
-    border: "none",
-    borderRadius: "8px",
-    padding: "8px 20px",
-    textDecoration: "none",
-    display: "inline-block",
-    marginBottom: "20px",
-  };
+  const styleButtonPrint = {
+    height: "50px"
+  }
 
   // Buscar la transacción de nuevo
   const transaccion = transacciones.find((t) => t.id === id);
@@ -49,7 +40,7 @@ function PaginaDescarga() {
           </div>
 
           <div className="d-flex justify-content-center mt-5 no-print">
-            <button className="btn btn-light fw-bold" onClick={handlePrint}>
+            <button style={styleButtonPrint} className="btn btn-light fw-bold colorVerdeOscuro" onClick={handlePrint}>
               Imprimir / Guardar como PDF
             </button>
           </div>
