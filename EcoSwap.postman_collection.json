@@ -1,0 +1,74 @@
+{
+	"info": {
+		"_postman_id": "07f18df2-b311-4333-868d-8768049ec811",
+		"name": "EcoSwap",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47543354",
+		"_collection_link": "https://frank777ch-8905205.postman.co/workspace/nivek's's-Workspace~843e1a47-a88b-4aae-8b1a-2879ff1c4bd6/collection/47543354-07f18df2-b311-4333-868d-8768049ec811?action=share&source=collection_link&creator=47543354"
+	},
+	"item": [
+		{
+			"name": "RegistrarRecicladora",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"frank@test.com\",\r\n    \"password\": \"mipasswordseguro123\",\r\n    \"nombreEmpresa\": \"Recicla Frank SAC\",\r\n    \"ruc\": \"20123456781\",\r\n    \"direccion\": \"Av. Siempre Viva 123\",\r\n    \"telefono\": \"999888777\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/auth/register",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LoguearRecicladora",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"frank@test.com\",\r\n    \"password\": \"mipasswordseguro123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/auth/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
