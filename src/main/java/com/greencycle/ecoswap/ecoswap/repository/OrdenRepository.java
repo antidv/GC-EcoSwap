@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface OrdenRepository extends JpaRepository<Orden, Long> {
     // Para que la recicladora vea su historial
-    List<Orden> findByUsuarioId(Long usuarioId);
+    List<Orden> findByUsuarioId(Integer usuarioId);
 }

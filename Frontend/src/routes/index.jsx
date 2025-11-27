@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useUsuario } from '../context/UsuarioContext.jsx';
 
+// Importación de Páginas
 import PaginaPrincipal from '../pages/PrincipalPagina.jsx';
 import PaginaDetalle from '../pages/DetallePagina.jsx';
 import PaginaDescarga from '../pages/DescargaPagina.jsx';
@@ -13,70 +14,64 @@ import ComoComprar from '../pages/ComoComprarPagina.jsx';
 import PaginaCertificado from '../pages/CertificadoPagina.jsx';
 import InicioSesion from '../pages/InicioSesionPagina.jsx';
 import CrearCuenta from '../pages/CrearCuentaPagina.jsx';
-import CertificadoDocumento from '../pages/CertificadoPDF.jsx';
 
-{/* Del admin */}
 import Inventario from '../pages/InventarioPagina.jsx';
 import PublicarInsumo from '../pages/PublicarInsumoPagina.jsx';
 import ChatPagina from '../pages/ChatPagina.jsx';
 import PagoExitoso from '../pages/PagoExistosoPagina.jsx';
-// import HistorialTransacciones from '../pages/HistorialTransaccionesPagina.jsx';
 
 const RutaProtegida = ({ rolesPermitidos }) => {
-  const { usuario } = useUsuario();
+  const { usuario, loading } = useUsuario();
+
+  if (loading) return <div>Cargando...</div>;
 
   if (!usuario) {
-    return <Navigate to="/" replace />
+    return <Navigate to="/login" replace />;
   }
 
   if (!rolesPermitidos.includes(usuario.rol)) {
-    return <Navigate to="/" replace />
+    return <Navigate to="/" replace />;
   }
 
-  return <Outlet />
+  return <Outlet />;
 }
 
 function AppRoutes() {
   return (
     <Routes>
-      {/* RUTAS PÚBLICAS */}
+      {/* --- RUTAS PÚBLICAS (Cualquiera puede entrar) --- */}
       <Route path='/login' element={<InicioSesion />}/>
+      <Route path='/crear-cuenta' element={<CrearCuenta />}/> 
       <Route path='/sign-up' element={<CrearCuenta />}/>
+      
       <Route path="/" element={<PaginaPrincipal />}/>
       <Route path="/detalle/:id" element={<PaginaDetalle />}/>
       <Route path="/quienes-somos" element={<QuienesSomos />}/>
       <Route path="/como-comprar" element={<ComoComprar />}/>
 
-      {/* Una ruta "catch-all" por si el usuario pone una URL no válida */}
-      {/* Falta arreglar esto, siempre manda a Pagina Principal xd, debe ser por rol */}
-      
-      {/* RUTAS EMPRESA */}
-      <Route element={<RutaProtegida rolesPermitidos={['empresa', 'usuario']} />}>
+      {/* --- RUTAS DE RECICLADORA (Cliente) --- */}
+      {/* Aquí corregimos 'empresa' por 'RECICLADORA' */}
+      <Route element={<RutaProtegida rolesPermitidos={['RECICLADORA']} />}>
         <Route path="/carrito" element={<PaginaCarrito />}/>
         <Route path="/chat-empresa" element={<PaginaChatEmpresa />}/>
         <Route path="/historial-certificados" element={<HistorialCertificadosPagina />}/>
         <Route path="/certificado/:id" element={<PaginaCertificado />}/>
         <Route path='/descargar-certificado/:id' element={<PaginaDescarga />}/>
-      </Route>
-
-      {/* RUTAS COMPARTIDAS (Admin y Empresa) */}
-      <Route element={<RutaProtegida rolesPermitidos={['admin', 'empresa', 'usuario']} />}>
+        
+        {/* Flujo de pago */}
         <Route path='/pago-exitoso/:id' element={<PagoExitoso />}/>
       </Route>
 
-      {/* Admin */}
-      <Route element={<RutaProtegida rolesPermitidos={['admin']} />}>
+      {/* --- RUTAS DE ADMIN (GreenCycle) --- */}
+      {/* Aquí corregimos 'admin' por 'ADMIN' */}
+      <Route element={<RutaProtegida rolesPermitidos={['ADMIN']} />}>
         <Route path='/inventario' element={<Inventario />}/>
         <Route path='/publicar-insumo' element={<PublicarInsumo />}/>
         <Route path='/chat-admin' element={<ChatPagina />}/>
-        
-        {/* Esto se tiene que editar respecto al rol, uno sería filtrado */}
-        <Route path='/historial-transacciones' element={<HistorialCertificadosPagina />}/>
+        {/* El admin también podría ver historiales si fuera necesario */}
       </Route>
 
-      {/* <Route path="*" element={<PaginaPrincipal />}/> */}
-
-      {/* CATCH-ALL (Ruta 404) */}
+      {/* --- CATCH-ALL (Error 404) --- */}
       <Route path='*' element={<Navigate to="/" replace />}/>
 
     </Routes>

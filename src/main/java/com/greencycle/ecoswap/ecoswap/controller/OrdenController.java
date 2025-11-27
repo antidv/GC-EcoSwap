@@ -102,7 +102,7 @@ public class OrdenController {
 
     // LISTAR MIS ORDENES (Para la Recicladora)
     @GetMapping("/mis-ordenes/{usuarioId}")
-    public List<Orden> listarPorUsuario(@PathVariable Long usuarioId) {
+    public List<Orden> listarPorUsuario(@PathVariable Integer usuarioId) {
         return ordenRepository.findByUsuarioId(usuarioId);
     }
 }
