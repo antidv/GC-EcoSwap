@@ -1,49 +1,68 @@
 import React from 'react';
-import ImagenCarton from "../assets/carton.jpg"; 
+import ImagenDefault from '../assets/logo_ecoswap.png';
+import { useInventario } from '../context/InventarioContext';
 
-// tipo" como prop para cambiar el color
-function Publicacion({ publicacion }) {
+const PublicacionInventario = ({ publicacion }) => {
+  const { cambiarEstadoPublicacion } = useInventario();
 
-  // Define el color del borde basado en el tipo
-  const colorBorde = publicacion.tipo === "Privado" ? "#E0B6B6" : "#D4D4A9";
-
-  const styleCard = {
-    width: "18rem",
-    border: `3px solid ${colorBorde}`,
-    position: "relative",
+  const handleToggle = () => {
+    cambiarEstadoPublicacion(publicacion.id);
   };
 
-  const styleCardBody = {
-    backgroundColor: colorBorde,
-    padding: "1rem"
-  };
+  const handleImageError = (e) => { e.target.src = ImagenDefault; };
+
+  const esPublico = publicacion.estado === 'DISPONIBLE';
+  const colorBorde = esPublico ? 'border-success' : 'border-danger';
+  const bgHeader = esPublico ? 'bg-success-subtle' : 'bg-danger-subtle';
 
   return (
-    <div className="card shadow-sm h-100" style={styleCard}>
-      {/* Usamos la imagen real del objeto */}
+    <div className={`card h-100 shadow-sm ${colorBorde}`}>
+      <div className={`card-header ${bgHeader} border-bottom-0 d-flex justify-content-between align-items-center py-2`}>
+        <small className="fw-bold text-uppercase" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>
+            {esPublico ? '🟢 Público' : '🔴 Privado'}
+        </small>
+        
+        <div className="form-check form-switch m-0">
+            <input 
+            className="form-check-input" 
+            type="checkbox" 
+            role="switch" 
+            checked={esPublico}
+            onChange={handleToggle}
+            style={{ cursor: 'pointer' }}
+            title="Cambiar visibilidad"
+            />
+        </div>
+      </div>
+
       <img 
-        src={publicacion.imagen} 
+        src={publicacion.imagenUrl || ImagenDefault} 
         className="card-img-top" 
-        alt={publicacion.nombre} 
+        alt={publicacion.nombre}
+        onError={handleImageError}
+        style={{ height: '180px', objectFit: 'cover' }} 
       />
-      
-      <div style={styleCardBody}>
-        <h5 className="card-title fw-bold">{publicacion.nombre}</h5>
+
+      <div className="card-body">
+        <h5 className="card-title fw-bold text-truncate">{publicacion.nombre}</h5>
         
-        <p className="card-text m-0" style={{ fontSize: "0.9rem" }}>
-          Cantidad disponible: {publicacion.cantidad}
+        <p className="card-text small text-muted mb-3">
+            {publicacion.descripcion || 'Sin descripción'}
         </p>
-        
-        <p className="card-text m-0" style={{ fontSize: "0.9rem" }}>
-          Ubicación: {publicacion.ubicacion}
-        </p>
-        
-        <p className="card-text text-end mt-2">
-          <b>Precio: {publicacion.precio}</b>
-        </p>
+
+        <div className="d-flex justify-content-between align-items-center bg-light p-2 rounded">
+            <div>
+                <small className="d-block text-muted" style={{fontSize: '0.7rem'}}>STOCK</small>
+                <span className="fw-bold">{publicacion.cantidadKg} kg</span>
+            </div>
+            <div className="text-end">
+                <small className="d-block text-muted" style={{fontSize: '0.7rem'}}>PRECIO</small>
+                <span className="fw-bold text-success">S/ {publicacion.precioPorKg}</span>
+            </div>
+        </div>
       </div>
     </div>
   );
-}
+};
 
-export default Publicacion;
+export default PublicacionInventario;

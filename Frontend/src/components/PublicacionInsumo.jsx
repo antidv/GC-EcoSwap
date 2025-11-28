@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
+import ImagenDefault from '../assets/logo_ecoswap.png';
 
 function PublicacionInsumo({ publicacion }) {
-  // Colores para los badges de publicaciones
   const coloresPorCategoria = {
-    'Papel': 'text-bg-primary',    // Azul
-    'Cartón': 'text-bg-warning',   // Amarillo/Naranja
-    'Plástico': 'text-bg-info',    // Cian
-    'Vidrio': 'text-bg-success',   // Verde
-    'Metal': 'text-bg-secondary',  // Gris
-    'Orgánico': 'text-bg-danger'  // Rojo
+    'Papel': 'text-bg-primary',    
+    'Cartón': 'text-bg-warning',   
+    'Plástico': 'text-bg-info',    
+    'Vidrio': 'text-bg-success',   
+    'Metal': 'text-bg-secondary',  
+    'Orgánico': 'text-bg-danger'  
   }
 
   const styleCard = {
@@ -19,22 +19,10 @@ function PublicacionInsumo({ publicacion }) {
   };
 
   const styleBadge = {
-    position: "absolute",
-    top: "10px",
-    right: "10px",
-    zIndex: 10,
-    fontSize: "14px"
+    position: "absolute", top: "10px", right: "10px", zIndex: 10, fontSize: "14px"
   };
 
-  const handleMouseEnter = (e) => {
-    e.currentTarget.style.transform = 'scale(1.03)';
-    e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.2)';
-  };
-
-  const handleMouseLeave = (e) => {
-    e.currentTarget.style.transform = 'scale(1)';
-    e.currentTarget.style.boxShadow = 'none';
-  };
+  const handleImageError = (e) => { e.target.src = ImagenDefault; };
 
   return (
     <Link 
@@ -42,19 +30,32 @@ function PublicacionInsumo({ publicacion }) {
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
       <div 
-        className="card mt-4 mb-4 border-2 colorVerdeOscuro" 
+        className="card mt-4 mb-4 border-2 colorVerdeOscuro h-100 shadow-sm" 
         style={styleCard}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         <span className={`badge ${coloresPorCategoria[publicacion.categoria] || 'text-bg-dark'}`} style={styleBadge}>
           {publicacion.categoria}
         </span>
-        <img src={publicacion.imagen} className="card-img-top" alt={publicacion.nombre} />
-        <div className="card-body">
-          <h5 className="card-title">{publicacion.nombre}</h5>
-          <p className="card-text m-0">Cantidad: {publicacion.cantidad}</p>
-          <p className="card-text text-end"><b>Precio: {publicacion.precio}</b></p>
+        
+        <img 
+            src={publicacion.imagenUrl || ImagenDefault} 
+            className="card-img-top" 
+            alt={publicacion.nombre}
+            onError={handleImageError}
+            style={{ height: '200px', objectFit: 'cover' }}
+        />
+        
+        <div className="card-body d-flex flex-column">
+          <h5 className="card-title fw-bold text-truncate">{publicacion.nombre}</h5>
+          
+          <div className="mt-auto">
+            <p className="card-text m-0 text-muted small">Stock disponible:</p>
+            <p className="card-text fw-bold">{publicacion.cantidadKg} kg</p>
+            
+            <h5 className="text-end text-success mt-2">
+                S/ {publicacion.precioPorKg} <span className="small text-muted">/kg</span>
+            </h5>
+          </div>
         </div>
       </div>
     </Link>
