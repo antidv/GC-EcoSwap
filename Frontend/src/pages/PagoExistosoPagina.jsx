@@ -19,7 +19,7 @@ function PagoExitoso() {
 
   // Estilo para el botón naranja/amarillo
   const styleBotonVolver = {
-    backgroundColor: '#ff9800', // Naranja
+    backgroundColor: '#198754', // Naranja
     color: 'white',
     border: 'none',
     padding: '10px 30px',

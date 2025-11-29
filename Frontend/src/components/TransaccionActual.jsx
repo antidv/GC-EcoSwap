@@ -48,13 +48,13 @@ function TransaccionActual({ datos }) {
   };
 
   const styleBotonSimular = {
-    backgroundColor: "#ffc107",
-    color: "#212529",
+    backgroundColor: "#198754",
+    color: "#ffffff",
     fontWeight: "bold",
     fontSize: "0.9rem",
-    border: "1px solid #ffc107",
+    border: "1px solid #198754",
     borderRadius: "8px",
-    padding: "8px 15px",
+    padding: "10px 20px",
     width: "100%",
     marginTop: "10px",
     cursor: "pointer",
@@ -72,7 +72,7 @@ function TransaccionActual({ datos }) {
   };
 
   return (
-    <div className="card" style={styleCard}>
+    <div className="card colorVerdeOscuro" style={styleCard}>
       <div className="card-body">
         <h5 className="card-title fw-bold text-center mb-3">
           Transacción actual
@@ -111,7 +111,7 @@ function TransaccionActual({ datos }) {
         </div>
 
         <button style={styleBotonSimular} onClick={handleSimularPago}>
-          <i className="bi bi-check-circle-fill"></i> Simular pago exitoso
+          <i class="bi bi-box2-fill"></i> Ver seguimiento
         </button>
       </div>
     </div>

@@ -19,7 +19,7 @@ function Publicacion({ publicacion }) {
   };
 
   return (
-    <div className="card shadow-sm h-100" style={styleCard}>
+    <div className="card shadow-sm h-100 colorVerdeOscuro" style={styleCard}>
       {/* Usamos la imagen real del objeto */}
       <img 
         src={publicacion.imagen} 
