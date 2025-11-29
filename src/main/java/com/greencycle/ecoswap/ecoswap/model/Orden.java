@@ -14,7 +14,7 @@ public class Orden {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     // Relación con el Usuario (Comprador)
     @ManyToOne
