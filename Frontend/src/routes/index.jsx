@@ -13,6 +13,7 @@ import ComoComprar from '../pages/ComoComprarPagina.jsx';
 import PaginaCertificado from '../pages/CertificadoPagina.jsx';
 import InicioSesion from '../pages/InicioSesionPagina.jsx';
 import CrearCuenta from '../pages/CrearCuentaPagina.jsx';
+import SeguimientoAdminPagina from "../pages/SeguimientoAdminPagina";
 import CertificadoDocumento from '../pages/CertificadoPDF.jsx';
 
 {/* Del admin */}
@@ -69,6 +70,7 @@ function AppRoutes() {
         <Route path='/inventario' element={<Inventario />}/>
         <Route path='/publicar-insumo' element={<PublicarInsumo />}/>
         <Route path='/chat-admin' element={<ChatPagina />}/>
+        <Route path='/seguimiento/:id' element={<SeguimientoAdminPagina />}/>
         
         {/* Esto se tiene que editar respecto al rol, uno sería filtrado */}
         <Route path='/historial-transacciones' element={<HistorialCertificadosPagina />}/>

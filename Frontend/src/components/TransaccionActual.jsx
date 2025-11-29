@@ -66,7 +66,7 @@ function TransaccionActual({ datos }) {
 
   // Función para simular el éxito
   const handleSimularPago = () => {
-    navigate(`/pago-exitoso/${datos.id || 'admin-simulado'}`, { 
+    navigate(`/seguimiento/${datos.id || 'admin-simulado'}`, { 
       state: { datosTransaccion: datos } 
     });
   };
