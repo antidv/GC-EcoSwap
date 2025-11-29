@@ -1,16 +1,19 @@
 package com.greencycle.ecoswap.ecoswap.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import com.greencycle.ecoswap.ecoswap.dto.InsumoRequest;
 import com.greencycle.ecoswap.ecoswap.model.Insumo;
 import com.greencycle.ecoswap.ecoswap.repository.InsumoRepository;
+import com.greencycle.ecoswap.ecoswap.model.CategoriaInsumo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/insumos")
@@ -70,5 +73,14 @@ public class InsumoController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+    
+    @GetMapping("/categorias")
+    public List<String> listarCategorias() {
+        // Convierte los valores del ENUM a una lista de Strings
+        // Retornará: ["PAPEL", "CARTON", "PLASTICO", "VIDRIO", "METAL", "ORGANICO"]
+        return Arrays.stream(CategoriaInsumo.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
     }
 }
