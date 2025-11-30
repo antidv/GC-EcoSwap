@@ -25,7 +25,7 @@ function SeguimientoAdminPagina() {
   const cargarOrden = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/ordenes');
+      const response = await api.get('/ordenes'); 
       const ordenEncontrada = response.data.find(o => o.id === parseInt(id));
       
       if (ordenEncontrada) {
@@ -51,8 +51,8 @@ function SeguimientoAdminPagina() {
       case 'PENDIENTE': 
       case 'PAGADO':
       case 'PREPARANDO':  setIndiceActivo(0); break;
-      case 'EN_CAMINO':  setIndiceActivo(1); break;
-      case 'ENTREGADO':  setIndiceActivo(2); break;
+      case 'EN_CAMINO':   setIndiceActivo(1); break;
+      case 'ENTREGADO':   setIndiceActivo(2); break;
       default: setIndiceActivo(0);
     }
   };
@@ -76,27 +76,24 @@ function SeguimientoAdminPagina() {
     }
   };
 
-  const retrocederEstado = async () => {
-    let estadoAnterior = '';
-    
-    if (orden.estado === 'PREPARANDO') estadoAnterior = 'PAGADO';
-    else if (orden.estado === 'EN_CAMINO') estadoAnterior = 'PREPARANDO';
-    else if (orden.estado === 'ENTREGADO') estadoAnterior = 'EN_CAMINO';
-    else return; 
+  const revertirProceso = async () => {
+    if (!window.confirm("¿Estás seguro? Esto devolverá la orden a estado PENDIENTE y reiniciará todo el flujo.")) {
+        return;
+    }
 
     try {
-        await api.put(`/ordenes/${id}/estado`, estadoAnterior, {
+        await api.put(`/ordenes/${id}/estado`, "PENDIENTE", {
             headers: { 'Content-Type': 'text/plain' }
         });
         cargarOrden(); 
     } catch (error) {
         console.error(error);
-        alert("Error al cambiar estado");
+        alert("Error al revertir estado");
     }
   };
 
   const styleBotonPrincipal = {
-    backgroundColor: "#198754",
+    backgroundColor: "#198754", 
     borderColor: "#198754",
     color: "white",
     padding: "15px 40px",
@@ -105,6 +102,14 @@ function SeguimientoAdminPagina() {
     borderRadius: "50px",
     boxShadow: "0 4px 10px rgba(25, 135, 84, 0.4)",
     transition: "all 0.3s ease"
+  };
+
+  const styleBotonRevertir = {
+    color: "#dc3545",
+    textDecoration: "none",
+    fontWeight: "bold",
+    fontSize: "0.9rem",
+    marginTop: "15px"
   };
 
   if (loading) return <div className="text-center mt-5"><div className="spinner-border text-success"></div></div>;
@@ -147,8 +152,8 @@ function SeguimientoAdminPagina() {
                         <i className="bi bi-check-circle-fill me-2 fs-4"></i> 
                         <strong>Proceso Finalizado Correctamente</strong>
                     </div>
-                    <button className="btn btn-outline-secondary btn-sm" onClick={retrocederEstado}>
-                        Deshacer entrega (Volver a En Tránsito)
+                    <button className="btn btn-outline-danger btn-sm" onClick={revertirProceso}>
+                        Revertir a Pendiente (Error)
                     </button>
                 </div>
             ) : (
@@ -166,8 +171,8 @@ function SeguimientoAdminPagina() {
                     </button>
 
                     {orden.estado !== 'PENDIENTE' && orden.estado !== 'PAGADO' && (
-                        <button className="btn btn-link text-secondary btn-sm text-decoration-none" onClick={retrocederEstado}>
-                            <i className="bi bi-arrow-counterclockwise me-1"></i> Corregir paso anterior
+                        <button className="btn btn-link" style={styleBotonRevertir} onClick={revertirProceso}>
+                            <i className="bi bi-arrow-counterclockwise me-1"></i> Revertir todo a Pendiente
                         </button>
                     )}
                 </div>
