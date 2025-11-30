@@ -1,19 +1,27 @@
 package com.greencycle.ecoswap.ecoswap.controller;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import com.greencycle.ecoswap.ecoswap.dto.InsumoRequest;
-import com.greencycle.ecoswap.ecoswap.model.Insumo;
-import com.greencycle.ecoswap.ecoswap.repository.InsumoRepository;
-import com.greencycle.ecoswap.ecoswap.model.CategoriaInsumo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.stream.Collectors;
+import com.greencycle.ecoswap.ecoswap.dto.InsumoRequest;
+import com.greencycle.ecoswap.ecoswap.model.CategoriaInsumo;
+import com.greencycle.ecoswap.ecoswap.model.Insumo;
+import com.greencycle.ecoswap.ecoswap.repository.InsumoRepository;
 
 @RestController
 @RequestMapping("/api/insumos")
@@ -82,5 +90,39 @@ public class InsumoController {
         return Arrays.stream(CategoriaInsumo.values())
                 .map(Enum::name)
                 .collect(Collectors.toList());
+    }
+
+    // Editar Insumo completo (PUT) - Solo Admin
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarInsumo(@PathVariable Integer id, @RequestBody InsumoRequest request) {
+        Optional<Insumo> insumoOpt = insumoRepository.findById(id);
+        if (insumoOpt.isPresent()) {
+            Insumo insumo = insumoOpt.get();
+
+            // Actualizamos los campos con lo que viene del Front
+            insumo.setNombre(request.getNombre());
+            insumo.setDescripcion(request.getDescripcion());
+            insumo.setCategoria(request.getCategoria());
+            insumo.setCantidadKg(request.getCantidadKg());
+            insumo.setPrecioPorKg(request.getPrecioPorKg());
+            insumo.setImagenUrl(request.getImagenUrl());
+            
+            // Nota: No cambiamos la fecha de creación ni el estado (eso se hace con el otro endpoint)
+            insumoRepository.save(insumo);
+            return ResponseEntity.ok(insumo);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Eliminar Insumo (DELETE) - Solo Admin
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarInsumo(@PathVariable Integer id) {
+        if (insumoRepository.existsById(id)) {
+            insumoRepository.deleteById(id);
+            return ResponseEntity.ok("Insumo eliminado correctamente");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
