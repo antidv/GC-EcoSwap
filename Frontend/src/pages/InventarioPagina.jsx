@@ -15,7 +15,7 @@ const ColorDot = ({ color }) => (
       display: "inline-block",
       marginRight: "8px",
     }}
-  ></span>
+  />
 );
 
 function Inventario() {
@@ -24,9 +24,7 @@ function Inventario() {
 
   const { listaPublicaciones, loading } = useInventario();
 
-  const handleNuevaPublicacion = () => {
-    navigate("/publicar-insumo");
-  };
+  const handleNuevaPublicacion = () => navigate("/publicar-insumo");
 
   const handleSetFiltro = (e, tipo) => {
     e.preventDefault();
@@ -42,108 +40,103 @@ function Inventario() {
 
   return (
     <>
-      <div className="d-flex flex-column-min-vh-100">
-        {/* Header */}
-        <Header />
+      <Header />
 
-        <div className="container my-5 flex-grow-1">
-          <div className="row mb-4 mt-5">
-            <div className="col-12 d-flex align-items-center justify-content-between">
+      <div className="container stylePantalla" style={{ minHeight: "80vh" }}>
+        <div className="row mb-4 mt-5">
+          <div className="col-12 d-flex align-items-center justify-content-between">
+            <button
+              className="btn btn-success me-3 shadow-sm"
+              onClick={handleNuevaPublicacion}
+            >
+              <i className="bi bi-plus-lg me-2"></i> Nueva publicación
+            </button>
+
+            <div className="dropdown">
               <button
-                className="btn btn-success me-3 shadow-sm"
-                onClick={handleNuevaPublicacion}
+                className="btn btn-light dropdown-toggle border shadow-sm"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
               >
-                <i className="bi bi-plus-lg me-2"></i> Nueva publicación
+                <i className="bi bi-filter me-2"></i>{" "}
+                {filtro === "Todos" ? "Todos los estados" : filtro}
               </button>
-
-              <div className="dropdown">
-                <button
-                  className="btn btn-light dropdown-toggle border shadow-sm"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i className="bi bi-filter me-2"></i>
-                  {filtro === "Todos" ? "Todos los estados" : filtro}
-                </button>
-                <ul className="dropdown-menu shadow">
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={(e) => handleSetFiltro(e, "Todos")}
-                    >
-                      Todos
-                    </button>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={(e) => handleSetFiltro(e, "Publico")}
-                    >
-                      <ColorDot color="#198754" /> Público (Disponible)
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={(e) => handleSetFiltro(e, "Privado")}
-                    >
-                      <ColorDot color="#dc3545" /> Privado (Oculto)
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="row px-3">
-              {loading && (
-                <div className="col-12 text-center mt-5">
-                  <div className="spinner-border text-success" role="status">
-                    <span className="visually-hidden">Cargando...</span>
-                  </div>
-                  <p className="text-muted mt-2">Cargando inventario...</p>
-                </div>
-              )}
-
-              {!loading &&
-                publicacionesFiltradas.length > 0 &&
-                publicacionesFiltradas.map((pub) => (
-                  <div
-                    className="col-12 col-md-6 col-lg-4 col-xl-3 mb-4"
-                    key={pub.id}
+              <ul className="dropdown-menu shadow">
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={(e) => handleSetFiltro(e, "Todos")}
                   >
-                    <Publicacion publicacion={pub} />
-                  </div>
-                ))}
-
-              {!loading && publicacionesFiltradas.length === 0 && (
-                <div className="col-12 text-center mt-5 p-5 bg-light rounded border border-dashed">
-                  <h4 className="text-muted">
-                    No se encontraron publicaciones.
-                  </h4>
-                  <p className="text-secondary">
-                    Intenta cambiar el filtro o crea una nueva.
-                  </p>
-                </div>
-              )}
+                    Todos
+                  </button>
+                </li>
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={(e) => handleSetFiltro(e, "Publico")}
+                  >
+                    <ColorDot color="#198754" /> Público (Disponible)
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={(e) => handleSetFiltro(e, "Privado")}
+                  >
+                    <ColorDot color="#dc3545" /> Privado (Oculto)
+                  </button>
+                </li>
+              </ul>
             </div>
           </div>
+        </div>
 
-          {!loading && publicacionesFiltradas.length > 0 && (
-            <div className="row mt-5 mb-5">
-              <div className="col-12 text-center">
-                <p className="text-muted small">— Fin de los resultados —</p>
+        <div className="row px-3">
+          {loading && (
+            <div className="col-12 text-center mt-5">
+              <div className="spinner-border text-success" role="status">
+                <span className="visually-hidden">Cargando...</span>
               </div>
+              <p className="text-muted mt-2">Cargando inventario...</p>
+            </div>
+          )}
+
+          {!loading &&
+            publicacionesFiltradas.length > 0 &&
+            publicacionesFiltradas.map((pub) => (
+              <div
+                className="col-12 col-md-6 col-lg-4 col-xl-3 mb-4"
+                key={pub.id}
+              >
+                <Publicacion publicacion={pub} />
+              </div>
+            ))}
+
+          {!loading && publicacionesFiltradas.length === 0 && (
+            <div className="col-12 text-center mt-5 p-5 bg-light rounded border border-dashed">
+              <h4 className="text-muted">No se encontraron publicaciones.</h4>
+              <p className="text-secondary">
+                Intenta cambiar el filtro o crea una nueva.
+              </p>
             </div>
           )}
         </div>
-        
-        {/* Footer */}
-        <Footer />
+
+        {!loading && publicacionesFiltradas.length > 0 && (
+          <div className="row mt-5 mb-5">
+            <div className="col-12 text-center">
+              <p className="text-muted small">— Fin de los resultados —</p>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Footer fuera del container principal */}
+      <Footer />
     </>
   );
 }
