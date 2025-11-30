@@ -50,7 +50,7 @@ export const UsuarioProvider = ({children}) => {
           if (!usuario?.id) return { success: false, message: "No hay sesión activa"};
 
           try {
-               await api.put(`/usuarios/$usuario.id`, datosActualizados);
+               await api.put(`/usuarios/${usuario.id}`, datosActualizados);
 
                const nuevoEstado = { ...usuario, ...datosActualizados};
                delete nuevoEstado.password;

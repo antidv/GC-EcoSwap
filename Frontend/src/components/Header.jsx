@@ -69,7 +69,7 @@ const Header = () => {
                 <li><hr className="dropdown-divider" /></li>
                 <li><Link className="dropdown-item" to="/perfil">Ver perfil</Link></li>
                 <li><hr className="dropdown-divider" /></li>
-                <li><Link className="dropdown-item" to="/historial-certificados">Ver certificados</Link></li>
+                <li><Link className="dropdown-item" to="/historial-certificados">Ver compras</Link></li>
                 <li><hr className="dropdown-divider" /></li>
                 <li><button onClick={handleLogout} className="dropdown-item text-danger">Cerrar Sesión</button></li>
               </ul>

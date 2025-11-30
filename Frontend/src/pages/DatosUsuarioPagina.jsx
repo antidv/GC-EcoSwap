@@ -8,19 +8,25 @@ function DatosUsuarioPagina() {
   const navigate = useNavigate();
   const { cargarPerfil, actualizarPerfil } = useUsuario();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // Estados de Datos Generales
+  const [currentEmail, setCurrentEmail] = useState("");
   const [name, setName] = useState("");
   const [ruc, setRuc] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
 
-  const [errorEmail, setErrorEmail] = useState(false);
-  const [errorPassword, setErrorPassword] = useState(false);
-  const [errorName, setErrorName] = useState(false);
-  const [errorRuc, setErrorRuc] = useState(false);
-  const [errorAddress, setErrorAddress] = useState(false);
-  const [errorPhone, setErrorPhone] = useState(false);
+  // Estados para Cambiar Correo
+  const [newEmail, setNewEmail] = useState("");
+  const [passforEmailChange, setPassForEmailChange] = useState("");
+
+  // Estados para Cambiar Contraseña
+  const [newPassword, setNewPassword] = useState("");
+  const [passForPassChange, setPassForPassChange] = useState("");
+
+  // Errores de datos generales
+  const [errorsDatos, setErrorsDatos] = useState({});
+  const [errorsEmail, setErrorsEmail] = useState({});
+  const [errorsPass, setErrorsPass] = useState({});
 
   const styleInputSesion = { maxWidth: "30rem" };
 
@@ -31,7 +37,7 @@ function DatosUsuarioPagina() {
       if (respuesta?.success) {
         const d = respuesta.data;
 
-        setEmail(d.email || "");
+        setCurrentEmail(d.email || "");
         setName(d.nombreEmpresa || "");
         setRuc(d.ruc || "");
         setAddress(d.direccion || "");
@@ -41,51 +47,93 @@ function DatosUsuarioPagina() {
     inicializarDatos();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleUpdateDatos = async (e) => {
     e.preventDefault();
+    setErrorsDatos({});
 
-    setErrorEmail(false);
-    setErrorPassword(false);
-    setErrorName(false);
-    setErrorRuc(false);
-    setErrorAddress(false);
-    setErrorPhone(false);
+    const newErrors = {};
+    if (!name.trim()) newErrors.name = true;
+    if (!ruc.trim() || ruc.length != 11) newErrors.ruc = true;
+    if (!address.trim()) newErrors.address = true;
+    if (!phone.trim() || phone.length < 7) newErrors.phone = true;
 
-    let esValido = true;
-    if (email.trim() === "") {setErrorEmail(true); esValido = false;
-    }
-    if (password.trim() === "") {setErrorPassword(true); esValido = false;
-    }
-    if (name.trim() === "") {setErrorName(true); esValido = false;
-    }
-    if (ruc.trim() === "" || ruc.length !== 11) {setErrorRuc(true); esValido = false;
-    }
-    if (address.trim() === "") {setErrorAddress(true); esValido = false;
-    }
-    if (phone.trim() === "" || phone.length < 7) {setErrorPhone(true); esValido = false;
+    if (Object.keys(newErrors).length > 0) {
+      setErrorsDatos(newErrors);
+      return;
     }
 
-    if (esValido) {
-      console.log("Enviando actualización...");
+    const datos = {
+      nombreEmpresa: name,
+      ruc,
+      direccion: address,
+      telefono: phone,
+    };
 
-      const datosParaBackend = {
-        nombreEmpresa: name,
-        ruc: ruc,
-        direccion: address,
-        telefono: phone,
-        email: email,
-        ...(password.trim() !== "" && { password: password }),
-      };
+    const resultado = await actualizarPerfil(datos);
+    if (resultado.success) {
+      alert("!Datos generales actualizados!");
+      navigate("/")
+    } else {
+      alert("Error: " + resultado.message);
+    }
+  };
 
-      const resultado = await actualizarPerfil(datosParaBackend);
+  const handleUpdateEmail = async (e) => {
+    e.preventDefault();
+    setErrorsEmail({});
 
-      if (resultado.success) {
-        alert("¡Datos analizados correctamente!");
-        navigate("/");
-        setPassword("");
-      } else {
-        alert("Error: " + resultado.message);
-      }
+    const newErrors = {};
+    if (!newEmail.trim()) newErrors.email = true;
+    if (!passforEmailChange.trim()) newErrors.pass = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrorsEmail(newErrors);
+      return;
+    }
+
+    const datos = {
+      email: newEmail,
+      passwordConfirmation: passforEmailChange,
+    };
+
+    const resultado = await actualizarPerfil(datos);
+    if (resultado.success) {
+      alert("¡Correo actualizado correctamente!");
+      setCurrentEmail(newEmail);
+      setNewEmail("");
+      setPassForEmailChange("");
+      navigate("/")
+    } else {
+      alert("Error al cambiar correo: " + resultado.message);
+    }
+  };
+
+  const handleUpdatePassword = async (e) => {
+    e.preventDefault();
+    setErrorsPass({});
+
+    const newErrors = {};
+    if (!newPassword.trim()) newErrors.newPass = true;
+    if (!passForPassChange.trim()) newErrors.currentPass = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrorsPass(newErrors);
+      return;
+    }
+
+    const datos = {
+      password: newPassword,
+      passwordConfirmation: passForPassChange,
+    };
+
+    const resultado = await actualizarPerfil(datos);
+    if (resultado.success) {
+      alert("¡Contraseña actualizada correctamente!");
+      setNewPassword("");
+      setPassForPassChange("");
+      navigate("/")
+    } else {
+      alert("Error al cambiar contraseña: " + resultado.message);
     }
   };
 
@@ -97,68 +145,25 @@ function DatosUsuarioPagina() {
 
         <div className="container my-5 flex-grow-1">
           <div className="row">
-            <h2 className="text-black text-center">Información de empresa</h2>
+            <h2 className="text-black text-center">Configuración de Cuenta</h2>
+            <p className="text-center text-muted">
+              Usuario actual: <strong>{currentEmail}</strong>
+            </p>
           </div>
+
           <div className="row mt-3">
             <div className="col-12 d-flex justify-content-center">
+              {/* CARD PRINCIPAL */}
               <div
-                className="card colorVerdeOscuro"
+                className="card colorVerdeOscuro shadow"
                 style={{ width: "fit-content" }}
               >
                 <div className="card-body m-3">
-                  <form onSubmit={handleSubmit}>
-                    {/* Email y Password*/}
-                    <div className="row">
-                      <div className="col-6 mb-3">
-                        <label
-                          htmlFor="inputEmail"
-                          className="form-label text-black"
-                        >
-                          <b>Correo electrónico</b>
-                        </label>
-                        <input
-                          type="email"
-                          className={`form-control border ${
-                            errorEmail ? "border-danger" : "border-black"
-                          }`}
-                          id="inputEmail"
-                          style={styleInputSesion}
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="ejemplo@correo.com"
-                        />
-                        {errorEmail && (
-                          <small className="text-danger">
-                            * Debe ingresar un correo
-                          </small>
-                        )}
-                      </div>
-
-                      <div className="col-6 mb-3">
-                        <label
-                          htmlFor="inputPassword"
-                          className="form-label text-black"
-                        >
-                          <b>Contraseña</b>
-                        </label>
-                        <input
-                          type="password"
-                          className={`form-control border ${
-                            errorPassword ? "border-danger" : "border-black"
-                          }`}
-                          id="inputPassword"
-                          style={styleInputSesion}
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          placeholder="********"
-                        />
-                        {errorPassword && (
-                          <small className="text-danger">
-                            * Debe ingresar una contraseña
-                          </small>
-                        )}
-                      </div>
-                    </div>
+                  {/* SECCIÓN 1: DATOS GENERALES */}
+                  <form onSubmit={handleUpdateDatos}>
+                    <h5 className="text-black">
+                      1. Datos generales
+                    </h5>
 
                     {/* Nombre y RUC */}
                     <div className="row">
@@ -172,15 +177,14 @@ function DatosUsuarioPagina() {
                         <input
                           type="text"
                           className={`form-control border ${
-                            errorName ? "border-danger" : "border-black"
+                            errorsDatos.name ? "border-danger" : "border-black"
                           }`}
                           id="inputName"
                           style={styleInputSesion}
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          placeholder="Juan Pérez"
                         />
-                        {errorName && (
+                        {errorsDatos.name && (
                           <small className="text-danger">
                             * Ingrese nombre
                           </small>
@@ -197,15 +201,14 @@ function DatosUsuarioPagina() {
                         <input
                           type="text"
                           className={`form-control border ${
-                            errorRuc ? "border-danger" : "border-black"
+                            errorsDatos.ruc ? "border-danger" : "border-black"
                           }`}
                           id="inputRuc"
                           style={styleInputSesion}
                           value={ruc}
                           onChange={(e) => setRuc(e.target.value)}
-                          placeholder="12345678901"
                         />
-                        {errorRuc && (
+                        {errorsDatos.ruc && (
                           <small className="text-danger">
                             * RUC de 11 dígitos
                           </small>
@@ -224,7 +227,9 @@ function DatosUsuarioPagina() {
                         <input
                           type="text"
                           className={`form-control border ${
-                            errorAddress ? "border-danger" : "border-black"
+                            errorsDatos.address
+                              ? "border-danger"
+                              : "border-black"
                           }`}
                           id="inputAddress"
                           style={styleInputSesion}
@@ -232,7 +237,7 @@ function DatosUsuarioPagina() {
                           onChange={(e) => setAddress(e.target.value)}
                           placeholder="Calle Falsa 123"
                         />
-                        {errorAddress && (
+                        {errorsDatos.address && (
                           <small className="text-danger">
                             * Ingrese dirección
                           </small>
@@ -249,7 +254,7 @@ function DatosUsuarioPagina() {
                         <input
                           type="text"
                           className={`form-control border ${
-                            errorPhone ? "border-danger" : "border-black"
+                            errorsDatos.phone ? "border-danger" : "border-black"
                           }`}
                           id="inputPhone"
                           style={styleInputSesion}
@@ -257,7 +262,7 @@ function DatosUsuarioPagina() {
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="912345678"
                         />
-                        {errorPhone && (
+                        {errorsDatos.phone && (
                           <small className="text-danger">
                             * Ingrese teléfono
                           </small>
@@ -265,13 +270,136 @@ function DatosUsuarioPagina() {
                       </div>
                     </div>
 
-                    {/* Botón de Editar */}
+                    <div className="d-flex justify-content-end">
+                      <button type="submit" className="btn btn-warning fw-bold">
+                        Guardar Datos Generales
+                      </button>
+                    </div>
+                  </form>
+                  
+                  <hr className="text-black border-2 opacity-50" />
+
+                  {/* SECCIÓN 2: CAMBIAR CORREO */}
+                  <form onSubmit={handleUpdateEmail}>
+                    <h5 className="text-black">
+                      2. Cambiar Correo Electrónico
+                    </h5>
                     <div className="row">
-                      <div className="col-12 d-flex justify-content-center">
-                        <button type="submit" className="btn btn-success">
-                          Ingresar
-                        </button>
+                      <div className="col-6 mb-3">
+                        <label
+                          htmlFor="inputEmail"
+                          className="form-label text-black"
+                        >
+                          <b>Nuevo Correo</b>
+                        </label>
+                        <input
+                          type="email"
+                          className={`form-control border ${
+                            errorsEmail.email ? "border-danger" : "border-black"
+                          }`}
+                          id="inputEmail"
+                          style={styleInputSesion}
+                          value={newEmail}
+                          onChange={(e) => setNewEmail(e.target.value)}
+                          placeholder="ejemplo@correo.com"
+                        />
+                        {errorsEmail.email && (
+                          <small className="text-danger">
+                            * Ingrese nuevo correo
+                          </small>
+                        )}
                       </div>
+
+                      <div className="col-6 mb-3">
+                        <label className="form-label text-black">
+                          <b>Contraseña actual</b>
+                        </label>
+                        <input
+                          type="password"
+                          className={`form-control border ${
+                            errorsEmail.pass ? "border-danger" : "border-black"
+                          }`}
+                          placeholder="********"
+                          value={passforEmailChange}
+                          onChange={(e) =>
+                            setPassForEmailChange(e.target.value)
+                          }
+                        />
+                        {errorsEmail.pass && (
+                          <small className="text-danger">
+                            * Requerido para confirmar
+                          </small>
+                        )}
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-end">
+                      <button type="submit" className="btn btn-warning fw-bold">
+                        Actualizar correo
+                      </button>
+                    </div>
+                  </form>
+                  
+                  <hr className="text-black border-2 opacity-50" />
+                  
+                  {/* SECCIÓN 3: CAMBIAR CONTRASEÑA */}
+                  <form onSubmit={handleUpdatePassword}>
+                    <h5 className="text-black">3. Cambiar Contraseña</h5>
+                    <div className="row">
+                      <div className="col-6 mb-3">
+                        <label
+                          htmlFor="inputPassword"
+                          className="form-label text-black"
+                        >
+                          <b>Nueva Contraseña</b>
+                        </label>
+                        <input
+                          type="password"
+                          className={`form-control border ${
+                            errorsPass.newPass ? "border-danger" : "border-black"
+                          }`}
+                          id="inputPassword"
+                          style={styleInputSesion}
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          placeholder="********"
+                        />
+                        {errorsPass.newPass && (
+                          <small className="text-danger">
+                            * Ingrese nueva contraseña
+                          </small>
+                        )}
+                      </div>
+
+                      <div className="col-6 mb-3">
+                        <label
+                          htmlFor="inputPassword"
+                          className="form-label text-black"
+                        >
+                          <b>Contraseña Actual</b>
+                        </label>
+                        <input
+                          type="password"
+                          className={`form-control border ${
+                            errorsPass.currentPass ? "border-danger" : "border-black"
+                          }`}
+                          id="inputPassword"
+                          style={styleInputSesion}
+                          value={newPassword}
+                          onChange={(e) => setPassForPassChange(e.target.value)}
+                          placeholder="********"
+                        />
+                        {errorsPass.currentPass && (
+                          <small className="text-danger">
+                            * Ingrese nueva contraseña
+                          </small>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="d-flex justify-content-end">
+                      <button type="submit" className="btn btn-warning fw-bold">
+                        Actualizar contraseña
+                      </button>
                     </div>
                   </form>
                 </div>
