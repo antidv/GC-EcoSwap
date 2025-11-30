@@ -20,7 +20,7 @@ const PublicacionInventario = ({ publicacion }) => {
 
   return (
     <>
-      <div className={`card h-100 shadow-sm colorVerdeOscuro`}>
+      <div className={`card h-100 shadow-sm`}>
         <div
           className={`card-header ${bgHeader} border-bottom-0 d-flex justify-content-between align-items-center py-2`}
         >

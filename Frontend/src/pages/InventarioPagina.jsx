@@ -56,7 +56,7 @@ function Inventario() {
 
               <div className="dropdown">
                 <button
-                  className="btn btn-light dropdown-toggle border shadow-sm"
+                  className="btn btn-light dropdown-toggle border shadow-sm colorVerdeOscuro"
                   type="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
