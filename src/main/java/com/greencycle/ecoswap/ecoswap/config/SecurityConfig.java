@@ -1,5 +1,7 @@
 package com.greencycle.ecoswap.ecoswap.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,6 +48,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/insumos").hasRole("ADMIN")
 
                 .requestMatchers("/api/carrito/**").hasRole("RECICLADORA")
+
+                .requestMatchers(HttpMethod.DELETE, "/api/insumos/**").hasRole("ADMIN")
 
                 .anyRequest().authenticated()
             )
