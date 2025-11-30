@@ -6,7 +6,7 @@ import { useUsuario } from "../context/UsuarioContext";
 
 function DatosUsuarioPagina() {
   const navigate = useNavigate();
-  const { usuario, editar } = useUsuario();
+  const { cargarPerfil, actualizarPerfil } = useUsuario();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,14 +25,21 @@ function DatosUsuarioPagina() {
   const styleInputSesion = { maxWidth: "30rem" };
 
   useEffect(() => {
-     if (usuario) {
-          setEmail(usuario.email || "");
-          setName(usuario.nombreEmpresa || "");
-          setRuc(usuario.ruc || "");
-          setAddress(usuario.direccion || usuario.address || "");
-          setPhone(usuario.telefono || "");
-     }
-  }, [usuario])
+    const inicializarDatos = async () => {
+      const respuesta = await cargarPerfil();
+
+      if (respuesta?.success) {
+        const d = respuesta.data;
+
+        setEmail(d.email || "");
+        setName(d.nombreEmpresa || "");
+        setRuc(d.ruc || "");
+        setAddress(d.direccion || "");
+        setPhone(d.telefono || "");
+      }
+    };
+    inicializarDatos();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,33 +52,21 @@ function DatosUsuarioPagina() {
     setErrorPhone(false);
 
     let esValido = true;
-    if (email.trim() === "") {
-      setErrorEmail(true);
-      esValido = false;
+    if (email.trim() === "") {setErrorEmail(true); esValido = false;
     }
-    if (password.trim() === "") {
-      setErrorPassword(true);
-      esValido = false;
+    if (password.trim() === "") {setErrorPassword(true); esValido = false;
     }
-    if (name.trim() === "") {
-      setErrorName(true);
-      esValido = false;
+    if (name.trim() === "") {setErrorName(true); esValido = false;
     }
-    if (ruc.trim() === "" || ruc.length !== 11) {
-      setErrorRuc(true);
-      esValido = false;
+    if (ruc.trim() === "" || ruc.length !== 11) {setErrorRuc(true); esValido = false;
     }
-    if (address.trim() === "") {
-      setErrorAddress(true);
-      esValido = false;
+    if (address.trim() === "") {setErrorAddress(true); esValido = false;
     }
-    if (phone.trim() === "" || phone.length < 7) {
-      setErrorPhone(true);
-      esValido = false;
+    if (phone.trim() === "" || phone.length < 7) {setErrorPhone(true); esValido = false;
     }
 
     if (esValido) {
-      console.log("Enviando datos al backend...");
+      console.log("Enviando actualización...");
 
       const datosParaBackend = {
         nombreEmpresa: name,
@@ -79,14 +74,15 @@ function DatosUsuarioPagina() {
         direccion: address,
         telefono: phone,
         email: email,
-        password: password,
+        ...(password.trim() !== "" && { password: password }),
       };
 
-      const resultado = await editar(datosParaBackend);
+      const resultado = await actualizarPerfil(datosParaBackend);
 
       if (resultado.success) {
-        alert("¡Cuenta creada con éxito! Por favor inicie sesión.");
+        alert("¡Datos analizados correctamente!");
         navigate("/");
+        setPassword("");
       } else {
         alert("Error: " + resultado.message);
       }
@@ -105,7 +101,10 @@ function DatosUsuarioPagina() {
           </div>
           <div className="row mt-3">
             <div className="col-12 d-flex justify-content-center">
-              <div className="card" style={{ width: "fit-content" }}>
+              <div
+                className="card colorVerdeOscuro"
+                style={{ width: "fit-content" }}
+              >
                 <div className="card-body m-3">
                   <form onSubmit={handleSubmit}>
                     {/* Email y Password*/}
@@ -202,7 +201,7 @@ function DatosUsuarioPagina() {
                           }`}
                           id="inputRuc"
                           style={styleInputSesion}
-                          value={usuario.ruc}
+                          value={ruc}
                           onChange={(e) => setRuc(e.target.value)}
                           placeholder="12345678901"
                         />
@@ -229,7 +228,7 @@ function DatosUsuarioPagina() {
                           }`}
                           id="inputAddress"
                           style={styleInputSesion}
-                          value={usuario.address}
+                          value={address}
                           onChange={(e) => setAddress(e.target.value)}
                           placeholder="Calle Falsa 123"
                         />
@@ -254,7 +253,7 @@ function DatosUsuarioPagina() {
                           }`}
                           id="inputPhone"
                           style={styleInputSesion}
-                          value={usuario.telefono}
+                          value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="912345678"
                         />
