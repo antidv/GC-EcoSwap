@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 // Recibe 'datos' del chat seleccionado
 function TransaccionActual({ datos }) {
@@ -44,7 +44,7 @@ function TransaccionActual({ datos }) {
     width: "100%",
     marginTop: "1rem",
     textAlign: "center",
-    cursor: "default"
+    cursor: "default",
   };
 
   const styleBotonSimular = {
@@ -61,13 +61,13 @@ function TransaccionActual({ datos }) {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "5px"
+    gap: "5px",
   };
 
   // Función para simular el éxito
   const handleSimularPago = () => {
-    navigate(`/seguimiento-admin/${datos.id || 'admin-simulado'}`, { 
-      state: { datosTransaccion: datos } 
+    navigate(`/seguimiento-admin/${datos.id || "admin-simulado"}`, {
+      state: { datosTransaccion: datos },
     });
   };
 
@@ -77,30 +77,32 @@ function TransaccionActual({ datos }) {
         <h5 className="card-title fw-bold text-center mb-3">
           Transacción actual
         </h5>
-        
+
         <p className="card-text m-0 mt-3">
           <b>Comprador:</b> {datos.comprador}
         </p>
-        
+
         <div className="card-text m-0 mt-2">
           <b>Productos:</b>
           {datos.productos && (
             <ul style={styleLista}>
               {datos.productos.map((p, i) => (
-                <li key={i}>- {p.cantidad}x {p.nombre}</li>
+                <li key={i}>
+                  - {p.cantidad}x {p.nombre}
+                </li>
               ))}
             </ul>
           )}
         </div>
-        
+
         <p className="card-text m-0 mt-3">
           <b>Dirección:</b> {datos.direccion}
         </p>
-        
+
         <p className="card-text fw-bold mt-3">
           Total a cobrar: S/ {parseFloat(datos.total).toFixed(2)}
         </p>
-        
+
         <p className="card-text m-0" style={{ fontSize: "0.9rem" }}>
           <b>CCI:</b> {datos.cci}
         </p>
@@ -111,7 +113,7 @@ function TransaccionActual({ datos }) {
         </div>
 
         <button style={styleBotonSimular} onClick={handleSimularPago}>
-          <i className="bi bi-box2-fill"></i> Ver seguimiento
+          <i className="bi bi-box2-fill"></i> Marcar como preparado
         </button>
       </div>
     </div>
