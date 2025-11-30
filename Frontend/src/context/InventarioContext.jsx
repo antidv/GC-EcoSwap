@@ -70,13 +70,49 @@ export const InventarioProvider = ({ children }) => {
     }
   };
 
+  // Nuevas funciones, agregar para el back
+
+  const obtenerPublicacionPorId = async (id) => {
+    const insumoEncontrado = listaPublicaciones.find(p => p.id === id);
+    
+    if (insumoEncontrado) {
+        return insumoEncontrado;
+    }
+
+    try {
+        const response = await api.get(`/insumos/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error obteniendo insumo por ID:", error);
+        return null;
+    }
+  };
+
+  const editarPublicacion = async (id, dataActualizada) => {
+    try {
+        const response = await api.put(`/insumos/${id}`, dataActualizada);
+
+        setListaPublicaciones(prevLista => 
+            prevLista.map(item => 
+                item.id === parseInt(id) ? { ...item, ...dataActualizada } : item
+            )
+        );
+        return { success: true };
+    } catch (error) {
+        console.error("Error al editar insumo:", error);
+        return { success: false, message: error.response?.data?.message || "Error al actualizar." };
+    }
+  };
+
   return (
     <InventarioContext.Provider value={{ 
       listaPublicaciones, 
       loading,
       agregarPublicacion, 
       cambiarEstadoPublicacion,
-      recargarInventario: cargarInsumos 
+      recargarInventario: cargarInsumos,
+      obtenerPublicacionPorId,
+      editarPublicacion
     }}>
       {children}
     </InventarioContext.Provider>

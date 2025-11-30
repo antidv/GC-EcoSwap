@@ -22,6 +22,7 @@ import Inventario from '../pages/InventarioPagina.jsx';
 import PublicarInsumo from '../pages/PublicarInsumoPagina.jsx';
 import ChatPagina from '../pages/ChatPagina.jsx';
 import PagoExitoso from '../pages/PagoExistosoPagina.jsx';
+import EditarInsumo from '../pages/EditarInsumoPagina.jsx';
 
 const RutaProtegida = ({ rolesPermitidos }) => {
   const { usuario, loading } = useUsuario();
@@ -81,6 +82,7 @@ function AppRoutes() {
         <Route path='/publicar-insumo' element={<PublicarInsumo />}/>
         <Route path='/chat-admin' element={<ChatPagina />}/>
         <Route path='/seguimiento-admin/:id' element={<SeguimientoAdminPagina />}/>
+        <Route path='/editar-insumo/:id' element={<EditarInsumo />}/>
         
         {/* Esto se tiene que editar respecto al rol, uno sería filtrado */}
         <Route path='/historial-transacciones' element={<HistorialCertificadosPagina />}/>
