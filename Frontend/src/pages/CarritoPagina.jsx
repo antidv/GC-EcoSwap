@@ -120,7 +120,7 @@ function PaginaCarrito() {
       <Header />
 
       <div className="container my-5 flex-grow-1" style={styleContenedor}>
-        <h2 className="text-white mb-4 fw-bold">Carro de compras</h2>
+        <h2 className="text-black mb-4 fw-bold">Carro de compras</h2>
         
         <div className="row">
           <div className="col-md-8 mb-4">
