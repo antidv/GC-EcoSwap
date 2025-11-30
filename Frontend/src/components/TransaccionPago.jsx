@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import api from "../services/api"; 
 import { useUsuario } from "../context/UsuarioContext";
 import { useTransacciones } from "../context/TransaccionesContext";
-import { useNavigate } from "react-router-dom";
 
 function TransaccionPago({ ordenId }) {
   const { usuario } = useUsuario();
