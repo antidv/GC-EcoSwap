@@ -12,11 +12,10 @@ const PublicacionInventario = ({ publicacion }) => {
   const handleImageError = (e) => { e.target.src = ImagenDefault; };
 
   const esPublico = publicacion.estado === 'DISPONIBLE';
-  const colorBorde = esPublico ? 'border-success' : 'border-danger';
   const bgHeader = esPublico ? 'bg-success-subtle' : 'bg-danger-subtle';
 
   return (
-    <div className={`card h-100 shadow-sm ${colorBorde}`}>
+    <>
       <div className={`card-header ${bgHeader} border-bottom-0 d-flex justify-content-between align-items-center py-2`}>
         <small className="fw-bold text-uppercase" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>
             {esPublico ? '🟢 Público' : '🔴 Privado'}
@@ -34,8 +33,8 @@ const PublicacionInventario = ({ publicacion }) => {
             />
         </div>
       </div>
-
-    <div className="card shadow-sm h-100 colorVerdeOscuro" style={styleCard}>
+    
+    <div className="card shadow-sm h-100 colorVerdeOscuro">
       {/* Usamos la imagen real del objeto */}
       <img 
         src={publicacion.imagenUrl || ImagenDefault} 
@@ -64,6 +63,7 @@ const PublicacionInventario = ({ publicacion }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
