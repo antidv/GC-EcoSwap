@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import PublicacionInsumo from "../components/PublicacionInsumo.jsx";
 import BarraBusqueda from "../components/BarraBusqueda.jsx";
 import { useInventario } from "../context/InventarioContext.jsx";
+import { useUsuario } from "../context/UsuarioContext.jsx";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 
@@ -10,6 +12,16 @@ function PaginaPrincipal() {
   const [filtroActivo, setFiltroActivo] = useState("Todos");
   
   const { listaPublicaciones, loading } = useInventario();
+  const { usuario } = useUsuario();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (usuario?.rol === 'ADMIN') {
+        navigate('/inventario', { replace: true });
+    }
+  }, [usuario, navigate]);
+
+  if (usuario?.rol === 'ADMIN') return null;
 
   const handleSearch = (e) => {
     e.preventDefault();
