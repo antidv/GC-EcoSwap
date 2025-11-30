@@ -102,8 +102,8 @@ function TransaccionPago({ ordenId }) {
     marginTop: "1rem",
   };
 
-  if (loading) return <div className="text-white">Cargando datos...</div>;
-  if (!orden) return <div className="text-white">Orden no encontrada o acceso denegado.</div>;
+  if (loading) return <div className="text-black">Cargando datos...</div>;
+  if (!orden) return <div className="text-black">Orden no encontrada o acceso denegado.</div>;
 
   return (
     <div className="card" style={styleCard}>

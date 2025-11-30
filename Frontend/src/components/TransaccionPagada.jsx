@@ -3,7 +3,7 @@ import React from 'react';
 function TransaccionPagada({ datos }) {
   
   // Protección si no hay datos
-  if (!datos) return <div className="text-white">Cargando transacción...</div>;
+  if (!datos) return <div className="text-black">Cargando transacción...</div>;
 
   const styleCard = {
     backgroundColor: "rgba(255, 255, 255, 0.9)",

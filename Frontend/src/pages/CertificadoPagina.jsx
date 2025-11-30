@@ -55,7 +55,7 @@ function PaginaCertificado() {
   if (!transaccion) {
     return (
       <div className="container text-center" style={{ padding: "2rem" }}>
-        <h2 className="text-white">Transacción no encontrada</h2>
+        <h2 className="text-black">Transacción no encontrada</h2>
         <button style={styleBotonVolver} onClick={() => navigate(-1)}>
           &larr; Volver
         </button>
