@@ -5,6 +5,30 @@ import Footer from '../components/Footer.jsx';
 
 function PagoExitoso() {
   const { id } = useParams();
+  const location = useLocation();
+
+  let datosTransaccion = location.state?.datosTransaccion;
+  
+  if (!datosTransaccion) {
+    datosTransaccion = MOCK_CHATS.find(t => 
+      t.id === id || t.id === `T-${id}` || (t.id && t.id.includes(id))
+    );
+  }
+
+  // Estilo para el botón naranja/amarillo
+  const styleBotonVolver = {
+    backgroundColor: '#198754', // Naranja
+    color: 'white',
+    border: 'none',
+    padding: '10px 30px',
+    borderRadius: '8px',
+    fontWeight: 'bold',
+    textDecoration: 'none',
+    fontSize: '1.1rem',
+    display: 'inline-block',
+    marginTop: '2rem',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+  };
 
   return (
     <div className="d-flex flex-column min-vh-100 stylePantalla">

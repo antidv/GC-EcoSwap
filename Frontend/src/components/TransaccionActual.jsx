@@ -44,44 +44,44 @@ function TransaccionActual({ datos }) {
     width: "100%",
     marginTop: "1rem",
     textAlign: "center",
-    cursor: "default"
+    cursor: "default",
   };
 
   const styleBotonSimular = {
-    backgroundColor: "#ffc107",
-    color: "#212529",
+    backgroundColor: "#198754",
+    color: "#ffffff",
     fontWeight: "bold",
     fontSize: "0.9rem",
-    border: "1px solid #ffc107",
+    border: "1px solid #198754",
     borderRadius: "8px",
-    padding: "8px 15px",
+    padding: "10px 20px",
     width: "100%",
     marginTop: "10px",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "5px"
+    gap: "5px",
   };
 
   // Función para simular el éxito
   const handleSimularPago = () => {
-    navigate(`/seguimiento/${datos.id || 'admin-simulado'}`, { 
-      state: { datosTransaccion: datos } 
+    navigate(`/seguimiento-admin/${datos.id || "admin-simulado"}`, {
+      state: { datosTransaccion: datos },
     });
   };
 
   return (
-    <div className="card" style={styleCard}>
+    <div className="card colorVerdeOscuro" style={styleCard}>
       <div className="card-body">
         <h5 className="card-title fw-bold text-center mb-3">
           Transacción actual
         </h5>
-        
+
         <p className="card-text m-0 mt-3">
           <b>Comprador:</b> {datos.comprador}
         </p>
-        
+
         <div className="card-text m-0 mt-2">
           <b>Productos:</b>
           {datos.productos && (
@@ -94,15 +94,15 @@ function TransaccionActual({ datos }) {
             </ul>
           )}
         </div>
-        
+
         <p className="card-text m-0 mt-3">
           <b>Dirección:</b> {datos.direccion}
         </p>
-        
+
         <p className="card-text fw-bold mt-3">
           Total a cobrar: S/ {parseFloat(datos.total).toFixed(2)}
         </p>
-        
+
         <p className="card-text m-0" style={{ fontSize: "0.9rem" }}>
           <b>CCI:</b> {datos.cci}
         </p>

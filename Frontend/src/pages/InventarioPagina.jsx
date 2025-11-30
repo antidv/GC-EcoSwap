@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
-import Publicacion from '../components/PublicacionInventario.jsx'; 
-import { useInventario } from '../context/InventarioContext.jsx';
-import Header from '../components/Header.jsx';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Publicacion from "../components/PublicacionInventario.jsx";
+import { useInventario } from "../context/InventarioContext.jsx";
+import Header from "../components/Header.jsx";
+import Footer from "../components/Footer.jsx";
 
 const ColorDot = ({ color }) => (
-  <span style={{
-    height: '10px',
-    width: '10px',
-    backgroundColor: color,
-    borderRadius: '50%',
-    display: 'inline-block',
-    marginRight: '8px'
-  }}></span>
+  <span
+    style={{
+      height: "10px",
+      width: "10px",
+      backgroundColor: color,
+      borderRadius: "50%",
+      display: "inline-block",
+      marginRight: "8px",
+    }}
+  ></span>
 );
 
 function Inventario() {
@@ -22,7 +25,7 @@ function Inventario() {
   const { listaPublicaciones, loading } = useInventario();
 
   const handleNuevaPublicacion = () => {
-    navigate('/publicar-insumo');
+    navigate("/publicar-insumo");
   };
 
   const handleSetFiltro = (e, tipo) => {
@@ -75,9 +78,7 @@ function Inventario() {
                 </li>
               </ul>
             </div>
-            
           </div>
-        </div>
 
         <div className="row px-3">
           
@@ -114,6 +115,8 @@ function Inventario() {
           </div>
         )}
 
+        {/* Footer */}
+        <Footer />
       </div>
     </>
   );

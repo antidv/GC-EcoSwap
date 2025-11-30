@@ -1,3 +1,4 @@
+
 function EstadoEnvio({imagen, nombre, descripcion, isSelected}){
 
      const styleCardEstado = {

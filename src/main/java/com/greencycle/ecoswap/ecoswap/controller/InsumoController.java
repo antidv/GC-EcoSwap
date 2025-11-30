@@ -74,7 +74,7 @@ public class InsumoController {
 
         return ResponseEntity.notFound().build();
     }
-    
+
     @GetMapping("/categorias")
     public List<String> listarCategorias() {
         // Convierte los valores del ENUM a una lista de Strings

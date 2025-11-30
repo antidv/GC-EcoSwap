@@ -89,9 +89,17 @@ function TransaccionPago({ ordenId }) {
     border: "2px solid #333", borderRadius: "8px", padding: "10px 20px", cursor: "pointer", width: "100%", marginTop: "1rem"
   };
 
-  const styleBotonAzul = {
-    backgroundColor: "#0d6efd", color: "white", fontWeight: "bold", fontSize: "1.1rem",
-    border: "none", borderRadius: "8px", padding: "10px 20px", cursor: "pointer", width: "100%", marginTop: "1rem"
+  const styleBotonPagar = {
+    backgroundColor: "#198754",
+    color: "#ffffff",
+    fontWeight: "bold",
+    fontSize: "1.1rem",
+    border: "2px solid #198754",
+    borderRadius: "8px",
+    padding: "10px 20px",
+    cursor: "pointer",
+    width: "100%",
+    marginTop: "1rem",
   };
 
   if (loading) return <div className="text-white">Cargando datos...</div>;

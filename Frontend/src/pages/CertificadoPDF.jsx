@@ -19,7 +19,6 @@ const CertificadoDocumento = ({ transaccion }) => {
     Orgánico  | 0.35                 | 0.4               | 0.0
 
   */
-
   const metricas = {
     residuos: (transaccion.cantidad * 0.5).toFixed(1), // kg estimados
     co2: (transaccion.cantidad * 1.2).toFixed(1), // kg CO2

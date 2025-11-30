@@ -6,7 +6,6 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function SeguimientoRecicladoraPagina() {
-
   const [indiceActivo] = useState();
   const navigate = useNavigate();
   const location = useLocation();
@@ -40,7 +39,6 @@ function SeguimientoRecicladoraPagina() {
               />
             ))}
           </div>
-          
           {indiceActivo === 3 ? (
             <div className="my-2 d-flex justify-content-center">
               <button
@@ -56,7 +54,6 @@ function SeguimientoRecicladoraPagina() {
               <p className="text-black">Esperando respuesta del administrador...</p>
             </div>
           )}
-
         </div>
 
         {/* Footer */}

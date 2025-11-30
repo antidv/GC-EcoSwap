@@ -65,6 +65,11 @@ function AppRoutes() {
         <Route path="/historial-certificados" element={<HistorialCertificadosPagina />}/>
         <Route path="/certificado/:id" element={<PaginaCertificado />}/>
         <Route path='/descargar-certificado/:id' element={<PaginaDescarga />}/>
+        <Route path='/seguimiento/:id' element={<SeguimientoRecicladoraPagina />}/>
+      </Route>
+
+      {/* RUTAS COMPARTIDAS (Admin y Empresa) */}
+      <Route element={<RutaProtegida rolesPermitidos={['admin', 'empresa', 'usuario']} />}>
         <Route path='/pago-exitoso/:id' element={<PagoExitoso />}/>
         <Route path='/seguimiento/:id' element={<SeguimientoRecicladoraPagina />}/>
       </Route>
@@ -73,6 +78,10 @@ function AppRoutes() {
       <Route element={<RutaProtegida rolesPermitidos={['ADMIN']} />}>
         <Route path='/inventario' element={<Inventario />}/>
         <Route path='/publicar-insumo' element={<PublicarInsumo />}/>
+        <Route path='/chat-admin' element={<ChatPagina />}/>
+        <Route path='/seguimiento-admin/:id' element={<SeguimientoAdminPagina />}/>
+        
+        {/* Esto se tiene que editar respecto al rol, uno sería filtrado */}
         <Route path='/historial-transacciones' element={<HistorialCertificadosPagina />}/>
         <Route path='/seguimiento-admin/:id' element={<SeguimientoAdminPagina />}/>
       </Route>

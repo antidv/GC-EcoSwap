@@ -35,6 +35,8 @@ const PublicacionInventario = ({ publicacion }) => {
         </div>
       </div>
 
+    <div className="card shadow-sm h-100 colorVerdeOscuro" style={styleCard}>
+      {/* Usamos la imagen real del objeto */}
       <img 
         src={publicacion.imagenUrl || ImagenDefault} 
         className="card-img-top" 
