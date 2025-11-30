@@ -67,6 +67,8 @@ const Header = () => {
               <ul className="dropdown-menu dropdown-menu-end">
                 <li><h6 className="dropdown-header text-uppercase text-success fw-bold">{usuario.nombre}</h6><span className="dropdown-item-text text-muted" style={{ fontSize: "0.9rem" }}>{usuario.email}</span></li>
                 <li><hr className="dropdown-divider" /></li>
+                <li><Link className="dropdown-item" to="/perfil">Ver perfil</Link></li>
+                <li><hr className="dropdown-divider" /></li>
                 <li><Link className="dropdown-item" to="/historial-certificados">Ver certificados</Link></li>
                 <li><hr className="dropdown-divider" /></li>
                 <li><button onClick={handleLogout} className="dropdown-item text-danger">Cerrar Sesión</button></li>

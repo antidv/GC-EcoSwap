@@ -16,7 +16,7 @@ import InicioSesion from '../pages/InicioSesionPagina.jsx';
 import CrearCuenta from '../pages/CrearCuentaPagina.jsx';
 import SeguimientoAdminPagina from "../pages/SeguimientoAdminPagina";
 import SeguimientoRecicladoraPagina from "../pages/SeguimientoRecicladoraPagina";
-import CertificadoDocumento from '../pages/CertificadoPDF.jsx';
+import DatosUsuarioPagina from '../pages/DatosUsuarioPagina.jsx';
 
 import Inventario from '../pages/InventarioPagina.jsx';
 import PublicarInsumo from '../pages/PublicarInsumoPagina.jsx';
@@ -66,6 +66,7 @@ function AppRoutes() {
         <Route path="/certificado/:id" element={<PaginaCertificado />}/>
         <Route path='/descargar-certificado/:id' element={<PaginaDescarga />}/>
         <Route path='/seguimiento/:id' element={<SeguimientoRecicladoraPagina />}/>
+        <Route path='/perfil' element={<DatosUsuarioPagina />}/>
       </Route>
 
       {/* RUTAS COMPARTIDAS (Admin y Empresa) */}
