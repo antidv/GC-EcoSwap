@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../services/api';
 
 function BarraBusqueda({ 
   terminoBusqueda, 
@@ -7,6 +8,20 @@ function BarraBusqueda({
   onFiltroActivoChange, 
   onSearchSubmit 
 }) {
+  const [listaCategorias, setListaCategorias] = useState([]);
+
+  useEffect(() => {
+    const cargarCategorias = async () => {
+      try {
+        const response = await api.get('/insumos/categorias');
+        setListaCategorias(response.data);
+      } catch (error) {
+        console.error("Error cargando categorías del filtro:", error);
+      }
+    };
+    cargarCategorias();
+  }, []);
+
   const handleInputChange = (e) => {
     onTerminoBusquedaChange(e.target.value);
   };
@@ -19,7 +34,6 @@ function BarraBusqueda({
   return (
     <div className="d-flex justify-content-center">
       
-      {/* BARRA DE BÚSQUEDA (Formulario) */}
       <form className="input-group" onSubmit={onSearchSubmit} style={{ maxWidth: "30rem" }}>
         <input 
           type="text" 
@@ -31,7 +45,6 @@ function BarraBusqueda({
         />
       </form>
 
-      {/* BOTÓN DE FILTRO (Dropdown) */}
       <div className="dropdown ms-2">
         <button 
           className="btn btn-light dropdown-toggle border-2 colorVerdeOscuro" 
@@ -41,11 +54,30 @@ function BarraBusqueda({
         >
           Filtro: {filtroActivo}
         </button>
+        
         <ul className="dropdown-menu dropdown-menu-end">
-          <li><a className="dropdown-item" href="#" onClick={(e) => handleFiltroClick(e, "Todos")}>Todos</a></li>
-          <li><a className="dropdown-item" href="#" onClick={(e) => handleFiltroClick(e, "Cartón")}>Cartón</a></li>
-          <li><a className="dropdown-item" href="#" onClick={(e) => handleFiltroClick(e, "Papel")}>Papel</a></li>
-          <li><a className="dropdown-item" href="#" onClick={(e) => handleFiltroClick(e, "Plástico")}>Plástico</a></li>
+          <li>
+            <button className="dropdown-item" onClick={(e) => handleFiltroClick(e, "Todos")}>
+              Todos
+            </button>
+          </li>
+          
+          <li><hr className="dropdown-divider" /></li>
+
+          {listaCategorias.length > 0 ? (
+            listaCategorias.map((cat) => (
+              <li key={cat}>
+                <button 
+                  className="dropdown-item" 
+                  onClick={(e) => handleFiltroClick(e, cat)}
+                >
+                  {cat}
+                </button>
+              </li>
+            ))
+          ) : (
+            <li><span className="dropdown-item text-muted">Cargando...</span></li>
+          )}
         </ul>
       </div>
     </div>
