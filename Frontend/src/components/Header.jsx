@@ -123,7 +123,7 @@ const Header = () => {
                 <li><h6 className="dropdown-header text-uppercase text-success fw-bold">ADMINISTRADOR</h6><span className="dropdown-item-text text-muted" style={{ fontSize: "0.9rem" }}>{usuario.email}</span></li>
                 <li><hr className="dropdown-divider" /></li>
                 <li><Link className="dropdown-item" to="/inventario">Ver inventario</Link></li>
-                <li><Link className="dropdown-item" to="/historial-certificados">Ver transacciones</Link></li>
+                <li><Link className="dropdown-item" to="/historial-ventas">Ver transacciones</Link></li>
                 <li><hr className="dropdown-divider" /></li>
                 <li><button onClick={handleLogout} className="dropdown-item text-danger">Cerrar Sesión</button></li>
               </ul>
