@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 // Recibe 'datos' del chat seleccionado
 function TransaccionActual({ datos }) {
@@ -66,7 +66,7 @@ function TransaccionActual({ datos }) {
 
   // Función para simular el éxito
   const handleSimularPago = () => {
-    navigate(`/pago-exitoso/${datos.id || 'admin-simulado'}`, { 
+    navigate(`/seguimiento/${datos.id || 'admin-simulado'}`, { 
       state: { datosTransaccion: datos } 
     });
   };
@@ -87,7 +87,9 @@ function TransaccionActual({ datos }) {
           {datos.productos && (
             <ul style={styleLista}>
               {datos.productos.map((p, i) => (
-                <li key={i}>- {p.cantidad}x {p.nombre}</li>
+                <li key={i}>
+                  - {p.cantidad}x {p.nombre}
+                </li>
               ))}
             </ul>
           )}
@@ -111,7 +113,7 @@ function TransaccionActual({ datos }) {
         </div>
 
         <button style={styleBotonSimular} onClick={handleSimularPago}>
-          <i className="bi bi-check-circle-fill"></i> Simular pago exitoso
+          <i className="bi bi-box2-fill"></i> Marcar como preparado
         </button>
       </div>
     </div>

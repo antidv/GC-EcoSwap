@@ -10,6 +10,8 @@ import com.greencycle.ecoswap.ecoswap.repository.InsumoRepository;
 import com.greencycle.ecoswap.ecoswap.repository.OrdenRepository;
 import com.greencycle.ecoswap.ecoswap.repository.UsuarioRepository;
 import com.greencycle.ecoswap.ecoswap.repository.CarritoItemRepository;
+import com.greencycle.ecoswap.ecoswap.service.CertificadoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,9 @@ public class OrdenController {
     @Autowired
     private CarritoItemRepository carritoRepository;
 
+    @Autowired
+    private CertificadoService certificadoService;
+
     @PostMapping
     @Transactional
     public ResponseEntity<?> crearOrden(@RequestBody OrdenRequest request) {
@@ -49,7 +54,7 @@ public class OrdenController {
         orden.setDireccionEntrega(request.getDireccionEntrega());
         orden.setCciPago(request.getCciPago());
         orden.setEstado("PENDIENTE");
-        orden.setCodigoConfirmacion(UUID.randomUUID().toString().substring(0, 8).toUpperCase()); // Código único corto
+        orden.setCodigoConfirmacion(UUID.randomUUID().toString().substring(0, 8).toUpperCase());
         orden.setFechaCompra(LocalDateTime.now());
 
         BigDecimal montoTotalCalculado = BigDecimal.ZERO;
@@ -86,10 +91,24 @@ public class OrdenController {
         Orden nuevaOrden = ordenRepository.save(orden);
 
         List<CarritoItem> itemsDelCarrito = carritoRepository.findByUsuario(usuario);
-        
         carritoRepository.deleteAll(itemsDelCarrito);
 
+        certificadoService.generarCertificado(nuevaOrden);
+
         return ResponseEntity.ok(nuevaOrden);
+    }
+
+    @PutMapping("/{id}/estado")
+    public ResponseEntity<?> actualizarEstado(@PathVariable Integer id, @RequestBody String nuevoEstado) {
+        Orden orden = ordenRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
+
+        String estadoLimpio = nuevoEstado.replace("\"", "").trim().toUpperCase();
+
+        orden.setEstado(estadoLimpio);
+        ordenRepository.save(orden);
+
+        return ResponseEntity.ok("Estado actualizado a: " + estadoLimpio);
     }
 
     @GetMapping

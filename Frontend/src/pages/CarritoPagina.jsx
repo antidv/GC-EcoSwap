@@ -72,17 +72,17 @@ function PaginaCarrito() {
 
   const handleConfirmarPedido = async () => {
     if (!usuario) {
-        alert("Debes iniciar sesión para comprar.");
+        alert("Debes iniciar sesión.");
         navigate('/login');
         return;
     }
 
-    const resultado = await crearOrden(usuario, items, total);
+    const resultado = await crearOrden(usuario, items, subtotal);
 
     if (resultado.success) {
        const idOrden = resultado.orden.id;
        
-       navigate(`/pago-exitoso/${idOrden}`); 
+       navigate(`/chat-empresa/${idOrden}`); 
     } else {
        alert("Error al procesar la compra: " + resultado.message);
     }

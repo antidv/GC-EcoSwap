@@ -1,6 +1,25 @@
 const CertificadoDocumento = ({ transaccion }) => {
   if (!transaccion) return null;
 
+  // MODIFICAR LAS MÉTRICAS
+  /* Cada categoría tendrá su factor de aprovechamiento (insumos que tiene utilidad),
+    fecha de emisión y el factor de ahorro hídrico.
+
+    Residuos Evitados = Materiales Vendidos (kg) * Factor de Aprovechamiento (entre 0 y 1 %)
+    CO2 Ahorrado = Residuos Evitados (kg) * Fecha de emisión (CO2/kg)
+    Agua Preservada = Residuos Evitados (kg) * Factor de Ahorro Hídrico (Litros/Kg)
+
+    Categoría | Fac. Aprovechamiento | Fecha de emisión  | Factor de Ahorro Hídrico
+    ------------------------------------------------------------------------------------
+    Papel     | 0.85                 | 0.9               | 26.0
+    Cartón    | 0.90                 | 1.1               | 24.0
+    Plástico  | 0.70                 | 1.5               | 5.7
+    Vidrio    | 0.95                 | 0.3               | 1.3
+    Metal     | 0.95                 | 4.0               | 50.0
+    Orgánico  | 0.35                 | 0.4               | 0.0
+
+  */
+
   const metricas = {
     residuos: (transaccion.cantidad * 0.5).toFixed(1), // kg estimados
     co2: (transaccion.cantidad * 1.2).toFixed(1), // kg CO2

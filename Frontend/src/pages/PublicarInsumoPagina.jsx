@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useInventario } from '../context/InventarioContext.jsx';
 import Header from '../components/Header.jsx';
+import api from '../services/api';
 
 function PublicarInsumo() {
   const navigate = useNavigate();
@@ -13,6 +14,21 @@ function PublicarInsumo() {
   const [precio, setPrecio] = useState("");
   const [cantidad, setCantidad] = useState("");
   const [imagenUrl, setImagenUrl] = useState("https://cdn-icons-png.flaticon.com/512/2666/2666668.png");
+  
+  const [listaCategorias, setListaCategorias] = useState([]);
+
+  useEffect(() => {
+    const obtenerCategorias = async () => {
+        try {
+            const response = await api.get('/insumos/categorias');
+            setListaCategorias(response.data);
+        } catch (error) {
+            console.error("Error cargando categorías:", error);
+            setListaCategorias(["PLASTICO", "CARTON", "PAPEL", "VIDRIO", "METAL"]); 
+        }
+    };
+    obtenerCategorias();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +54,7 @@ function PublicarInsumo() {
   };
 
   return (
-    <div className="container-fluid min-vh-100 stylePantalla">
+    <div className="d-flex flex-column min-vh-100 stylePantalla">
       <Header />
       <div className="row justify-content-center mt-4 mb-5">
         <div className="col-12 col-md-10 col-lg-8">
@@ -59,6 +75,7 @@ function PublicarInsumo() {
                       required
                     />
                   </div>
+                  
                   <div className="col-md-6">
                     <label className="form-label fw-bold">Categoría</label>
                     <select 
@@ -67,11 +84,11 @@ function PublicarInsumo() {
                       required
                     >
                         <option value="">Seleccionar...</option>
-                        <option value="Cartón">Cartón</option>
-                        <option value="Plástico">Plástico</option>
-                        <option value="Papel">Papel</option>
-                        <option value="Metal">Metal</option>
-                        <option value="Vidrio">Vidrio</option>
+                        {listaCategorias.map((cat) => (
+                            <option key={cat} value={cat}>
+                                {cat}
+                            </option>
+                        ))}
                     </select>
                   </div>
                 </div>

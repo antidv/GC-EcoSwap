@@ -14,6 +14,9 @@ import ComoComprar from '../pages/ComoComprarPagina.jsx';
 import PaginaCertificado from '../pages/CertificadoPagina.jsx';
 import InicioSesion from '../pages/InicioSesionPagina.jsx';
 import CrearCuenta from '../pages/CrearCuentaPagina.jsx';
+import SeguimientoAdminPagina from "../pages/SeguimientoAdminPagina";
+import SeguimientoRecicladoraPagina from "../pages/SeguimientoRecicladoraPagina";
+import CertificadoDocumento from '../pages/CertificadoPDF.jsx';
 
 import Inventario from '../pages/InventarioPagina.jsx';
 import PublicarInsumo from '../pages/PublicarInsumoPagina.jsx';
@@ -39,7 +42,7 @@ const RutaProtegida = ({ rolesPermitidos }) => {
 function AppRoutes() {
   return (
     <Routes>
-      {/* --- RUTAS PÚBLICAS (Cualquiera puede entrar) --- */}
+      {/* --- RUTAS PÚBLICAS --- */}
       <Route path='/login' element={<InicioSesion />}/>
       <Route path='/crear-cuenta' element={<CrearCuenta />}/> 
       <Route path='/sign-up' element={<CrearCuenta />}/>
@@ -49,26 +52,29 @@ function AppRoutes() {
       <Route path="/quienes-somos" element={<QuienesSomos />}/>
       <Route path="/como-comprar" element={<ComoComprar />}/>
 
-      {/* --- RUTAS DE RECICLADORA (Cliente) --- */}
-      {/* Aquí corregimos 'empresa' por 'RECICLADORA' */}
+      {/* --- RUTAS COMPARTIDAS (ADMIN Y RECICLADORA) --- */}
+      <Route element={<RutaProtegida rolesPermitidos={['RECICLADORA', 'ADMIN']} />}>
+        <Route path="/chat-empresa/:ordenId" element={<PaginaChatEmpresa />}/>
+        <Route path='/pago-exitoso/:id' element={<PagoExitoso />}/>
+      </Route>
+
+      {/* --- RUTAS SOLO DE RECICLADORA (Cliente) --- */}
       <Route element={<RutaProtegida rolesPermitidos={['RECICLADORA']} />}>
         <Route path="/carrito" element={<PaginaCarrito />}/>
         <Route path="/chat-empresa" element={<PaginaChatEmpresa />}/>
         <Route path="/historial-certificados" element={<HistorialCertificadosPagina />}/>
         <Route path="/certificado/:id" element={<PaginaCertificado />}/>
         <Route path='/descargar-certificado/:id' element={<PaginaDescarga />}/>
-        
-        {/* Flujo de pago */}
         <Route path='/pago-exitoso/:id' element={<PagoExitoso />}/>
+        <Route path='/seguimiento/:id' element={<SeguimientoRecicladoraPagina />}/>
       </Route>
 
-      {/* --- RUTAS DE ADMIN (GreenCycle) --- */}
-      {/* Aquí corregimos 'admin' por 'ADMIN' */}
+      {/* --- RUTAS SOLO DE ADMIN (GreenCycle) --- */}
       <Route element={<RutaProtegida rolesPermitidos={['ADMIN']} />}>
         <Route path='/inventario' element={<Inventario />}/>
         <Route path='/publicar-insumo' element={<PublicarInsumo />}/>
-        <Route path='/chat-admin' element={<ChatPagina />}/>
-        {/* El admin también podría ver historiales si fuera necesario */}
+        <Route path='/historial-transacciones' element={<HistorialCertificadosPagina />}/>
+        <Route path='/seguimiento-admin/:id' element={<SeguimientoAdminPagina />}/>
       </Route>
 
       {/* --- CATCH-ALL (Error 404) --- */}

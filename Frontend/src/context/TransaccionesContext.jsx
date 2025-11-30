@@ -51,6 +51,20 @@ export function TransaccionesProvider({ children }) {
           }
      };
 
+     const actualizarEstadoOrden = async (ordenId, nuevoEstado) => {
+          try {
+               await api.put(`/ordenes/${ordenId}/estado`, nuevoEstado, {
+                    headers: { 'Content-Type': 'text/plain' }
+               });
+               
+               await obtenerHistorial(); 
+               return { success: true };
+          } catch (error) {
+               console.error("Error actualizando estado:", error);
+               return { success: false, message: "No se pudo actualizar el estado." };
+          }
+     };
+
      const obtenerHistorial = useCallback(async () => {
         if (!usuario) return;
         
@@ -74,13 +88,17 @@ export function TransaccionesProvider({ children }) {
         }
      }, [usuario]);
 
+     const ordenesPendientes = historial.filter(o => o.estado === 'PENDIENTE');
+
      return (
           <TransaccionesContext.Provider value={{
                ordenCreada, 
                crearOrden,
+               actualizarEstadoOrden,
                historial,
                obtenerHistorial,
-               loading
+               loading,
+               ordenesPendientes
           }}>
                {children}
           </TransaccionesContext.Provider>
