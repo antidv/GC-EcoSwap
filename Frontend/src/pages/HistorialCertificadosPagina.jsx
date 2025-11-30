@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useTransacciones } from '../context/TransaccionesContext';
@@ -7,68 +8,98 @@ import { useUsuario } from '../context/UsuarioContext';
 function HistorialCertificadosPagina() {
   const { historial, obtenerHistorial, loading } = useTransacciones();
   const { usuario } = useUsuario();
+  const navigate = useNavigate();
 
+  // Cargar historial al entrar
   useEffect(() => {
-    obtenerHistorial();
-  }, [obtenerHistorial]);
+    if (usuario) {
+        obtenerHistorial();
+    }
+  }, [usuario, obtenerHistorial]);
+
+  const handleVerDetalle = (ordenId) => {
+    // Redirige a la sala de chat/seguimiento de esa orden
+    navigate(`/chat-empresa/${ordenId}`);
+  };
 
   return (
     <div className="d-flex flex-column min-vh-100 stylePantalla">
       <Header />
       
       <div className="container my-5 flex-grow-1">
-        <h2 className="text-center mb-4 text-black fw-bold">
-            {usuario?.rol === 'ADMIN' ? 'Historial de Ventas' : 'Mis Compras y Certificados'}
-        </h2>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+            <h2 className="text-black fw-bold">Mis Compras y Certificados</h2>
+            <button className="btn btn-outline-secondary btn-sm" onClick={obtenerHistorial}>
+                <i className="bi bi-arrow-clockwise me-1"></i> Actualizar
+            </button>
+        </div>
 
         {loading ? (
-            <div className="text-center mt-5">
-                <div className="spinner-border text-success" role="status"></div>
-                <p className="mt-2 text-muted">Cargando transacciones...</p>
-            </div>
+            <div className="text-center mt-5"><div className="spinner-border text-success"></div></div>
         ) : (
-            <div className="table-responsive shadow rounded bg-white p-3">
+            <div className="table-responsive shadow rounded bg-white p-0">
                 <table className="table table-hover align-middle mb-0">
-                    <thead className="table-success">
+                    <thead className="table-success text-uppercase small">
                         <tr>
-                            <th># Orden</th>
+                            <th className="ps-4"># Orden</th>
                             <th>Fecha</th>
                             <th>Cód. Confirmación</th>
                             <th>Estado</th>
                             <th className="text-end">Total</th>
+                            <th className="text-center">Acción</th>
                         </tr>
                     </thead>
                     <tbody>
                         {historial.length > 0 ? (
                             historial.map((orden) => (
-                                <tr key={orden.id}>
-                                    <td className="fw-bold text-secondary">#{orden.id}</td>
+                                <tr key={orden.id} style={{cursor: 'pointer'}} onClick={() => handleVerDetalle(orden.id)}>
+                                    
+                                    <td className="ps-4 fw-bold text-secondary">#{orden.id}</td>
+                                    
                                     <td>
                                         {new Date(orden.fechaCompra).toLocaleDateString()} 
-                                        <small className="text-muted ms-1">
+                                        <br/>
+                                        <small className="text-muted" style={{fontSize: '0.7rem'}}>
                                             {new Date(orden.fechaCompra).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                                         </small>
                                     </td>
+                                    
                                     <td>
-                                        <span className="badge bg-dark font-monospace">{orden.codigoConfirmacion}</span>
+                                        <span className="badge bg-light text-dark border font-monospace">
+                                            {orden.codigoConfirmacion}
+                                        </span>
                                     </td>
+                                    
                                     <td>
-                                        {orden.estado === 'PENDIENTE' ? (
-                                            <span className="badge bg-warning text-dark">Pendiente</span>
-                                        ) : (
-                                            <span className="badge bg-success">Completada</span>
-                                        )}
+                                        {orden.estado === 'PENDIENTE' && <span className="badge bg-warning text-dark">Pendiente</span>}
+                                        {orden.estado === 'PAGADO' && <span className="badge bg-info text-dark">Pagado</span>}
+                                        {orden.estado === 'PREPARANDO' && <span className="badge bg-primary">Preparando</span>}
+                                        {orden.estado === 'EN_CAMINO' && <span className="badge bg-success">En camino</span>}
+                                        {orden.estado === 'ENTREGADO' && <span className="badge bg-success">Entregado</span>}
+                                        {orden.estado === 'CANCELADO' && <span className="badge bg-primary">Cancelado</span>}
+
                                     </td>
-                                    <td className="text-end fw-bold text-success fs-5">
+                                    
+                                    <td className="text-end fw-bold text-success">
                                         S/ {orden.montoTotal.toFixed(2)}
+                                    </td>
+
+                                    <td className="text-center">
+                                        <button 
+                                            className="btn btn-sm btn-light border" 
+                                            onClick={(e) => { e.stopPropagation(); handleVerDetalle(orden.id); }}
+                                            title="Ver seguimiento"
+                                        >
+                                            <i className="bi bi-eye-fill text-success"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="5" className="text-center py-5 text-muted">
-                                    <i className="bi bi-receipt mb-2" style={{fontSize: '2rem'}}></i>
-                                    <p className="m-0">No se encontraron transacciones registradas.</p>
+                                <td colSpan="6" className="text-center py-5 text-muted">
+                                    <i className="bi bi-cart-x mb-2" style={{fontSize: '2rem'}}></i>
+                                    <p className="m-0">Aún no has realizado compras.</p>
                                 </td>
                             </tr>
                         )}

@@ -85,8 +85,10 @@ function HistorialTransaccionesPagina() {
                                     <td>
                                         {orden.estado === 'PENDIENTE' && <span className="badge bg-warning text-dark">Pendiente</span>}
                                         {orden.estado === 'PAGADO' && <span className="badge bg-info text-dark">Pagado</span>}
-                                        {orden.estado === 'ENTREGADO' && <span className="badge bg-success">Completado</span>}
-                                        {orden.estado === 'VENDIDO' && <span className="badge bg-secondary">Vendido</span>}
+                                        {orden.estado === 'PREPARANDO' && <span className="badge bg-primary">Preparando</span>}
+                                        {orden.estado === 'EN_CAMINO' && <span className="badge bg-success">En camino</span>}
+                                        {orden.estado === 'ENTREGADO' && <span className="badge bg-success">Entregado</span>}
+                                        {orden.estado === 'CANCELADO' && <span className="badge bg-primary">Cancelado</span>}
                                     </td>
                                     
                                     <td className="text-end fw-bold text-success">
