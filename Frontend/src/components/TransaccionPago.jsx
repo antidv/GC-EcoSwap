@@ -36,11 +36,11 @@ function TransaccionPago() {
   };
 
   const styleBotonPagar = {
-    backgroundColor: "#D4D4A9",
-    color: "#073801",
+    backgroundColor: "#198754",
+    color: "#ffffff",
     fontWeight: "bold",
     fontSize: "1.1rem",
-    border: "2px solid #333",
+    border: "2px solid #198754",
     borderRadius: "8px",
     padding: "10px 20px",
     cursor: "pointer",
@@ -80,7 +80,7 @@ function TransaccionPago() {
 
     if(vaciarCarrito) vaciarCarrito();
 
-    navigate(`/certificado/${nuevoId}`, {state: { datosTransaccion: nuevaTransaccion }});
+    navigate(`/seguimiento/${nuevoId}`, {state: { datosTransaccion: nuevaTransaccion }});
   };
 
   return (
@@ -119,7 +119,7 @@ function TransaccionPago() {
         </p>
 
         <button style={styleBotonPagar} onClick={handlePagar}>
-          Realizar pago
+          Ver seguimiento
         </button>
       </div>
     </div>

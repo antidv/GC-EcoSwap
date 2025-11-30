@@ -66,7 +66,7 @@ function TransaccionActual({ datos }) {
 
   // Función para simular el éxito
   const handleSimularPago = () => {
-    navigate(`/seguimiento/${datos.id || 'admin-simulado'}`, { 
+    navigate(`/seguimiento-admin/${datos.id || 'admin-simulado'}`, { 
       state: { datosTransaccion: datos } 
     });
   };
@@ -111,7 +111,7 @@ function TransaccionActual({ datos }) {
         </div>
 
         <button style={styleBotonSimular} onClick={handleSimularPago}>
-          <i class="bi bi-box2-fill"></i> Ver seguimiento
+          <i className="bi bi-box2-fill"></i> Ver seguimiento
         </button>
       </div>
     </div>

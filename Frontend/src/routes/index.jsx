@@ -14,6 +14,7 @@ import PaginaCertificado from '../pages/CertificadoPagina.jsx';
 import InicioSesion from '../pages/InicioSesionPagina.jsx';
 import CrearCuenta from '../pages/CrearCuentaPagina.jsx';
 import SeguimientoAdminPagina from "../pages/SeguimientoAdminPagina";
+import SeguimientoRecicladoraPagina from "../pages/SeguimientoRecicladoraPagina";
 import CertificadoDocumento from '../pages/CertificadoPDF.jsx';
 
 {/* Del admin */}
@@ -58,6 +59,7 @@ function AppRoutes() {
         <Route path="/historial-certificados" element={<HistorialCertificadosPagina />}/>
         <Route path="/certificado/:id" element={<PaginaCertificado />}/>
         <Route path='/descargar-certificado/:id' element={<PaginaDescarga />}/>
+        <Route path='/seguimiento/:id' element={<SeguimientoRecicladoraPagina />}/>
       </Route>
 
       {/* RUTAS COMPARTIDAS (Admin y Empresa) */}
@@ -70,7 +72,7 @@ function AppRoutes() {
         <Route path='/inventario' element={<Inventario />}/>
         <Route path='/publicar-insumo' element={<PublicarInsumo />}/>
         <Route path='/chat-admin' element={<ChatPagina />}/>
-        <Route path='/seguimiento/:id' element={<SeguimientoAdminPagina />}/>
+        <Route path='/seguimiento-admin/:id' element={<SeguimientoAdminPagina />}/>
         
         {/* Esto se tiene que editar respecto al rol, uno sería filtrado */}
         <Route path='/historial-transacciones' element={<HistorialCertificadosPagina />}/>

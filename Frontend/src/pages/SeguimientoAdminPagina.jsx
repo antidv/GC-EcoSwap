@@ -33,9 +33,9 @@ function SeguimientoAdminPagina() {
         <div className="container my-5 flex-grow-1">
           <h2 className="text-black">Seguimiento de envío</h2>
           {datosTransaccion && (
-            <p className="text-muted mb-4">
-              Orden para: {datosTransaccion.comprador}
-            </p>
+               <p className="text-muted mb-4">
+                    Orden para: {datosTransaccion.comprador}
+               </p>
           )}
 
           <div className="row">
