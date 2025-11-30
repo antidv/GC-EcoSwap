@@ -13,6 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,23 +32,22 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+            
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
+            
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() // Login y registro libre
-                .requestMatchers(HttpMethod.GET, "/api/insumos/publicos").authenticated()
+                .requestMatchers("/api/auth/**").permitAll()
+                
+                .requestMatchers(HttpMethod.GET, "/api/insumos/publicos").permitAll() 
 
-                // Crear Insumo: SOLO ADMIN
                 .requestMatchers(HttpMethod.POST, "/api/insumos").hasRole("ADMIN")
                 
-                // Cambiar Estado: SOLO ADMIN
                 .requestMatchers(HttpMethod.PUT, "/api/insumos/**").hasRole("ADMIN")
                 
-                // Ver listado completo (Privados y Públicos): SOLO ADMIN
                 .requestMatchers(HttpMethod.GET, "/api/insumos").hasRole("ADMIN")
 
-                // 3. ZONA CARRITO (Exclusivo Recicladoras)
                 .requestMatchers("/api/carrito/**").hasRole("RECICLADORA")
 
-                // 4. RESTO DEL MUNDO (Cualquier otra ruta requiere estar logueado como mínimo)
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -55,8 +58,24 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        
+        configuration.setAllowedOrigins(List.of("http://localhost:5173")); 
+        
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        
+        configuration.setAllowCredentials(true);
 
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;

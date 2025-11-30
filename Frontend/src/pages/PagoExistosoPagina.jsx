@@ -1,9 +1,7 @@
 import React from 'react';
-import { useParams, useLocation, Link } from 'react-router-dom';
-import TransaccionPagada from "../components/TransaccionPagada.jsx";
-import Header from "../components/Header.jsx";
-import { MOCK_TRANSACCIONES } from '../data/mockTransacciones.js';
-import { MOCK_CHATS } from '../data/mockChats.js';
+import { Link, useParams } from 'react-router-dom';
+import Header from '../components/Header.jsx';
+import Footer from '../components/Footer.jsx';
 
 function PagoExitoso() {
   const { id } = useParams();
@@ -33,40 +31,43 @@ function PagoExitoso() {
   };
 
   return (
-    <>
+    <div className="d-flex flex-column min-vh-100 stylePantalla">
       <Header />
-
-      {/* Contenedor principal */}
-      <div className="container-fluid d-flex flex-column align-items-center justify-content-center py-5" style={{minHeight: '85vh'}}>
+      
+      <div className="container flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center py-5">
         
-        <div className="row w-100 justify-content-center">
-          <div className="col-12 d-flex flex-column align-items-center">
+        <div className="card shadow-lg p-5 border-success animate__animated animate__fadeInUp" style={{maxWidth: '500px', borderRadius: '15px'}}>
+            <div className="mb-4">
+                <div className="rounded-circle bg-success d-inline-flex justify-content-center align-items-center" style={{width: '100px', height: '100px'}}>
+                    <i className="bi bi-check-lg text-white" style={{fontSize: '4rem'}}></i>
+                </div>
+            </div>
             
-            {datosTransaccion ? (
-              <>
-                {/* 1. La tarjeta de transacción */}
-                <TransaccionPagada datos={datosTransaccion} />
-                
-                {/* 2. El botón "Volver" DEBAJO de la tarjeta */}
-                <Link to="/inventario" style={styleBotonVolver}>
-                    Volver
-                </Link>
-              </>
-            ) : (
-              // Caso de error (también centrado)
-              <div className="text-white text-center">
-                <h3 className="display-4 fw-bold">Transacción no encontrada</h3>
-                <p className="lead">El ID {id} no existe en nuestros registros.</p>
-                <Link to="/inventario" className="btn btn-light btn-lg mt-3 fw-bold">
-                  <i className="bi bi-arrow-left me-2"></i> Volver al Inventario
-                </Link>
-              </div>
-            )}
+            <h2 className="text-success fw-bold mb-3">¡Compra Exitosa!</h2>
+            <p className="text-muted fs-5">Tu orden ha sido registrada correctamente en nuestro sistema.</p>
+            
+            <div className="alert alert-light border my-4 py-3">
+                <span className="text-uppercase small text-muted d-block">Número de Orden</span>
+                <strong className="fs-3 text-dark">#{id}</strong>
+            </div>
 
-          </div>
+            <p className="small text-muted mb-4">
+                El equipo de EcoSwap procesará tu solicitud. Puedes ver el detalle en tu historial.
+            </p>
+
+            <div className="d-grid gap-2">
+                <Link to="/historial-certificados" className="btn btn-success btn-lg fw-bold">
+                    <i className="bi bi-receipt me-2"></i> Ver mi Historial
+                </Link>
+                <Link to="/" className="btn btn-outline-secondary">
+                    Volver al Inicio
+                </Link>
+            </div>
         </div>
+
       </div>
-    </>
+      <Footer />
+    </div>
   );
 }
 

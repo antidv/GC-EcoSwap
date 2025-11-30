@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import api from '../services/api';
 
 const UsuarioContext = createContext(null);
 
@@ -8,18 +9,64 @@ export const useUsuario = () => {
 
 export const UsuarioProvider = ({children}) => {
      const [usuario, setUsuario] = useState(null);
+     const [loading, setLoading] = useState(true);
 
-     const login = (datosUsuario) => {
-          setUsuario(datosUsuario);
+     useEffect(() => {
+        const tokenGuardado = localStorage.getItem('token');
+        const datosGuardados = localStorage.getItem('datosUsuario');
+        
+        if (tokenGuardado && datosGuardados) {
+            setUsuario(JSON.parse(datosGuardados));
+        }
+        setLoading(false);
+     }, []);
+
+     const login = async (email, password) => {
+          try {
+              const response = await api.post('/auth/login', { email, password });
+              
+              const { token, usuario_id, rol, mensaje } = response.data;
+
+              localStorage.setItem('token', token);
+              
+              const datosUsuario = { id: usuario_id, email, rol };
+              localStorage.setItem('datosUsuario', JSON.stringify(datosUsuario));
+
+              setUsuario(datosUsuario);
+              
+              return { success: true };
+
+          } catch (error) {
+              console.error("Error al iniciar sesión:", error);
+              return { 
+                  success: false, 
+                  message: error.response?.data || "Credenciales incorrectas o error de conexión." 
+              };
+          }
+     };
+
+     const registrar = async (datosRegistro) => {
+          try {
+               await api.post('/auth/register', datosRegistro);
+               return { success: true };
+          } catch (error) {
+               console.error("Error al registrar:", error);
+               return { 
+                    success: false, 
+                    message: error.response?.data || "Error al registrar usuario. Verifique si el RUC o Email ya existen."
+               };
+          }
      };
 
      const logout = () => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('datosUsuario');
           setUsuario(null);
      }
 
      return (
-          <UsuarioContext.Provider value={{usuario, login, logout}}>
-               {children}
+          <UsuarioContext.Provider value={{usuario, login, logout, registrar, loading}}>
+               {!loading && children}
           </UsuarioContext.Provider>
      );
 };

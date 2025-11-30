@@ -1,4 +1,6 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import api from '../services/api';
+import { useUsuario } from './UsuarioContext';
 
 const CarritoContext = createContext(null);
 
@@ -8,27 +10,59 @@ export const useCarrito = () => {
 
 export const CarritoProvider = ({ children }) => {
   const [items, setItems] = useState([]);
+  const { usuario } = useUsuario();
 
-  const agregarAlCarrito = (producto, cantidad) => {
-    const itemExistente = items.find((item) => item.producto.id === producto.id);
-
-    if (itemExistente) {
-      setItems(items.map((item) =>
-        item.producto.id === producto.id
-          ? { ...item, cantidad: item.cantidad + cantidad }
-          : item
-      ));
-    } else {
-      setItems([...items, { producto, cantidad }]);
+  const cargarCarrito = useCallback(async () => {
+    if (!usuario || usuario.rol !== 'RECICLADORA') {
+      setItems([]);
+      return;
     }
-    console.log("Item agregado:", producto.nombre, "Cantidad:", cantidad);
+
+    try {
+      const response = await api.get('/carrito');
+      setItems(response.data);
+    } catch (error) {
+      console.error("Error al cargar carrito:", error);
+    }
+  }, [usuario]);
+
+  useEffect(() => {
+    cargarCarrito();
+  }, [cargarCarrito]);
+
+
+  const agregarAlCarrito = async (producto, cantidad) => {
+    if (!usuario) return;
+
+    try {
+      const payload = {
+        insumoId: producto.id,
+        cantidad: parseFloat(cantidad)
+      };
+
+      await api.post('/carrito/agregar', payload);
+      
+      await cargarCarrito(); 
+      console.log("Producto agregado al carrito DB");
+
+    } catch (error) {
+      console.error("Error al agregar al carrito:", error);
+      alert("Error al agregar producto. Intente nuevamente.");
+    }
   };
 
-  const eliminarDelCarrito = (productoId) => {
-    setItems(items.filter((item) => item.producto.id !== productoId));
+  const eliminarDelCarrito = async (carritoItemId) => {
+    try {
+      await api.delete(`/carrito/${carritoItemId}`);
+      
+      setItems(prevItems => prevItems.filter(item => item.id !== carritoItemId));
+      
+    } catch (error) {
+      console.error("Error al eliminar item:", error);
+    }
   };
 
-  const vaciarCarrito = () => {
+  const vaciarCarritoLocal = () => {
     setItems([]);
   };
 
@@ -36,7 +70,8 @@ export const CarritoProvider = ({ children }) => {
     items,
     agregarAlCarrito,
     eliminarDelCarrito,
-    vaciarCarrito
+    vaciarCarrito: vaciarCarritoLocal,
+    recargarCarrito: cargarCarrito
   };
 
   return (
