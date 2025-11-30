@@ -6,7 +6,8 @@ import { useUsuario } from "../context/UsuarioContext";
 
 function DatosUsuarioPagina() {
   const navigate = useNavigate();
-  const { cargarPerfil, actualizarPerfil } = useUsuario();
+  const { cargarPerfil, actualizarPerfil, cambiarEmail, cambiarPassword } =
+    useUsuario();
 
   // Estados de Datos Generales
   const [currentEmail, setCurrentEmail] = useState("");
@@ -17,7 +18,7 @@ function DatosUsuarioPagina() {
 
   // Estados para Cambiar Correo
   const [newEmail, setNewEmail] = useState("");
-  const [passforEmailChange, setPassForEmailChange] = useState("");
+  const [passForEmailChange, setPassForEmailChange] = useState("");
 
   // Estados para Cambiar Contraseña
   const [newPassword, setNewPassword] = useState("");
@@ -72,7 +73,7 @@ function DatosUsuarioPagina() {
     const resultado = await actualizarPerfil(datos);
     if (resultado.success) {
       alert("!Datos generales actualizados!");
-      navigate("/")
+      navigate("/");
     } else {
       alert("Error: " + resultado.message);
     }
@@ -84,25 +85,20 @@ function DatosUsuarioPagina() {
 
     const newErrors = {};
     if (!newEmail.trim()) newErrors.email = true;
-    if (!passforEmailChange.trim()) newErrors.pass = true;
+    if (!passForEmailChange.trim()) newErrors.pass = true;
 
     if (Object.keys(newErrors).length > 0) {
       setErrorsEmail(newErrors);
       return;
     }
 
-    const datos = {
-      email: newEmail,
-      passwordConfirmation: passforEmailChange,
-    };
-
-    const resultado = await actualizarPerfil(datos);
+    const resultado = await cambiarEmail(passForEmailChange, newEmail);
     if (resultado.success) {
       alert("¡Correo actualizado correctamente!");
       setCurrentEmail(newEmail);
       setNewEmail("");
       setPassForEmailChange("");
-      navigate("/")
+      navigate("/");
     } else {
       alert("Error al cambiar correo: " + resultado.message);
     }
@@ -121,17 +117,12 @@ function DatosUsuarioPagina() {
       return;
     }
 
-    const datos = {
-      password: newPassword,
-      passwordConfirmation: passForPassChange,
-    };
-
-    const resultado = await actualizarPerfil(datos);
+    const resultado = await cambiarPassword(passForPassChange, newPassword);
     if (resultado.success) {
       alert("¡Contraseña actualizada correctamente!");
       setNewPassword("");
       setPassForPassChange("");
-      navigate("/")
+      navigate("/");
     } else {
       alert("Error al cambiar contraseña: " + resultado.message);
     }
@@ -161,9 +152,7 @@ function DatosUsuarioPagina() {
                 <div className="card-body m-3">
                   {/* SECCIÓN 1: DATOS GENERALES */}
                   <form onSubmit={handleUpdateDatos}>
-                    <h5 className="text-black">
-                      1. Datos generales
-                    </h5>
+                    <h5 className="text-black">1. Datos generales</h5>
 
                     {/* Nombre y RUC */}
                     <div className="row">
@@ -276,7 +265,7 @@ function DatosUsuarioPagina() {
                       </button>
                     </div>
                   </form>
-                  
+
                   <hr className="text-black border-2 opacity-50" />
 
                   {/* SECCIÓN 2: CAMBIAR CORREO */}
@@ -312,7 +301,7 @@ function DatosUsuarioPagina() {
 
                       <div className="col-6 mb-3">
                         <label className="form-label text-black">
-                          <b>Contraseña actual</b>
+                          <b>Contraseña Actual</b>
                         </label>
                         <input
                           type="password"
@@ -320,7 +309,7 @@ function DatosUsuarioPagina() {
                             errorsEmail.pass ? "border-danger" : "border-black"
                           }`}
                           placeholder="********"
-                          value={passforEmailChange}
+                          value={passForEmailChange}
                           onChange={(e) =>
                             setPassForEmailChange(e.target.value)
                           }
@@ -338,9 +327,9 @@ function DatosUsuarioPagina() {
                       </button>
                     </div>
                   </form>
-                  
+
                   <hr className="text-black border-2 opacity-50" />
-                  
+
                   {/* SECCIÓN 3: CAMBIAR CONTRASEÑA */}
                   <form onSubmit={handleUpdatePassword}>
                     <h5 className="text-black">3. Cambiar Contraseña</h5>
@@ -355,7 +344,9 @@ function DatosUsuarioPagina() {
                         <input
                           type="password"
                           className={`form-control border ${
-                            errorsPass.newPass ? "border-danger" : "border-black"
+                            errorsPass.newPass
+                              ? "border-danger"
+                              : "border-black"
                           }`}
                           id="inputPassword"
                           style={styleInputSesion}
@@ -380,11 +371,13 @@ function DatosUsuarioPagina() {
                         <input
                           type="password"
                           className={`form-control border ${
-                            errorsPass.currentPass ? "border-danger" : "border-black"
+                            errorsPass.currentPass
+                              ? "border-danger"
+                              : "border-black"
                           }`}
                           id="inputPassword"
                           style={styleInputSesion}
-                          value={newPassword}
+                          value={passForPassChange}
                           onChange={(e) => setPassForPassChange(e.target.value)}
                           placeholder="********"
                         />

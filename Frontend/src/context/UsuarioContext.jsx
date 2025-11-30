@@ -53,18 +53,50 @@ export const UsuarioProvider = ({children}) => {
                await api.put(`/usuarios/${usuario.id}`, datosActualizados);
 
                const nuevoEstado = { ...usuario, ...datosActualizados};
-               delete nuevoEstado.password;
-
                setUsuario(nuevoEstado);
                localStorage.setItem('datosUsuario', JSON.stringify(nuevoEstado));
-
                return  { success: true};
+
           } catch (error) {
                console.error("Error al actualizar", error);
                return {
                     success: false,
                     message: error.response?.data || "Error al actualizar perfil"
                }
+          }
+     }
+
+     const cambiarEmail = async(passwordActual, nuevoEmail) => {
+          if (!usuario?.id) return { success: false, message: "No hay sesión activa"};
+
+          try{
+               await api.put(`/usuarios/${usuario.id}/email`, {
+                    passwordActual: passwordActual,
+                    nuevoEmail: nuevoEmail
+               });
+
+               const nuevoEstado = { ...usuario, email: nuevoEmail};
+               setUsuario(nuevoEstado);
+               localStorage.setItem('datosUsuario', JSON.stringify(nuevoEstado));
+
+               return { success: true};
+          } catch (error) {
+               return { success: false, message: error.response?.data || "Error al cambiar email"};
+          }
+     }
+
+     const cambiarPassword = async (passwordActual, nuevaPassword) => {
+          if (!usuario?.id) return { success: false, message: "No hay sesión activa"};
+
+          try {
+               await api.put(`/usuarios/${usuario.id}/password`, {
+                    passwordActual: passwordActual,
+                    nuevaPassword: nuevaPassword
+               });
+
+               return { success: true };
+          } catch(error) {
+               return {success: false, message: error.response?.data || "Error al cambiar contraseña"};
           }
      }
 
@@ -112,7 +144,7 @@ export const UsuarioProvider = ({children}) => {
      }
 
      return (
-          <UsuarioContext.Provider value={{usuario, login, logout, registrar, cargarPerfil, actualizarPerfil, loading}}>
+          <UsuarioContext.Provider value={{usuario, login, logout, registrar, cargarPerfil, actualizarPerfil, cambiarEmail, cambiarPassword, loading}}>
                {!loading && children}
           </UsuarioContext.Provider>
      );

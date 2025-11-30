@@ -88,7 +88,7 @@ function PaginaDetalle() {
       <div className="container my-5 flex-grow-1">
         <div className="row justify-content-center">
           
-          <div className="col-12 col-md-5 mb-4">
+          <div className="col-12 col-md-5">
             <img
               src={producto.imagenUrl || ImagenDefault}
               onError={handleImageError}
