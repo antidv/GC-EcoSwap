@@ -21,6 +21,53 @@ export const UsuarioProvider = ({children}) => {
         setLoading(false);
      }, []);
 
+     const cargarPerfil = async () => {
+          let idUsuario = usuario?.id;
+          if(!idUsuario) {
+               const guardado = JSON.parse(localStorage.getItem('datosUsuario'));
+               idUsuario = guardado?.id;
+          }
+
+          if (!idUsuario) return;
+
+          try {
+               const response = await api.get(`/usuarios/${idUsuario}`);
+
+               const datosCompletos = { ...usuario, ...response.data};
+
+               setUsuario(datosCompletos);
+
+               localStorage.setItem('datosUsuario', JSON.stringify(datosCompletos));
+
+               return { success: true, data: datosCompletos};
+          } catch (error) {
+               console.error("Error cargando perfil: ", error);
+               return { success: false, message: "Erro al cargar los datos del perfil"};
+          }
+     }
+     
+     const actualizarPerfil = async (datosActualizados) => {
+          if (!usuario?.id) return { success: false, message: "No hay sesión activa"};
+
+          try {
+               await api.put(`/usuarios/$usuario.id`, datosActualizados);
+
+               const nuevoEstado = { ...usuario, ...datosActualizados};
+               delete nuevoEstado.password;
+
+               setUsuario(nuevoEstado);
+               localStorage.setItem('datosUsuario', JSON.stringify(nuevoEstado));
+
+               return  { success: true};
+          } catch (error) {
+               console.error("Error al actualizar", error);
+               return {
+                    success: false,
+                    message: error.response?.data || "Error al actualizar perfil"
+               }
+          }
+     }
+
      const login = async (email, password) => {
           try {
               const response = await api.post('/auth/login', { email, password });
@@ -75,7 +122,7 @@ export const UsuarioProvider = ({children}) => {
      }
 
      return (
-          <UsuarioContext.Provider value={{usuario, login, logout, registrar, loading}}>
+          <UsuarioContext.Provider value={{usuario, login, logout, registrar, cargarPerfil, actualizarPerfil, loading}}>
                {!loading && children}
           </UsuarioContext.Provider>
      );
