@@ -163,9 +163,6 @@ function SeguimientoAdminPagina() {
                         <i className="bi bi-check-circle-fill me-2 fs-4"></i> 
                         <strong>Proceso Finalizado Correctamente</strong>
                     </div>
-                    <button className="btn btn-outline-danger btn-sm" onClick={revertirProceso}>
-                        Revertir a Pendiente (Error)
-                    </button>
                 </div>
             ) : (
                 <div className="d-flex flex-column align-items-center gap-3">
