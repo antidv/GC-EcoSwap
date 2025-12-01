@@ -3,12 +3,14 @@ import { useUsuario } from "../context/UsuarioContext"; // Importamos el context
 import api from "../services/api"; // Tu conexión con Spring Boot
 import "./ChatComponente.css";
 
-function ChatComponente({ ordenId }) {
+function ChatComponente({ ordenId, estadoOrden }) {
   const { usuario } = useUsuario(); // Obtenemos quién está logueado
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef(null); // Referencia para el auto-scroll
   const chatContainerRef = useRef(null);
+
+  const chatBloqueado = estadoOrden === "CANCELADO";
 
   // 1. Función para cargar mensajes del Backend
   const cargarMensajes = async () => {
@@ -50,6 +52,8 @@ function ChatComponente({ ordenId }) {
 
   // 4. Enviar Mensaje (POST)
   const handleSendMessage = async () => {
+    if (chatBloqueado) return;
+
     if (!inputValue.trim() || !usuario || !ordenId) return;
 
     const contenidoMensaje = inputValue;
@@ -170,11 +174,12 @@ function ChatComponente({ ordenId }) {
         >
           <textarea
             className="form-control border-0 bg-transparent"
-            placeholder="Escribe un mensaje..."
+            placeholder={chatBloqueado ? "No puedes enviar mensajes en una orden cancelada." : "Escribe un mensaje..."}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             rows="1"
+            disabled={chatBloqueado}
             style={{ resize: "none", boxShadow: "none" }}
           />
           <button

@@ -41,7 +41,14 @@ function HistorialVentasAdminPagina() {
   };
 
   const handleVerDetalle = (id) => {
-      navigate(`/seguimiento-admin/${id}`);
+    const ordenSeleccionada = historial.find(o => o.id === id);
+    
+    if (ordenSeleccionada && ordenSeleccionada.estado === "CANCELADO") {
+      navigate(`/chat-empresa/${id}`);
+      return;
+    }
+    
+    navigate(`/seguimiento-admin/${id}`);
   };
 
   return (

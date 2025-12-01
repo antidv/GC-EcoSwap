@@ -71,6 +71,24 @@ function TransaccionPago({ ordenId }) {
     }
   };
 
+  const handleCancelar = async () => {
+    try {
+        await api.put(`/ordenes/${ordenId}/estado`, "CANCELADO", {
+            headers: { 'Content-Type': 'text/plain' }
+        });
+
+        alert("¡Venta Cancelada! El pedido ha sido anulado.");
+        
+        await obtenerHistorial();
+        
+        navigate(`/historial-ventas`);
+
+    } catch (error) {
+        console.error("Error al cancelar:", error);
+        alert("Error al cancelar la venta.");
+    }
+  }
+
   const styleCard = {
     backgroundColor: "white",
     color: "#333",
@@ -206,6 +224,17 @@ function TransaccionPago({ ordenId }) {
             {orden.estado === 'CANCELADO' && (
                 <div className="alert alert-success mt-3 text-center small">
                     Venta Cancelada
+                </div>
+            )}
+
+            {orden.estado !== 'CANCELADO' && orden.estado !== 'ENTREGADO' && (
+                <div className='mt-3 text-center'>
+                    <button 
+                        onClick={handleCancelar} 
+                        className="btn btn-outline-danger fw-bold"
+                    >
+                        Cancelar orden
+                    </button>
                 </div>
             )}
           </>
