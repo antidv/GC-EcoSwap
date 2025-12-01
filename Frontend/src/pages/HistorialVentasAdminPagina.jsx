@@ -50,7 +50,7 @@ function HistorialVentasAdminPagina() {
       
       <div className="container my-5 flex-grow-1">
         <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2 className="text-black fw-bold mb-0">Gestión de Ventas</h2>
+            <h2 className="text-black fw-bold mb-0">Historial de transacciones</h2>
             <span className="badge bg-secondary fs-6">
                 Total: {transaccionesProcesadas.length} órdenes
             </span>

@@ -180,7 +180,7 @@ function SeguimientoAdminPagina() {
         </div>
         
         <div className="text-center mt-5">
-            <button className="btn btn-link text-secondary" onClick={() => navigate('/historial-transacciones')}>
+            <button className="btn btn-link text-secondary" onClick={() => navigate('/historial-ventas')}>
                 &larr; Volver al Historial
             </button>
         </div>
