@@ -9,6 +9,7 @@ import PaginaDescarga from '../pages/DescargaPagina.jsx';
 import PaginaCarrito from '../pages/CarritoPagina.jsx';
 import PaginaChatEmpresa from '../pages/ChatEmpresaPagina.jsx'
 import HistorialCertificadosPagina from '../pages/HistorialCertificadosPagina.jsx';
+import HistorialTransaccionesPagina from '../pages/HistorialTransaccionesPagina.jsx';
 import QuienesSomos from '../pages/QuienesSomosPagina.jsx';
 import ComoComprar from '../pages/ComoComprarPagina.jsx';
 import PaginaCertificado from '../pages/CertificadoPagina.jsx';
@@ -89,6 +90,7 @@ function AppRoutes() {
         
         {/* Esto se tiene que editar respecto al rol, uno sería filtrado */}
         <Route path='/historial-ventas' element={<HistorialVentasAdminPagina />}/>
+        <Route path='/historial-transacciones' element={<HistorialTransaccionesPagina />}/>
         <Route path='/seguimiento-admin/:id' element={<SeguimientoAdminPagina />}/>
       </Route>
 

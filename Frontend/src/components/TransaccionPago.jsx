@@ -16,9 +16,7 @@ function TransaccionPago({ ordenId }) {
     const cargarOrden = async () => {
         try {
             setLoading(true);
-            
             const endpoint = usuario.rol === 'ADMIN' ? '/ordenes' : `/ordenes/mis-ordenes/${usuario.id}`;
-            
             const response = await api.get(endpoint);
             
             const ordenEncontrada = response.data.find(o => o.id === parseInt(ordenId));
@@ -45,9 +43,9 @@ function TransaccionPago({ ordenId }) {
             headers: { 'Content-Type': 'text/plain' }
         });
 
-        alert("¡Pago registrado! El administrador verificará tu depósito.");
+        alert("¡Pago registrado! Redirigiendo al seguimiento...");
         
-        window.location.reload(); 
+        navigate(`/seguimiento/${ordenId}`); 
 
     } catch (error) {
         console.error("Error al pagar:", error);
@@ -57,15 +55,15 @@ function TransaccionPago({ ordenId }) {
 
   const handleAprobar = async () => {
     try {
-        await api.put(`/ordenes/${ordenId}/estado`, "ENTREGADO", {
+        await api.put(`/ordenes/${ordenId}/estado`, "PREPARANDO", {
             headers: { 'Content-Type': 'text/plain' }
         });
 
-        alert("¡Venta Concretada! La orden ha sido finalizada.");
+        alert("¡Venta Concretada! Iniciando proceso de envío.");
         
-        await obtenerHistorial(); 
+        await obtenerHistorial();
         
-        navigate('/inventario');
+        navigate(`/seguimiento-admin/${ordenId}`);
 
     } catch (error) {
         console.error("Error al aprobar:", error);
@@ -89,17 +87,9 @@ function TransaccionPago({ ordenId }) {
     border: "2px solid #333", borderRadius: "8px", padding: "10px 20px", cursor: "pointer", width: "100%", marginTop: "1rem"
   };
 
-  const styleBotonPagar = {
-    backgroundColor: "#198754",
-    color: "#ffffff",
-    fontWeight: "bold",
-    fontSize: "1.1rem",
-    border: "2px solid #198754",
-    borderRadius: "8px",
-    padding: "10px 20px",
-    cursor: "pointer",
-    width: "100%",
-    marginTop: "1rem",
+  const styleBotonAzul = {
+    backgroundColor: "#0d6efd", color: "white", fontWeight: "bold", fontSize: "1.1rem",
+    border: "none", borderRadius: "8px", padding: "10px 20px", cursor: "pointer", width: "100%", marginTop: "1rem"
   };
 
   if (loading) return <div className="text-black">Cargando datos...</div>;
@@ -118,7 +108,7 @@ function TransaccionPago({ ordenId }) {
       </div>
 
       <p className="card-text m-0 mb-1">
-        <b>Comprador:</b> {orden.usuario?.nombreEmpresa || "Cliente"}
+        <b>Comprador:</b> {orden.usuario?.nombreEmpresa || orden.usuario?.nombre || orden.usuario?.email || "Cliente"}
       </p>
       
       <div className="card-text m-0 mb-2">
@@ -153,15 +143,33 @@ function TransaccionPago({ ordenId }) {
                     Realizar pago
                 </button>
             )}
-            {(orden.estado === 'PAGADO' || orden.estado === 'PREPARADO') && (
-                <div className="alert alert-info mt-3 text-center small">
-                    <i className="bi bi-clock-history me-1"></i>
-                    Esperando confirmación del vendedor...
+            
+            {(orden.estado === 'PAGADO' || orden.estado === 'PREPARANDO' || orden.estado === 'EN_CAMINO' || orden.estado === 'ENTREGADO') && (
+                <div className="d-grid gap-2 mt-3">
+                    <div className="alert alert-info text-center small mb-2 py-1">
+                        <i className="bi bi-info-circle me-1"></i> Pago registrado
+                    </div>
+                    <button 
+                        className="btn btn-outline-success fw-bold"
+                        onClick={() => navigate(`/seguimiento/${ordenId}`)}
+                    >
+                        <i className="bi bi-truck me-2"></i> Ver Seguimiento
+                    </button>
                 </div>
             )}
+
             {orden.estado === 'ENTREGADO' && (
+                        <button 
+                            className="btn btn-success fw-bold text-white mt-2"
+                            onClick={() => navigate(`/certificado/${ordenId}`)}
+                        >
+                            <i className="bi bi-file-earmark-text me-2"></i> Ver Certificado
+                        </button>
+            )}
+
+            {orden.estado === 'CANCELADO' && (
                 <div className="alert alert-success mt-3 text-center small fw-bold">
-                    ¡Pedido Entregado! Revisa tu certificado.
+                    Pedido Cancelado
                 </div>
             )}
           </>
@@ -171,17 +179,33 @@ function TransaccionPago({ ordenId }) {
           <>
             {orden.estado === 'PENDIENTE' && (
                 <div className="alert alert-warning mt-3 text-center small">
-                    El cliente aún no ha registrado el pago.
+                    Esperando pago del cliente...
                 </div>
             )}
-            {(orden.estado === 'PAGADO' || orden.estado === 'PREPARADO') && (
+            
+            {orden.estado === 'PAGADO' && (
                 <button style={styleBotonAzul} onClick={handleAprobar}>
                     Concretar Venta (Aprobar)
                 </button>
             )}
+
+            {(orden.estado === 'PREPARANDO' || orden.estado === 'EN_CAMINO') && (
+                 <button 
+                    className="btn btn-outline-primary w-100 mt-3"
+                    onClick={() => navigate(`/seguimiento-admin/${ordenId}`)}
+                >
+                    Gestionar Envío
+                </button>
+            )}
+
             {orden.estado === 'ENTREGADO' && (
                 <div className="alert alert-success mt-3 text-center small">
                     Venta Finalizada
+                </div>
+            )}
+            {orden.estado === 'CANCELADO' && (
+                <div className="alert alert-success mt-3 text-center small">
+                    Venta Cancelada
                 </div>
             )}
           </>

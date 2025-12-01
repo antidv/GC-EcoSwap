@@ -1,30 +1,49 @@
-import React, { createContext, useState, useContext } from 'react';
-import { MOCK_CHATS } from '../data/mockChats.js';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import api from '../services/api'; // Conexión real
 
 const ChatsContext = createContext(null);
 
 export const useChats = () => useContext(ChatsContext);
 
 export const ChatsProvider = ({ children }) => {
-  // Inicializamos el estado con los datos del mock
-  const [chatsActivos, setChatsActivos] = useState(MOCK_CHATS);
-
-  // El chat que el admin tiene abierto actualmente
+  const [chatsActivos, setChatsActivos] = useState([]);
   const [chatSeleccionado, setChatSeleccionado] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Cargar la lista de órdenes (Chats) desde el Backend
+  useEffect(() => {
+    const obtenerChats = async () => {
+      try {
+        // Pedimos TODAS las órdenes. 
+        // En un futuro podrías filtrar solo las que tienen estado 'PENDIENTE' o 'EN_PROCESO'
+        const response = await api.get('/ordenes');
+        
+        // Mapeamos la respuesta para que sea fácil de leer en la lista visual
+        const datosFormateados = response.data.map(orden => ({
+            id: orden.id, 
+            titulo: `Orden #${orden.id}`,
+            usuarioNombre: orden.usuario?.nombre || "Cliente EcoSwap",
+            estado: orden.estado,
+            fecha: orden.fechaCompra,
+            total: orden.montoTotal
+        }));
+
+        // Ordenamos: Las más recientes primero
+        datosFormateados.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+        setChatsActivos(datosFormateados);
+      } catch (error) {
+        console.error("Error cargando la lista de chats:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    obtenerChats();
+  }, []);
 
   const seleccionarChat = (chat) => {
     setChatSeleccionado(chat);
-  };
-
-  // Función para que la empresa cree un nuevo chat al pagar (por las dudas)
-  const crearNuevoChat = (datosPago) => {
-    const nuevoChat = {
-      id: `chat-${Date.now()}`,
-      ...datosPago,
-      estado: "pendiente"
-    };
-    // Agregamos el nuevo chat al principio de la lista
-    setChatsActivos([nuevoChat, ...chatsActivos]);
   };
 
   return (
@@ -32,7 +51,7 @@ export const ChatsProvider = ({ children }) => {
       chatsActivos, 
       chatSeleccionado, 
       seleccionarChat,
-      crearNuevoChat
+      loading
     }}>
       {children}
     </ChatsContext.Provider>

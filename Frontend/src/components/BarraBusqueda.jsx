@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import api from '../services/api'; // Importamos la conexión al backend
+import api from '../services/api';
 
 function BarraBusqueda({ 
   terminoBusqueda, 
@@ -8,15 +8,13 @@ function BarraBusqueda({
   onFiltroActivoChange, 
   onSearchSubmit 
 }) {
-  // Estado para guardar las categorías que vienen de la BD
   const [listaCategorias, setListaCategorias] = useState([]);
 
-  // Cargar categorías al montar el componente
   useEffect(() => {
     const cargarCategorias = async () => {
       try {
         const response = await api.get('/insumos/categorias');
-        setListaCategorias(response.data); // Ej: ["PAPEL", "CARTON", "PLASTICO"]
+        setListaCategorias(response.data);
       } catch (error) {
         console.error("Error cargando categorías del filtro:", error);
       }
@@ -36,7 +34,6 @@ function BarraBusqueda({
   return (
     <div className="d-flex justify-content-center">
       
-      {/* BARRA DE BÚSQUEDA (Formulario) */}
       <form className="input-group" onSubmit={onSearchSubmit} style={{ maxWidth: "30rem" }}>
         <input 
           type="text" 

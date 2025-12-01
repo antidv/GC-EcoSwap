@@ -96,46 +96,46 @@ function Inventario() {
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="row px-3">
-            {loading && (
-              <div className="col-12 text-center mt-5">
-                <div className="spinner-border text-success" role="status">
-                  <span className="visually-hidden">Cargando...</span>
-                </div>
-                <p className="text-muted mt-2">Cargando inventario...</p>
+        <div className="row px-3">
+          {loading && (
+            <div className="col-12 text-center mt-5">
+              <div className="spinner-border text-success" role="status">
+                <span className="visually-hidden">Cargando...</span>
               </div>
-            )}
+              <p className="text-muted mt-2">Cargando inventario...</p>
+            </div>
+          )}
 
-            {!loading &&
-              publicacionesFiltradas.length > 0 &&
-              publicacionesFiltradas.map((pub) => (
-                <div
-                  className="col-12 col-md-6 col-lg-4 col-xl-3 mb-4"
-                  key={pub.id}
-                >
-                  <Publicacion publicacion={pub} />
-                </div>
-              ))}
-
-            {!loading && publicacionesFiltradas.length === 0 && (
-              <div className="col-12 text-center mt-5 p-5 bg-light rounded border border-dashed">
-                <h4 className="text-muted">No se encontraron publicaciones.</h4>
-                <p className="text-secondary">
-                  Intenta cambiar el filtro o crea una nueva.
-                </p>
+          {!loading &&
+            publicacionesFiltradas.length > 0 &&
+            publicacionesFiltradas.map((pub) => (
+              <div
+                className="col-12 col-md-6 col-lg-4 col-xl-3 mb-4"
+                key={pub.id}
+              >
+                <Publicacion publicacion={pub} />
               </div>
-            )}
-          </div>
+            ))}
 
-          {!loading && publicacionesFiltradas.length > 0 && (
-            <div className="row mt-5 mb-5">
-              <div className="col-12 text-center">
-                <p className="text-muted small">— Fin de los resultados —</p>
-              </div>
+          {!loading && publicacionesFiltradas.length === 0 && (
+            <div className="col-12 text-center mt-5 p-5 bg-light rounded border border-dashed">
+              <h4 className="text-muted">No se encontraron publicaciones.</h4>
+              <p className="text-secondary">
+                Intenta cambiar el filtro o crea una nueva.
+              </p>
             </div>
           )}
         </div>
+
+        {!loading && publicacionesFiltradas.length > 0 && (
+          <div className="row mt-5 mb-5">
+            <div className="col-12 text-center">
+              <p className="text-muted small">— Fin de los resultados —</p>
+            </div>
+          </div>
+        )}
 
         {/* Footer*/}
         <Footer />

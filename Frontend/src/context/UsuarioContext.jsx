@@ -50,6 +50,7 @@ export const UsuarioProvider = ({children}) => {
           if (!usuario?.id) return { success: false, message: "No hay sesión activa"};
 
           try {
+<<<<<<< HEAD
                await api.put(`/usuarios/${usuario.id}`, datosActualizados);
 
                const nuevoEstado = { ...usuario, ...datosActualizados};
@@ -57,6 +58,17 @@ export const UsuarioProvider = ({children}) => {
                localStorage.setItem('datosUsuario', JSON.stringify(nuevoEstado));
                return  { success: true};
 
+=======
+               await api.put(`/usuarios/$usuario.id`, datosActualizados);
+
+               const nuevoEstado = { ...usuario, ...datosActualizados};
+               delete nuevoEstado.password;
+
+               setUsuario(nuevoEstado);
+               localStorage.setItem('datosUsuario', JSON.stringify(nuevoEstado));
+
+               return  { success: true};
+>>>>>>> origin/Integracion
           } catch (error) {
                console.error("Error al actualizar", error);
                return {
@@ -66,6 +78,7 @@ export const UsuarioProvider = ({children}) => {
           }
      }
 
+<<<<<<< HEAD
      const cambiarEmail = async(passwordActual, nuevoEmail) => {
           if (!usuario?.id) return { success: false, message: "No hay sesión activa"};
 
@@ -100,20 +113,32 @@ export const UsuarioProvider = ({children}) => {
           }
      }
 
+=======
+>>>>>>> origin/Integracion
      const login = async (email, password) => {
           try {
               const response = await api.post('/auth/login', { email, password });
               
-              const { token, usuario_id, rol, mensaje } = response.data;
+              console.log("Respuesta del Login Backend:", response.data);
+
+              const { token, usuario_id, rol, nombre, nombreEmpresa, direccion, telefono } = response.data;
 
               localStorage.setItem('token', token);
               
-              const datosUsuario = { id: usuario_id, email, rol };
-              localStorage.setItem('datosUsuario', JSON.stringify(datosUsuario));
-
-              setUsuario(datosUsuario);
-              
-              return { success: true };
+              const datosUsuario = {
+                id: usuario_id,
+                email,
+                rol,
+                nombre: nombreEmpresa || nombre || "Usuario EcoSwap",
+                direccion: direccion || "Dirección no registrada",
+                telefono: telefono || ""
+               };
+               
+               localStorage.setItem('datosUsuario', JSON.stringify(datosUsuario));
+               
+               setUsuario(datosUsuario);
+               
+               return { success: true };
 
           } catch (error) {
               console.error("Error al iniciar sesión:", error);
@@ -132,7 +157,7 @@ export const UsuarioProvider = ({children}) => {
                console.error("Error al registrar:", error);
                return { 
                     success: false, 
-                    message: error.response?.data || "Error al registrar usuario. Verifique si el RUC o Email ya existen."
+                    message: error.response?.data || "Error al registrar usuario. Verifique los datos."
                };
           }
      };
@@ -144,7 +169,11 @@ export const UsuarioProvider = ({children}) => {
      }
 
      return (
+<<<<<<< HEAD
           <UsuarioContext.Provider value={{usuario, login, logout, registrar, cargarPerfil, actualizarPerfil, cambiarEmail, cambiarPassword, loading}}>
+=======
+          <UsuarioContext.Provider value={{usuario, login, logout, registrar, cargarPerfil, actualizarPerfil, loading}}>
+>>>>>>> origin/Integracion
                {!loading && children}
           </UsuarioContext.Provider>
      );
