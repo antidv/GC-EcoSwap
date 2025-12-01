@@ -8,5 +8,5 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
     // Para que la recicladora vea su historial
     List<Orden> findByUsuarioId(Integer usuarioId);
 
-    boolean existsByUsuarioIdAndEstadoIn(Long usuarioId, List<String> estados);
+    boolean existsByUsuarioIdAndEstadoIn(Integer usuarioId, List<String> estados);
 }

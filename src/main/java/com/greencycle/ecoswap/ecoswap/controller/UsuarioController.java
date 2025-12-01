@@ -56,7 +56,7 @@ public class UsuarioController {
 
         // VALIDACIÓN DE REGLA DE NEGOCIO:
         // "No modificar dirección ni datos clave si hay pedidos en curso"
-        boolean tienePedidosActivos = ordenRepository.existsByUsuarioIdAndEstadoIn(Long.valueOf(id), ESTADOS_ACTIVOS);
+        boolean tienePedidosActivos = ordenRepository.existsByUsuarioIdAndEstadoIn(Math.toIntExact(Long.valueOf(id)), ESTADOS_ACTIVOS);
 
         if (tienePedidosActivos) {
             return ResponseEntity.badRequest()
@@ -89,7 +89,7 @@ public class UsuarioController {
         }
 
         // VALIDACIÓN DE PEDIDOS ACTIVOS
-        boolean tienePedidosActivos = ordenRepository.existsByUsuarioIdAndEstadoIn(Long.valueOf(id), ESTADOS_ACTIVOS);
+        boolean tienePedidosActivos = ordenRepository.existsByUsuarioIdAndEstadoIn(Math.toIntExact(Long.valueOf(id)), ESTADOS_ACTIVOS);
 
         if (tienePedidosActivos) {
             return ResponseEntity.badRequest()

@@ -14,13 +14,15 @@ public class Mensaje {
 
     @ManyToOne
     @JoinColumn(name = "orden_id", nullable = false)
-    private Orden orden; // Vinculado a la orden específica
+    private Orden orden;
 
     @ManyToOne
     @JoinColumn(name = "remitente_id", nullable = false)
     private Usuario remitente;
 
-    // No ponemos destinatario obligatorio, se asume que es el otro participante de la orden
+    @ManyToOne
+    @JoinColumn(name = "destinatario_id", nullable = false)
+    private Usuario destinatario;
 
     @Column(nullable = false)
     private String contenido;
