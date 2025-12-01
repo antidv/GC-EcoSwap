@@ -50,7 +50,6 @@ export const UsuarioProvider = ({children}) => {
           if (!usuario?.id) return { success: false, message: "No hay sesión activa"};
 
           try {
-<<<<<<< HEAD
                await api.put(`/usuarios/${usuario.id}`, datosActualizados);
 
                const nuevoEstado = { ...usuario, ...datosActualizados};
@@ -58,17 +57,6 @@ export const UsuarioProvider = ({children}) => {
                localStorage.setItem('datosUsuario', JSON.stringify(nuevoEstado));
                return  { success: true};
 
-=======
-               await api.put(`/usuarios/$usuario.id`, datosActualizados);
-
-               const nuevoEstado = { ...usuario, ...datosActualizados};
-               delete nuevoEstado.password;
-
-               setUsuario(nuevoEstado);
-               localStorage.setItem('datosUsuario', JSON.stringify(nuevoEstado));
-
-               return  { success: true};
->>>>>>> origin/Integracion
           } catch (error) {
                console.error("Error al actualizar", error);
                return {
@@ -78,7 +66,6 @@ export const UsuarioProvider = ({children}) => {
           }
      }
 
-<<<<<<< HEAD
      const cambiarEmail = async(passwordActual, nuevoEmail) => {
           if (!usuario?.id) return { success: false, message: "No hay sesión activa"};
 
@@ -113,8 +100,6 @@ export const UsuarioProvider = ({children}) => {
           }
      }
 
-=======
->>>>>>> origin/Integracion
      const login = async (email, password) => {
           try {
               const response = await api.post('/auth/login', { email, password });
@@ -169,11 +154,7 @@ export const UsuarioProvider = ({children}) => {
      }
 
      return (
-<<<<<<< HEAD
           <UsuarioContext.Provider value={{usuario, login, logout, registrar, cargarPerfil, actualizarPerfil, cambiarEmail, cambiarPassword, loading}}>
-=======
-          <UsuarioContext.Provider value={{usuario, login, logout, registrar, cargarPerfil, actualizarPerfil, loading}}>
->>>>>>> origin/Integracion
                {!loading && children}
           </UsuarioContext.Provider>
      );
