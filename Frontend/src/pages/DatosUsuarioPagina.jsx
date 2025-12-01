@@ -338,7 +338,7 @@ function DatosUsuarioPagina() {
                     <div className="row">
                       <div className="col-6 mb-3">
                         <label
-                          htmlFor="inputPassword"
+                          htmlFor="inputNewPassword"
                           className="form-label text-black"
                         >
                           <b>Nueva Contraseña</b>
@@ -350,7 +350,7 @@ function DatosUsuarioPagina() {
                               ? "border-danger"
                               : "border-black"
                           }`}
-                          id="inputPassword"
+                          id="inputNewPassword"
                           style={styleInputSesion}
                           value={newPassword}
                           onChange={(e) => setNewPassword(e.target.value)}
@@ -365,7 +365,7 @@ function DatosUsuarioPagina() {
 
                       <div className="col-6 mb-3">
                         <label
-                          htmlFor="inputPassword"
+                          htmlFor="inputCurrentPassword"
                           className="form-label text-black"
                         >
                           <b>Contraseña Actual</b>
@@ -377,7 +377,7 @@ function DatosUsuarioPagina() {
                               ? "border-danger"
                               : "border-black"
                           }`}
-                          id="inputPassword"
+                          id="inputCurrentPassword"
                           style={styleInputSesion}
                           value={passForPassChange}
                           onChange={(e) => setPassForPassChange(e.target.value)}
