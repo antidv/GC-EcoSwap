@@ -124,6 +124,7 @@ const Header = () => {
                 <li><hr className="dropdown-divider" /></li>
                 <li><Link className="dropdown-item" to="/inventario">Ver inventario</Link></li>
                 <li><Link className="dropdown-item" to="/historial-ventas">Ver transacciones</Link></li>
+                <li><Link className="dropdown-item" to="/ver-perfil">Ver perfil</Link></li>
                 <li><hr className="dropdown-divider" /></li>
                 <li><button onClick={handleLogout} className="dropdown-item text-danger">Cerrar Sesión</button></li>
               </ul>

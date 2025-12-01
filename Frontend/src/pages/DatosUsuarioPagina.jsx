@@ -6,7 +6,7 @@ import { useUsuario } from "../context/UsuarioContext";
 
 function DatosUsuarioPagina() {
   const navigate = useNavigate();
-  const { cargarPerfil, actualizarPerfil, cambiarEmail, cambiarPassword } =
+  const { cargarPerfil, actualizarPerfil, cambiarEmail, cambiarPassword, logout } =
     useUsuario();
 
   // Estados de Datos Generales
@@ -94,11 +94,13 @@ function DatosUsuarioPagina() {
 
     const resultado = await cambiarEmail(passForEmailChange, newEmail);
     if (resultado.success) {
-      alert("¡Correo actualizado correctamente!");
+      alert("¡Correo actualizado correctamente! Su sesión ha expirado. Inicie sesión con su nuevo correo.");
       setCurrentEmail(newEmail);
       setNewEmail("");
       setPassForEmailChange("");
-      navigate("/");
+      
+      logout();
+      navigate("/login");
     } else {
       alert("Error al cambiar correo: " + resultado.message);
     }
