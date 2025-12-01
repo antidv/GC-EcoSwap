@@ -8,8 +8,4 @@ public class UsuarioUpdate {
     private String direccion;
     private String telefono;
     private String ruc;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/Integracion
