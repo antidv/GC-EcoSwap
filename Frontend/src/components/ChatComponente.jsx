@@ -8,6 +8,7 @@ function ChatComponente({ ordenId }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef(null); // Referencia para el auto-scroll
+  const chatContainerRef = useRef(null);
 
   // 1. Función para cargar mensajes del Backend
   const cargarMensajes = async () => {
@@ -35,7 +36,16 @@ function ChatComponente({ ordenId }) {
 
   // 3. Efecto para bajar el scroll automáticamente
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const container = chatContainerRef.current;
+    if (container) {
+      const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHight < 150;
+
+      if (isNearBottom) {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth"});
+      }
+    } else {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages]);
 
   // 4. Enviar Mensaje (POST)
@@ -109,6 +119,7 @@ function ChatComponente({ ordenId }) {
 
       {/* Área de Mensajes */}
       <div
+        ref={chatContainerRef}
         className="chat-messages flex-grow-1 overflow-y-auto p-3"
         style={{ backgroundColor: "#f9f9f9" }}
       >
