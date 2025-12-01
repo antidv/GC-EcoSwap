@@ -92,6 +92,10 @@ function SeguimientoAdminPagina() {
     }
   };
 
+  const handleIrAlChat = () => {
+    navigate(`/chat-empresa/${id}`);
+  };
+
   const styleBotonPrincipal = {
     backgroundColor: "#198754", 
     borderColor: "#198754",
@@ -128,9 +132,16 @@ function SeguimientoAdminPagina() {
                     Estado Actual: {orden.estado}
                 </span>
             </div>
-            <p className="text-muted mt-2 fw-bold">
+            <p className="text-muted mt-2 fw-bold mb-2">
                 Cliente: {orden.usuario?.nombreEmpresa || orden.usuario?.email}
             </p>
+            <button 
+                className="btn btn-outline-success btn-sm rounded-pill px-4 fw-bold shadow-sm"
+                onClick={handleIrAlChat}
+            >
+                <i className="bi bi-chat-dots-fill me-2"></i>
+                Abrir Chat del Pedido
+            </button>
         </div>
 
         <div className="row justify-content-center mb-5">
@@ -180,8 +191,8 @@ function SeguimientoAdminPagina() {
         </div>
         
         <div className="text-center mt-5">
-            <button className="btn btn-link text-secondary" onClick={() => navigate('/historial-ventas')}>
-                &larr; Volver al Historial
+            <button className="btn btn-link text-secondary" onClick={() => navigate('/chat-admin')}>
+                &larr; Volver a Historial Transacciones
             </button>
         </div>
 
