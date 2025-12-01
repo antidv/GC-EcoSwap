@@ -29,7 +29,6 @@ function FiltrosVentasAdmin({
                     </div>
                 </div>
 
-                {/* 2. Filtro de Estado */}
                 <div className="col-6 col-md-3">
                     <select 
                         className="form-select" 
@@ -37,8 +36,12 @@ function FiltrosVentasAdmin({
                         onChange={(e) => setFiltroEstado(e.target.value)}
                     >
                         <option value="TODOS">Todos los estados</option>
-                        <option value="PENDIENTE">🟡 Pendientes</option>
-                        <option value="COMPLETADA">🟢 Completadas</option>
+                        <option value="PENDIENTE">🟡 Pendiente</option>
+                        <option value="PAGADO">🔵 Pagado</option>
+                        <option value="PREPARANDO">📦 Preparando</option>
+                        <option value="EN_CAMINO">🚚 En Camino</option>
+                        <option value="ENTREGADO">✅ Entregado</option>
+                        <option value="CANCELADO">🔴 Cancelado</option>
                     </select>
                 </div>
 

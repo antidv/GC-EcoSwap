@@ -19,7 +19,6 @@ function HistorialVentasAdminPagina() {
     obtenerHistorial();
   }, [obtenerHistorial]);
 
-  // --- LÓGICA DE NEGOCIO (Filtrado y Ordenamiento) ---
   const transaccionesProcesadas = historial
     .filter((orden) => {
         const termino = busqueda.toLowerCase();
@@ -37,7 +36,6 @@ function HistorialVentasAdminPagina() {
         return ordenFecha === "ASC" ? fechaA - fechaB : fechaB - fechaA;
     });
 
-  // Funciones auxiliares
   const toggleOrdenFecha = () => {
     setOrdenFecha(prev => prev === "DESC" ? "ASC" : "DESC");
   };
@@ -58,7 +56,6 @@ function HistorialVentasAdminPagina() {
             </span>
         </div>
 
-        {/* Componente de Filtros */}
         <FiltrosVentasAdmin 
             busqueda={busqueda}
             setBusqueda={setBusqueda}
@@ -68,7 +65,6 @@ function HistorialVentasAdminPagina() {
             toggleOrdenFecha={toggleOrdenFecha}
         />
 
-        {/* Componente de Tabla */}
         <TablaVentasAdmin 
             ventas={transaccionesProcesadas}
             loading={loading}

@@ -1,5 +1,24 @@
 import React from 'react';
 
+const getEstadoBadge = (estado) => {
+    switch (estado) {
+        case 'PENDIENTE':
+            return <span className="badge bg-warning text-dark">Pendiente</span>;
+        case 'PAGADO':
+            return <span className="badge bg-info text-dark">Pagado</span>;
+        case 'PREPARANDO':
+            return <span className="badge bg-primary">Preparando</span>;
+        case 'EN_CAMINO':
+            return <span className="badge bg-secondary">En Camino</span>;
+        case 'ENTREGADO':
+            return <span className="badge bg-success">Entregado</span>;
+        case 'CANCELADO':
+            return <span className="badge bg-danger">Cancelado</span>;
+        default:
+            return <span className="badge bg-light text-dark border">{estado}</span>;
+    }
+};
+
 function TablaVentasAdmin({ ventas, loading, ordenFecha, onVerDetalle }) {
     
     if (loading) {
@@ -52,11 +71,7 @@ function TablaVentasAdmin({ ventas, loading, ordenFecha, onVerDetalle }) {
                                 </td>
                                 
                                 <td>
-                                    {orden.estado === 'PENDIENTE' ? (
-                                        <span className="badge bg-warning text-dark">Pendiente</span>
-                                    ) : (
-                                        <span className="badge bg-success">Completada</span>
-                                    )}
+                                    {getEstadoBadge(orden.estado)}
                                 </td>
                                 
                                 <td className="text-end fw-bold text-success">
