@@ -79,7 +79,7 @@ function EditarInsumo() {
       <div className="row justify-content-center mt-4 mb-5">
         <div className="col-12 col-md-10 col-lg-8">
           
-          <h4 className="text-white mb-3">Editar Insumo</h4> {/* Título cambiado */}
+          <h4 className="text-black mb-3">Editar Insumo</h4> {/* Título cambiado */}
           
           <div className="card shadow" style={{borderRadius: '8px'}}>
             <div className="card-body p-4">

@@ -45,7 +45,10 @@ function Inventario() {
         <Header />
 
         <div className="container my-5 flex-grow-1">
-          <div className="row mb-4 mt-5">
+          <div className="row">
+            <h2 className="text-center text-black mb-4">Mi inventario</h2>
+          </div>
+          <div className="row mb-4 mt-2">
             <div className="col-12 d-flex align-items-center justify-content-between">
               <button
                 className="btn btn-success me-3 shadow-sm"
@@ -96,46 +99,46 @@ function Inventario() {
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="row px-3">
-          {loading && (
-            <div className="col-12 text-center mt-5">
-              <div className="spinner-border text-success" role="status">
-                <span className="visually-hidden">Cargando...</span>
+          <div className="row">
+            {loading && (
+              <div className="col-12 text-center mt-5">
+                <div className="spinner-border text-success" role="status">
+                  <span className="visually-hidden">Cargando...</span>
+                </div>
+                <p className="text-muted mt-2">Cargando inventario...</p>
               </div>
-              <p className="text-muted mt-2">Cargando inventario...</p>
-            </div>
-          )}
+            )}
 
-          {!loading &&
-            publicacionesFiltradas.length > 0 &&
-            publicacionesFiltradas.map((pub) => (
-              <div
-                className="col-12 col-md-6 col-lg-4 col-xl-3 mb-4"
-                key={pub.id}
-              >
-                <Publicacion publicacion={pub} />
+            {!loading &&
+              publicacionesFiltradas.length > 0 &&
+              publicacionesFiltradas.map((pub) => (
+                <div
+                  className="col-12 col-md-6 col-lg-4 col-xl-3 mb-4"
+                  key={pub.id}
+                >
+                  <Publicacion publicacion={pub} />
+                </div>
+              ))}
+
+            {!loading && publicacionesFiltradas.length === 0 && (
+              <div className="col-12 text-center mt-5 p-5 bg-light rounded border border-dashed">
+                <h4 className="text-muted">No se encontraron publicaciones.</h4>
+                <p className="text-secondary">
+                  Intenta cambiar el filtro o crea una nueva.
+                </p>
               </div>
-            ))}
-
-          {!loading && publicacionesFiltradas.length === 0 && (
-            <div className="col-12 text-center mt-5 p-5 bg-light rounded border border-dashed">
-              <h4 className="text-muted">No se encontraron publicaciones.</h4>
-              <p className="text-secondary">
-                Intenta cambiar el filtro o crea una nueva.
-              </p>
-            </div>
-          )}
-        </div>
-
-        {!loading && publicacionesFiltradas.length > 0 && (
-          <div className="row mt-5 mb-5">
-            <div className="col-12 text-center">
-              <p className="text-muted small">— Fin de los resultados —</p>
-            </div>
+            )}
           </div>
-        )}
+
+          {!loading && publicacionesFiltradas.length > 0 && (
+            <div className="row mt-5 mb-5">
+              <div className="col-12 text-center">
+                <p className="text-muted small">— Fin de los resultados —</p>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Footer*/}
         <Footer />
