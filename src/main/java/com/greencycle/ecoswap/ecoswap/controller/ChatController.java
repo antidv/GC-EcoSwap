@@ -38,8 +38,8 @@ public class ChatController {
         Orden orden = ordenRepository.findById(request.getOrdenId())
                 .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
 
-        // 1. Validar estado (Solo PENDIENTE)
-        if (!"PENDIENTE".equals(orden.getEstado())) {
+        // 1. Validar estado
+        if ("CANCELADO".equals(orden.getEstado())) {
             return ResponseEntity.badRequest().body("Chat cerrado. Orden en estado: " + orden.getEstado());
         }
 

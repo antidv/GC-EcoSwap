@@ -103,12 +103,49 @@ public class OrdenController {
         Orden orden = ordenRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
 
-        String estadoLimpio = nuevoEstado.replace("\"", "").trim().toUpperCase();
+        // Validaciones básicas
+        if (orden.getEstado().equals("CANCELADO")) {
+            return ResponseEntity.badRequest().body("Esta orden ya está cancelada y el stock fue devuelto.");
+        }
+        if (orden.getEstado().equals("ENTREGADO")) {
+            return ResponseEntity.badRequest().body("No se puede cambiar una orden ya finalizada.");
+        }
 
-        orden.setEstado(estadoLimpio);
+        // CASO 1: CANCELACIÓN -> DEVOLUCIÓN DE STOCK
+        if ("CANCELADO".equals(nuevoEstado)) {
+            // Recorremos los detalles para saber qué devolver
+            for (DetalleOrden detalle : orden.getDetalles()) {
+                Insumo insumo = detalle.getInsumo();
+
+                // SUMAMOS lo que se había comprado
+                insumo.setCantidadKg(insumo.getCantidadKg().add(detalle.getCantidadComprada()));
+
+                // Si el insumo estaba marcado como "VENDIDO" (stock 0), ahora debe estar "DISPONIBLE"
+                // porque ya tiene stock de nuevo.
+                if ("VENDIDO".equals(insumo.getEstado())) {
+                    insumo.setEstado("DISPONIBLE");
+                }
+
+                insumoRepository.save(insumo);
+            }
+
+            orden.setEstado("CANCELADO");
+            ordenRepository.save(orden);
+            return ResponseEntity.ok("Orden cancelada. El stock ha sido restaurado al inventario.");
+        }
+
+        // CASO 2: ENTREGA -> CERTIFICADO
+        if ("ENTREGADO".equals(nuevoEstado)) {
+            orden.setEstado("ENTREGADO");
+            ordenRepository.save(orden);
+            certificadoService.generarCertificado(orden);
+            return ResponseEntity.ok("Orden entregada y Certificado generado.");
+        }
+
+        // CASO 3: FLUJO NORMAL (En Camino, Preparando)
+        orden.setEstado(nuevoEstado);
         ordenRepository.save(orden);
-
-        return ResponseEntity.ok("Estado actualizado a: " + estadoLimpio);
+        return ResponseEntity.ok("Estado actualizado a: " + nuevoEstado);
     }
 
     @GetMapping
