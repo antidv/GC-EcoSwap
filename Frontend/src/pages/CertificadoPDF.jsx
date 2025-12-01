@@ -1,35 +1,35 @@
+import React from "react";
+
 const CertificadoDocumento = ({ transaccion }) => {
   if (!transaccion) return null;
 
-  // MODIFICAR LAS MÉTRICAS
-  /* Cada categoría tendrá su factor de aprovechamiento (insumos que tiene utilidad),
-    fecha de emisión y el factor de ahorro hídrico.
+  let metricas;
 
-    Residuos Evitados = Materiales Vendidos (kg) * Factor de Aprovechamiento (entre 0 y 1 %)
-    CO2 Ahorrado = Residuos Evitados (kg) * Fecha de emisión (CO2/kg)
-    Agua Preservada = Residuos Evitados (kg) * Factor de Ahorro Hídrico (Litros/Kg)
+  if (transaccion.metricas) {
+    // CASO IDEAL: Usamos los datos precisos de Spring Boot
+    metricas = {
+      residuos: transaccion.metricas.residuos,
+      co2: transaccion.metricas.co2,
+      agua: transaccion.metricas.agua,
+      ahorro: transaccion.metricas.ahorro
+    };
+  } else {
+    // FALLBACK: Por si la data viene incompleta, calculamos aproximados (Tu lógica original)
+    // Nota: Usamos Number() para asegurar que no sea texto
+    const cantidad = Number(transaccion.cantidad) || 0;
+    const total = Number(transaccion.total) || 0;
+    
+    metricas = {
+      residuos: (cantidad * 0.5).toFixed(1), 
+      co2: (cantidad * 1.2).toFixed(1), 
+      agua: (cantidad * 50).toFixed(0), 
+      ahorro: (total * 0.15).toFixed(2), 
+    };
+  }
 
-    Categoría | Fac. Aprovechamiento | Fecha de emisión  | Factor de Ahorro Hídrico
-    ------------------------------------------------------------------------------------
-    Papel     | 0.85                 | 0.9               | 26.0
-    Cartón    | 0.90                 | 1.1               | 24.0
-    Plástico  | 0.70                 | 1.5               | 5.7
-    Vidrio    | 0.95                 | 0.3               | 1.3
-    Metal     | 0.95                 | 4.0               | 50.0
-    Orgánico  | 0.35                 | 0.4               | 0.0
-
-  */
-  const metricas = {
-    residuos: (transaccion.cantidad * 0.5).toFixed(1), // kg estimados
-    co2: (transaccion.cantidad * 1.2).toFixed(1), // kg CO2
-    agua: (transaccion.cantidad * 50).toFixed(0), // Litros
-    ahorro: (transaccion.total * 0.15).toFixed(2), // S/estimados
-  };
-
+  // Generación del QR con los datos reales
   const qrData = `Transacción: ${transaccion.id}, Total: S/${transaccion.total}`;
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
-    qrData
-  )}`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}`;
 
   return (
     <>
@@ -56,6 +56,7 @@ const CertificadoDocumento = ({ transaccion }) => {
           </div>
           <div className="text-end text-muted small">
             <p className="mb-0">Fecha de emisión</p>
+            {/* Si el backend manda fecha, úsala, si no, usa la actual */}
             <p className="fw-bold">{new Date().toLocaleDateString()}</p>
           </div>
         </div>

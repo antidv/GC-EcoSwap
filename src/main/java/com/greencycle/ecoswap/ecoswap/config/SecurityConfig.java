@@ -34,22 +34,28 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
             .authorizeHttpRequests(auth -> auth
+                // 1. Públicos
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/insumos/publicos").permitAll() 
+                .requestMatchers(HttpMethod.GET, "/api/insumos/publicos").permitAll()
 
-                .requestMatchers(HttpMethod.POST, "/api/insumos").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/insumos/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/insumos").hasRole("ADMIN")
+                // 2. CHAT
+                .requestMatchers("/api/chat/**").permitAll()
 
-                .requestMatchers("/api/carrito/**").hasRole("RECICLADORA")
-                
-                .requestMatchers(HttpMethod.POST, "/api/ordenes").hasRole("RECICLADORA")
+                // 3. Admin Insumos (Cambiamos a Authority por seguridad)
+                .requestMatchers(HttpMethod.POST, "/api/insumos").hasAnyAuthority("ADMIN", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/insumos/**").hasAnyAuthority("ADMIN", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/insumos").hasAnyAuthority("ADMIN", "ROLE_ADMIN")
 
-                .requestMatchers(HttpMethod.GET, "/api/ordenes/mis-ordenes/**").hasRole("RECICLADORA")
+                // 4. Recicladora
+                .requestMatchers("/api/carrito/**").hasAnyAuthority("RECICLADORA", "ROLE_RECICLADORA")
+                .requestMatchers(HttpMethod.POST, "/api/ordenes").hasAnyAuthority("RECICLADORA", "ROLE_RECICLADORA")
+                .requestMatchers(HttpMethod.GET, "/api/ordenes/mis-ordenes/**").hasAnyAuthority("RECICLADORA", "ROLE_RECICLADORA")
 
-                .requestMatchers(HttpMethod.GET, "/api/ordenes").hasRole("ADMIN")
+                // 5. Admin Ordenes
+                .requestMatchers(HttpMethod.GET, "/api/ordenes").hasAnyAuthority("ADMIN", "ROLE_ADMIN")
 
-                .requestMatchers(HttpMethod.PUT, "/api/ordenes/**").hasAnyRole("ADMIN", "RECICLADORA")
+                // 6. Actualizar estado (Ambos)
+                .requestMatchers(HttpMethod.PUT, "/api/ordenes/**").hasAnyAuthority("ADMIN", "RECICLADORA", "ROLE_ADMIN", "ROLE_RECICLADORA")
 
                 .anyRequest().authenticated()
             )

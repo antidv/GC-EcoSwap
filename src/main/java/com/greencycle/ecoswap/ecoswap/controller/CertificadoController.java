@@ -14,11 +14,10 @@ public class CertificadoController {
     @Autowired
     private CertificadoService certificadoService;
 
-    // Obtener los datos calculados de una orden finalizada
     @GetMapping("/{ordenId}")
-    public ResponseEntity<CertificadoResponse> obtenerCertificado(@PathVariable Long ordenId) {
+    public ResponseEntity<CertificadoResponse> obtenerCertificado(@PathVariable Integer ordenId) {
         try {
-            CertificadoResponse response = certificadoService.obtenerDatosCertificado(Math.toIntExact(ordenId));
+            CertificadoResponse response = certificadoService.obtenerDatosCertificado(ordenId);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();

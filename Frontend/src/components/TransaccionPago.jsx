@@ -158,6 +158,15 @@ function TransaccionPago({ ordenId }) {
                 </div>
             )}
 
+            {orden.estado === 'ENTREGADO' && (
+                        <button 
+                            className="btn btn-success fw-bold text-white mt-2"
+                            onClick={() => navigate(`/certificado/${ordenId}`)}
+                        >
+                            <i className="bi bi-file-earmark-text me-2"></i> Ver Certificado
+                        </button>
+            )}
+
             {orden.estado === 'CANCELADO' && (
                 <div className="alert alert-success mt-3 text-center small fw-bold">
                     Pedido Cancelado

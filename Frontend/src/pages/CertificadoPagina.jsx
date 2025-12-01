@@ -1,22 +1,58 @@
-import React from "react";
-import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
-import { useTransacciones } from "../context/TransaccionesContext.jsx";
-import { MOCK_TRANSACCIONES } from "../data/mockTransacciones.js";
-import Header from "../components/Header";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import api from "../services/api.js"; // Asegúrate de que esta ruta sea correcta para tu axios
+import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 
 function PaginaCertificado() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { transacciones } = useTransacciones();
+  
+  // 1. Estados para manejar la carga de datos real
+  const [transaccion, setTransaccion] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  let transaccion = location.state?.datosTransaccion;
+  // 2. useEffect para pedir los datos a Spring Boot al entrar
+  useEffect(() => {
+    const cargarDatos = async () => {
+      try {
+        setLoading(true);
+        // Llamada a tu endpoint Java: CertificadoController
+        const response = await api.get(`/certificados/${id}`);
+        const data = response.data;
 
-  if (!transaccion) {
-    transaccion = transacciones.find((t) => t.id === id);
-  }
+        // 3. Mapeo: Convertimos lo que manda Java a lo que espera tu Diseño
+        const datosAdaptados = {
+          id: data.idTransaccion,
+          codigo: data.codigoVerificacion,
+          comprador: data.comprador,
+          direccion: "Dirección registrada", // Tu endpoint actual no manda dirección, ponemos un texto por defecto
+          producto: data.resumenInsumos.join(", "), // Java manda lista, lo convertimos a texto
+          total: data.inversionTotal,
+          
+          // Guardamos las métricas exactas que calculó el Backend
+          metricas: {
+             residuos: data.residuosEvitados,
+             co2: data.co2Ahorrado,
+             agua: data.aguaPreservada,
+             ahorro: data.ahorroEconomico
+          }
+        };
 
+        setTransaccion(datosAdaptados);
+      } catch (err) {
+        console.error("Error cargando certificado:", err);
+        setError("No se pudo encontrar el certificado.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    cargarDatos();
+  }, [id]);
+
+  // Estilos Originales (Intactos)
   const styleCertificado = {
     backgroundColor: "rgba(255, 255, 255, 0.9)",
     color: "#333",
@@ -36,7 +72,8 @@ function PaginaCertificado() {
     padding: "8px 20px",
     textDecoration: 'none',
     display: 'inline-block',
-    marginBottom: '20px'
+    marginBottom: '20px',
+    cursor: 'pointer'
   };
 
   const styleBotonDescarga = {
@@ -50,12 +87,32 @@ function PaginaCertificado() {
     width: "100%",
     marginTop: "1rem",
     fontSize: "1.1rem",
+    textDecoration: 'none',
+    display: 'block',
+    textAlign: 'center'
   };
 
-  if (!transaccion) {
+  // Renderizado de carga para evitar pantalla blanca
+  if (loading) {
+    return (
+      <div className="d-flex flex-column min-vh-100">
+        <Header />
+        <div className="container my-5 text-center flex-grow-1">
+           <div className="spinner-border text-success" role="status">
+             <span className="visually-hidden">Cargando...</span>
+           </div>
+           <p className="mt-2">Generando certificado...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Renderizado de Error
+  if (error || !transaccion) {
     return (
       <div className="container text-center" style={{ padding: "2rem" }}>
-        <h2 className="text-white">Transacción no encontrada</h2>
+        <h2 className="text-black">{error || "Transacción no encontrada"}</h2>
         <button style={styleBotonVolver} onClick={() => navigate(-1)}>
           &larr; Volver
         </button>
@@ -63,19 +120,17 @@ function PaginaCertificado() {
     );
   }
 
+  // Datos para el QR
   const qrData = `Transacción: ${transaccion.id}, Comprador: ${transaccion.comprador}, Total: S/${transaccion.total}`;
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
-    qrData
-  )}`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}`;
 
   return (
     <>
       <div className="d-flex flex-column min-vh-100">
-        {/* Header */}
         <Header />
         
         <div className="container my-5 flex-grow-1">
-          {/* Certificado */}
+          {/* Certificado - Diseño Visual Original */}
           <div className="colorVerdeOscuro" style={styleCertificado}>
             <div className="text-center">
               <h4 className="fw-bold">Transacción N° {transaccion.id}</h4>
@@ -107,24 +162,25 @@ function PaginaCertificado() {
                 <img
                   src={qrUrl}
                   alt="Código QR de la transacción"
-                  style={{ border: "4px solid #D4D4A9", borderRadius: "8px" }}
+                  style={{ border: "4px solid #D4D4A9", borderRadius: "8px", maxWidth: "100%" }}
                 />
               </div>
             </div>
 
             {/* Botón de Descarga */}
             <div className="mt-4">
+              {/* Pasamos los datos ya cargados al siguiente componente via state para no volver a cargar */}
               <Link 
                 to={`/descargar-certificado/${transaccion.id}`}
+                state={{ datosTransaccion: transaccion }} 
                 style={styleBotonDescarga}
-                className="btn">
-                Descargar certificado verde
+              >
+                Ver certificado completo (PDF)
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Footer */}
         <Footer />
       </div>
     </>
