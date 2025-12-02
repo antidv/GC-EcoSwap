@@ -35,3 +35,10 @@ npm run dev
 ```bash
 .\mvnw spring-boot:run
 ```
+5. Para poder probar el sistema se cuenta con cuentas de prueba para administrador como uno de reciclador:
+- Administrador:
+admin@greencycle.com
+admin123
+- Reciclador:
+pedro1@sota.com
+pedro123
